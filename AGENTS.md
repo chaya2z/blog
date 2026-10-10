@@ -8,6 +8,11 @@ astro dev --background
 
 Manage the background server with `astro dev stop`, `astro dev status`, and `astro dev logs`.
 
+## Linting and formatting
+
+- After making code changes, run `npx oxlint --fix`, then run `npx oxfmt`.
+- Before finishing, run `npx oxlint --format=agent`.
+
 ## Documentation
 
 Full documentation: https://docs.astro.build
