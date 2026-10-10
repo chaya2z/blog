@@ -1,15 +1,25 @@
 {
   "$schema": "./node_modules/oxlint/configuration_schema.json",
-  "plugins": [
-    "typescript",
-    "unicorn",
-    "oxc"
-  ],
+  "plugins": ["typescript", "unicorn", "oxc"],
   "categories": {
-    "correctness": "error"
+    "correctness": "error",
+    "suspicious": "warn"
   },
-  "rules": {},
+  "rules": {
+    "eslint/no-var": "error",
+    "eslint/prefer-const": "error",
+    "eslint/no-console": [
+      "warn",
+      {
+        "allow": ["warn", "error"]
+      }
+    ],
+    "typescript/consistent-type-imports": "error"
+  },
   "env": {
     "builtin": true
+  },
+  "options": {
+    "denyWarnings": true
   }
 }
