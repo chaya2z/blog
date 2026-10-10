@@ -1,0 +1,14 @@
+{
+  "$schema": "./node_modules/oxfmt/configuration_schema.json",
+  "printWidth": 100,
+  "singleQuote": true,
+  "overrides": [
+    {
+      "files": ["*.json", "*.jsonc"],
+      "options": {
+        // Keep JSONC trailing-comma conventions consistent with JSON.
+        "trailingComma": "none"
+      }
+    }
+  ]
+}
