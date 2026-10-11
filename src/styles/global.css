@@ -67,22 +67,16 @@ body {
   margin: 0;
   background: var(--paper);
   color: var(--ink);
-  font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  /*
+   * One stack for every language. Inter covers Latin only, so Japanese
+   * characters fall through to Noto Sans JP; Latin inside Japanese text stays
+   * in Inter. Fonts are loaded in astro.config.mjs.
+   */
+  font-family: var(--font-inter), var(--font-noto-sans-jp), sans-serif;
   font-size: 1rem;
   line-height: 1.5;
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
-}
-
-/* On body, not html: body sets its own font-family, so html's would not be inherited. */
-body:lang(ja) {
-  /*
-   * Japanese fonts sit before the generic `sans-serif`: it always matches, so a
-   * family after it would never be reached for glyphs the Latin fonts lack.
-   */
-  font-family:
-    system-ui, -apple-system, 'Segoe UI', Roboto, 'Hiragino Sans', 'Hiragino Kaku Gothic ProN',
-    'Noto Sans JP', 'Yu Gothic UI', Meiryo, sans-serif;
 }
 
 ::selection {
