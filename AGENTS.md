@@ -25,3 +25,11 @@ Consult these guides before working on related tasks:
 - [Adding or managing content](https://docs.astro.build/en/guides/content-collections/)
 - [Adding styles or using Tailwind](https://docs.astro.build/en/guides/styling/)
 - [Supporting multiple languages](https://docs.astro.build/en/guides/internationalization/)
+
+## Shell and file editing
+
+- Prefer apply_patch when modifying existing files.
+- The shell may have zsh's noclobber option enabled.
+- When intentionally overwriting a file with shell redirection, use `>|` instead of `>`.
+- Do not disable noclobber globally.
+- Do not overwrite files without checking their existing content when preservation matters.
