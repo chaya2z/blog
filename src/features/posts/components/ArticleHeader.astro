@@ -1,0 +1,59 @@
+---
+import { formatDate } from '../date';
+
+interface Props {
+  title: string;
+  publishedAt: Date;
+}
+
+const { title, publishedAt } = Astro.props;
+---
+
+<header>
+  <h1>{title}</h1>
+  <div class="meta">
+    {/* The date is English UI text, even inside a Japanese post. */}
+    <time datetime={publishedAt.toISOString().slice(0, 10)} lang="en">{formatDate(publishedAt)}</time>
+  </div>
+</header>
+
+<style>
+  header {
+    display: grid;
+    gap: 1.5rem;
+    max-width: 62rem;
+  }
+  /* An accent bar marks where the grid starts, above the title. */
+  header::before {
+    width: 4rem;
+    height: var(--rule-heavy);
+    background: var(--accent);
+    content: '';
+  }
+  /* Article titles are sentences: big, but not set as poster capitals. */
+  h1 {
+    margin: 0;
+    font-size: clamp(2.4rem, 5.5vw, 4.75rem);
+    font-weight: 840;
+    line-height: 1;
+    letter-spacing: -0.05em;
+    text-wrap: balance;
+  }
+  h1:lang(ja) {
+    font-size: clamp(2rem, 4.5vw, 3.5rem);
+    line-height: 1.3;
+    letter-spacing: 0;
+  }
+  .meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem 1.5rem;
+    padding-block: 0.75rem;
+    border-block: 2px solid var(--ink);
+    font-size: 0.8rem;
+    font-weight: 750;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    font-variant-numeric: tabular-nums;
+  }
+</style>

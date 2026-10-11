@@ -1,6 +1,7 @@
 ---
 import type { GetStaticPaths } from 'astro';
 import { render } from 'astro:content';
+import ArticleHeader from '../../../features/posts/components/ArticleHeader.astro';
 import { getPosts, type PostEntry } from '../../../features/posts/content';
 import { parsePostId } from '../../../features/posts/id';
 import BaseLayout from '../../../shared/layouts/BaseLayout.astro';
@@ -24,10 +25,27 @@ const { Content } = await render(post);
 
 <BaseLayout title={post.data.title} lang={lang}>
   <article>
-    <h1>{post.data.title}</h1>
-    <time datetime={post.data.publishedAt.toISOString()}>
-      {post.data.publishedAt.toISOString().slice(0, 10)}
-    </time>
-    <Content />
+    <div class="article-head">
+      <div class="container">
+        <ArticleHeader title={post.data.title} publishedAt={post.data.publishedAt} />
+      </div>
+    </div>
+    <div class="container body">
+      <Content />
+    </div>
   </article>
 </BaseLayout>
+
+<style>
+  .container {
+    width: min(100% - 2 * clamp(1rem, 2.5vw, 2rem), 84rem);
+    margin-inline: auto;
+  }
+  .article-head {
+    padding-block: clamp(1.5rem, 4vw, 3rem) clamp(2.5rem, 5vw, 4.5rem);
+    border-bottom: var(--rule-heavy) solid var(--ink);
+  }
+  .body {
+    padding-block: clamp(2.5rem, 5vw, 4.5rem);
+  }
+</style>
