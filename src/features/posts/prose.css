@@ -1,0 +1,193 @@
+/* Typography for rendered Markdown. Applied via the .prose class. */
+
+.prose {
+  font-size: 1.125rem;
+  line-height: 1.75;
+  overflow-wrap: break-word;
+}
+.prose:lang(ja) {
+  line-height: 1.9;
+  line-break: strict;
+}
+
+/* Reset block margins with zero specificity so the flow spacing below wins. */
+.prose :where(p, ul, ol, pre, table, blockquote, figure) {
+  margin-block: 0;
+}
+/*
+ * Vertical rhythm. Gaps are in rem, not em: an em gap would follow the font size
+ * of the element it sits on, so a smaller code block would get a smaller gap.
+ * Framed blocks (code, tables, images) get more room than paragraphs, so their
+ * rules and edges do not crowd the text around them.
+ */
+.prose > * + * {
+  margin-top: 1.5rem;
+}
+.prose > * + :where(pre, table, figure, p:has(> img)),
+.prose > :where(pre, table, figure, p:has(> img)) + * {
+  margin-top: 2rem;
+}
+.prose > :first-child {
+  margin-top: 0;
+}
+
+/* Headings */
+.prose :where(h2, h3, h4) {
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  line-height: 1.25;
+  scroll-margin-top: 2rem;
+}
+/*
+ * A heading sits far from the section above and close to its own content, so it
+ * reads as the start of what follows. The gap below belongs to the heading, so
+ * the element after it drops the flow gap instead of adding its own.
+ */
+.prose h2 {
+  margin-top: 4.5rem;
+  margin-bottom: 1.5rem;
+  font-size: 1.75em;
+  line-height: 1.1;
+}
+.prose h3 {
+  margin-top: 3rem;
+  margin-bottom: 1.125rem;
+  font-size: 1.3em;
+}
+.prose :where(h2, h3) + * {
+  margin-top: 0;
+}
+
+/* Numbered sections: each h2 number is an accent block, each h3 a chip on a solid. */
+.prose {
+  counter-reset: h2;
+}
+.prose h2 {
+  counter-increment: h2;
+  counter-reset: h3;
+  display: flex;
+  align-items: center;
+  gap: 0.6em;
+  padding-top: 1.5rem;
+  border-top: var(--rule-heavy) solid var(--ink);
+}
+.prose h2::before {
+  content: counter(h2);
+  flex: none;
+  display: inline-grid;
+  place-items: center;
+  min-width: 1.9em;
+  height: 1.9em;
+  padding-inline: 0.35em;
+  font-size: 0.7em;
+  font-weight: 850;
+  color: #ffffff;
+  background: var(--accent);
+  outline: 2px solid var(--ink);
+  font-variant-numeric: tabular-nums;
+}
+.prose h3 {
+  counter-increment: h3;
+  display: flex;
+  align-items: center;
+  gap: 0.55em;
+}
+.prose h3::before {
+  content: counter(h2) '.' counter(h3);
+  flex: none;
+  padding: 0.18em 0.55em;
+  font-size: 0.7em;
+  font-weight: 850;
+  color: var(--on-solid);
+  background: var(--solid);
+  font-variant-numeric: tabular-nums;
+}
+
+/* Tight tracking suits large Latin type, not Japanese. */
+.prose:lang(ja) :where(h2, h3, h4) {
+  letter-spacing: 0;
+}
+
+.prose :where(code, pre) {
+  font-family: ui-monospace, 'SFMono-Regular', Menlo, Consolas, monospace;
+}
+
+/* Inline */
+.prose a {
+  color: var(--accent-text);
+  text-decoration-thickness: 2px;
+  text-underline-offset: 0.2em;
+}
+.prose a:hover {
+  text-decoration-thickness: 4px;
+}
+.prose strong {
+  font-weight: 750;
+}
+.prose :not(pre) > code {
+  padding: 0.12em 0.35em;
+  font-size: 0.85em;
+  background: color-mix(in oklab, var(--ink) 5%, var(--paper));
+  border: 1px solid var(--ink-hairline);
+}
+
+/* Lists */
+.prose :where(ul, ol) {
+  padding-left: 1.4em;
+}
+.prose li + li {
+  margin-top: 0.35em;
+}
+.prose li::marker {
+  color: var(--ink-muted);
+}
+
+/* Blocks */
+.prose blockquote {
+  margin-inline: 0;
+  padding-left: 1.1em;
+  border-left: var(--rule-heavy) solid var(--accent);
+  font-size: 1.15em;
+  font-weight: 560;
+}
+.prose hr {
+  margin-block: 2.5em;
+  border: 0;
+  border-top: var(--rule-heavy) solid var(--ink);
+}
+
+/*
+ * Code blocks keep the background Shiki sets inline (github-dark by default),
+ * so the token colors always sit on the theme they were chosen for.
+ */
+.prose pre {
+  padding: 1rem 1.5rem;
+  overflow-x: auto;
+  font-size: 0.82em;
+  line-height: 1.65;
+  border: 2px solid var(--ink);
+}
+
+/* Tables */
+.prose table {
+  display: block;
+  width: 100%;
+  overflow-x: auto;
+  border-collapse: collapse;
+  font-size: 0.85em;
+}
+.prose :where(th, td) {
+  padding: 0.5rem 0.75rem;
+  text-align: left;
+  border-bottom: 1px solid var(--ink-hairline);
+}
+.prose th {
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  border-bottom: 3px solid var(--ink);
+}
+.prose td {
+  font-variant-numeric: tabular-nums;
+}

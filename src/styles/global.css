@@ -1,0 +1,101 @@
+/*
+ * Custom properties hold the colors, which change between light and dark, and
+ * any other value once it is needed in several places. Values used once are
+ * written where they are used.
+ *
+ * Names follow print, in keeping with the Type Poster direction: the page is
+ * paper, and everything on it is ink.
+ *
+ *   --paper        the stock: page background
+ *   --ink          the main ink: body text, rules, borders
+ *   --accent       the second ink as a fill (blocks, rules)
+ *   --accent-text  the second ink as text on --paper. Screen-only: in print one
+ *                  ink serves both, but here text needs 4.5:1 contrast.
+ *   --solid        a solid: an area fully covered in ink
+ *   --on-solid     type on a solid. In light mode it is reversed out to the
+ *                  paper color; in dark mode the solid is a raised panel instead.
+ *   --ink-muted    a 76% tint of ink: secondary text, list markers
+ *   --ink-hairline a 50% tint of ink: thin rules and borders
+ *   --rule-heavy   the weight of the heavy rules that divide the page
+ */
+:root {
+  /* Petrol blue on newsprint */
+  --paper: #e3e0d7;
+  --ink: #1d1c1a;
+  --accent: #005a78;
+  --accent-text: #005a78;
+  --solid: var(--ink);
+  --on-solid: var(--paper);
+  /* Tints mix ink into paper, so they follow both in dark mode. */
+  --ink-muted: color-mix(in oklab, var(--ink) 76%, var(--paper));
+  --ink-hairline: color-mix(in oklab, var(--ink) 50%, var(--paper));
+  --rule-heavy: 0.55rem;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    /* Graphite rather than black, for long reading. */
+    --paper: #252422;
+    --ink: #e3e0d7;
+    --accent: #00698a;
+    --accent-text: #78c6e4;
+    /* In dark mode a solid lifts slightly off the page instead of reversing. */
+    --solid: color-mix(in oklab, var(--ink) 9%, var(--paper));
+    --on-solid: var(--ink);
+  }
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  color-scheme: light dark;
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  font-size: 1rem;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+/* On body, not html: body sets its own font-family, so html's would not be inherited. */
+body:lang(ja) {
+  /*
+   * Japanese fonts sit before the generic `sans-serif`: it always matches, so a
+   * family after it would never be reached for glyphs the Latin fonts lack.
+   */
+  font-family:
+    system-ui, -apple-system, 'Segoe UI', Roboto, 'Hiragino Sans', 'Hiragino Kaku Gothic ProN',
+    'Noto Sans JP', 'Yu Gothic UI', Meiryo, sans-serif;
+}
+
+::selection {
+  color: var(--ink);
+  background: color-mix(in oklab, var(--accent) 30%, var(--paper));
+}
+
+a {
+  color: inherit;
+}
+
+img,
+svg {
+  max-width: 100%;
+  height: auto;
+}
+
+:focus-visible {
+  /* currentColor always contrasts with its own background. */
+  outline: 3px solid currentColor;
+  outline-offset: 3px;
+}

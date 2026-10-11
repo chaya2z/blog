@@ -1,8 +1,12 @@
 ---
 import type { GetStaticPaths } from 'astro';
 import { render } from 'astro:content';
+import ArticleHeader from '../../../features/posts/components/ArticleHeader.astro';
+import Breadcrumbs from '../../../features/posts/components/Breadcrumbs.astro';
 import { getPosts, type PostEntry } from '../../../features/posts/content';
 import { parsePostId } from '../../../features/posts/id';
+import '../../../features/posts/prose.css';
+import BaseLayout from '../../../shared/layouts/BaseLayout.astro';
 
 export const getStaticPaths = (async () => {
   const posts = await getPosts();
@@ -21,19 +25,41 @@ const { lang } = parsePostId(post.id);
 const { Content } = await render(post);
 ---
 
-<html lang={lang}>
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width" />
-    <title>{post.data.title}</title>
-  </head>
-  <body>
-    <article>
-      <h1>{post.data.title}</h1>
-      <time datetime={post.data.publishedAt.toISOString()}>
-        {post.data.publishedAt.toISOString().slice(0, 10)}
-      </time>
-      <Content />
-    </article>
-  </body>
-</html>
+<BaseLayout title={post.data.title} lang={lang}>
+  {/* Breadcrumbs are site navigation, so they stay outside the article. */}
+  <div class="container crumbs">
+    <Breadcrumbs title={post.data.title} lang={lang} />
+  </div>
+  <article>
+    <div class="article-head">
+      <div class="container">
+        <ArticleHeader title={post.data.title} publishedAt={post.data.publishedAt} />
+      </div>
+    </div>
+    <div class="container body">
+      <div class="prose">
+        <Content />
+      </div>
+    </div>
+  </article>
+</BaseLayout>
+
+<style>
+  .container {
+    width: min(100% - 2 * clamp(1rem, 2.5vw, 2rem), 84rem);
+    margin-inline: auto;
+  }
+  .article-head {
+    padding-block: 1.5rem clamp(2.5rem, 5vw, 4.5rem);
+    border-bottom: var(--rule-heavy) solid var(--ink);
+  }
+  .crumbs {
+    padding-top: clamp(1.5rem, 4vw, 3rem);
+  }
+  .body {
+    padding-block: clamp(2.5rem, 5vw, 4.5rem);
+  }
+  .prose {
+    max-width: 68ch;
+  }
+</style>

@@ -102,7 +102,7 @@ The visual direction is **Type Poster**. Large typography is the main graphic el
 - **Grid:** a Swiss-style 12-column grid, with New Wave accents. Display type is offset by
   whole columns and uses extreme letter-spacing and mixed weights. Body text stays on a
   straight, readable column.
-- **Colour:** red, black and off-white for now. The palette is not final.
+- **Color:** red, black and off-white for now. The palette is not final.
 - **Shape:** square corners and strong rules. On small screens the layout reflows to one
   column.
 - **Accessibility:** WCAG 2.2 AA contrast, visible keyboard focus, and support for
