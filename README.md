@@ -1,43 +1,109 @@
-# Astro Starter Kit: Minimal
+# blog
+
+A personal tech blog built with [Astro](https://astro.build) and served from
+[Cloudflare Workers](https://developers.cloudflare.com/workers/static-assets/).
+
+## Quick start
+
+Requires Node.js 22.12+ and pnpm.
 
 ```sh
-pnpm create astro@latest -- --template minimal
+pnpm install
+pnpm dev
 ```
 
-> 🧑‍🚀 **Seasoned astronaut?** Delete this file. Have fun!
+## Why Astro
 
-## 🚀 Project Structure
+Astro is built for content sites, so running a blog on it is simple:
 
-Inside of your Astro project, you'll see the following folders and files:
+- **Content Collections** validate post frontmatter with a schema, so a missing or
+  mistyped field fails the build.
+- **Markdown and MDX** are supported out of the box. Images can sit next to the post that
+  uses them.
+- **Static output with no client JavaScript by default.** Article pages ship plain HTML
+  and CSS. Interactive parts load JavaScript only where they need it.
+
+## Why Cloudflare Workers
+
+- **Commercial use is allowed on the free plan.** The blog may show ads later.
+  [GitHub Pages](https://docs.github.com/en/pages/getting-started-with-github-pages/github-pages-limits)
+  prohibits commercial use, and
+  [Vercel Hobby](https://vercel.com/docs/limits/fair-use-guidelines) counts ads as
+  commercial use. The Cloudflare [terms](https://www.cloudflare.com/terms/) do not limit
+  the Free plan to non-commercial use.
+- **Workers can run server-side code.** API routes such as view counts can be added to the
+  same deployment later, under `/api/*`.
+- **Free while traffic is low.** Requests for static assets are
+  [free and unlimited](https://developers.cloudflare.com/workers/platform/pricing/). Only
+  requests that run a Worker script count against the Free plan's daily limit. Pages are
+  served as static assets, with no Worker script in front of them.
+- **Cheaper than AWS.** S3 and CloudFront also allow commercial use and server-side code.
+  But the
+  [CloudFront Free plan](https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/flat-rate-pricing-plan.html)
+  covers only 1M requests and 100 GB of transfer a month, and the next plan is paid.
+  Cloudflare serves static assets for free at any traffic level.
+- **The domain is already on Cloudflare.** DNS and hosting stay in one place.
+
+Pricing and terms were checked in October 2026. Cloudflare recommends
+[Workers over Pages](https://developers.cloudflare.com/pages/) for new projects, so this
+site uses Workers Static Assets.
+
+## Directory structure
+
+The code uses a hybrid feature-based structure. It keeps the directories and conventions
+that Astro reserves, such as `src/pages/` and `src/content/`, and organizes everything else
+by feature. Below is the target layout.
 
 ```text
-/
-├── public/
+.
+├── public/                # Static files served as-is
 ├── src/
-│   └── pages/
-│       └── index.astro
-└── package.json
+│   ├── pages/             # Routes: URLs, getStaticPaths(), page assembly
+│   ├── content.config.ts  # Content Collection schemas
+│   ├── content/
+│   │   └── posts/
+│   │       └── <lang>/<slug>/
+│   │           ├── index.md   # Post body
+│   │           └── image.png  # Images used by the post
+│   ├── features/          # Code that belongs to one feature
+│   │   ├── posts/
+│   │   └── home/
+│   ├── shared/            # Code that no single feature owns
+│   │   ├── components/
+│   │   └── layouts/
+│   └── styles/            # Global CSS and design tokens
+└── astro.config.mjs
 ```
 
-Astro looks for `../.astro` or `.md` files in the `../src` directory. Each page is exposed as a route based on its file name.
+- Code used by only one feature lives in `features/<name>/`. Only code that spans
+  features goes in `shared/`.
+- `pages/` handles routing and page assembly. Queries, URL builders and other feature
+  logic belong in `features/`.
+- There are no catch-all folders such as `utils/` or `lib/`.
+- Unit tests sit next to the code they test, for example `queries.test.ts`.
+- The styling approach (CSS Modules, global CSS, or a mix) is not decided yet.
 
-There's nothing special about `../src`, but that's where we like to put any Astro/React/Vue/Svelte/Preact components.
+## URL structure
 
-Any static assets, like images, can be placed in the `../public` directory.
+| Page       | Path                    |
+| :--------- | :---------------------- |
+| Home       | `/`                     |
+| Post index | `/posts/`               |
+| Post       | `/<lang>/posts/<slug>/` |
+| About      | `/about/`               |
 
-## 🧞 Commands
+`<lang>` is a [BCP 47](https://www.rfc-editor.org/info/bcp47) language tag: `en` or `ja`.
+The post index lists posts in both languages.
 
-All commands are run from the root of the project, from a terminal:
+## Design
 
-| Command                | Action                                           |
-| :--------------------- | :----------------------------------------------- |
-| `pnpm install`         | Installs dependencies                            |
-| `pnpm dev`             | Starts local dev server at `localhost:4321`      |
-| `pnpm build`           | Build your production site to `./dist/`          |
-| `pnpm preview`         | Preview your build locally, before deploying     |
-| `pnpm astro ...`       | Run CLI commands like `astro add`, `astro check` |
-| `pnpm astro -- --help` | Get help using the Astro CLI                     |
+The visual direction is **Type Poster**. Large typography is the main graphic element.
 
-## 👀 Want to learn more?
-
-Feel free to check [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
+- **Grid:** a Swiss-style 12-column grid, with New Wave accents. Display type is offset by
+  whole columns and uses extreme letter-spacing and mixed weights. Body text stays on a
+  straight, readable column.
+- **Colour:** red, black and off-white for now. The palette is not final.
+- **Shape:** square corners and strong rules. On small screens the layout reflows to one
+  column.
+- **Accessibility:** WCAG 2.2 AA contrast, visible keyboard focus, and support for
+  `prefers-reduced-motion`. No real text is rotated or set vertically.
