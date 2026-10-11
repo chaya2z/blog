@@ -10,8 +10,8 @@ Manage the background server with `astro dev stop`, `astro dev status`, and `ast
 
 ## Linting and formatting
 
-- After making code changes, run `npx oxlint --fix`, then run `npx oxfmt`.
-- Before finishing, run `npx oxlint --format=agent`.
+- After making code changes, run `pnpm oxlint --fix`, then run `pnpm oxfmt`.
+- Before finishing, run `pnpm oxlint --format=agent`.
 
 ## Documentation
 

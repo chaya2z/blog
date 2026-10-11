@@ -11,16 +11,19 @@
     "lint:fix": "oxlint --fix",
     "fmt": "oxfmt",
     "fmt:check": "oxfmt --check",
-    "typecheck": "astro check"
+    "typecheck": "astro check",
+    "test": "vitest run"
   },
   "dependencies": {
-    "astro": "^7.3.8"
+    "astro": "^7.3.8",
+    "sharp": "^0.35.5"
   },
   "devDependencies": {
     "@astrojs/check": "^0.9.10",
     "oxfmt": "^0.72.0",
     "oxlint": "^1.87.0",
-    "typescript": "^6.0.3"
+    "typescript": "^6.0.3",
+    "vitest": "^5.0.3"
   },
   "devEngines": {
     "packageManager": {
