@@ -5,6 +5,7 @@ import ArticleHeader from '../../../features/posts/components/ArticleHeader.astr
 import Breadcrumbs from '../../../features/posts/components/Breadcrumbs.astro';
 import { getPosts, type PostEntry } from '../../../features/posts/content';
 import { parsePostId } from '../../../features/posts/id';
+import '../../../features/posts/prose.css';
 import BaseLayout from '../../../shared/layouts/BaseLayout.astro';
 
 export const getStaticPaths = (async () => {
@@ -36,7 +37,9 @@ const { Content } = await render(post);
       </div>
     </div>
     <div class="container body">
-      <Content />
+      <div class="prose">
+        <Content />
+      </div>
     </div>
   </article>
 </BaseLayout>
@@ -55,5 +58,8 @@ const { Content } = await render(post);
   }
   .body {
     padding-block: clamp(2.5rem, 5vw, 4.5rem);
+  }
+  .prose {
+    max-width: 68ch;
   }
 </style>
