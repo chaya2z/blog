@@ -3,6 +3,7 @@ import type { GetStaticPaths } from 'astro';
 import { render } from 'astro:content';
 import { getPosts, type PostEntry } from '../../../features/posts/content';
 import { parsePostId } from '../../../features/posts/id';
+import BaseLayout from '../../../shared/layouts/BaseLayout.astro';
 
 export const getStaticPaths = (async () => {
   const posts = await getPosts();
@@ -21,19 +22,12 @@ const { lang } = parsePostId(post.id);
 const { Content } = await render(post);
 ---
 
-<html lang={lang}>
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width" />
-    <title>{post.data.title}</title>
-  </head>
-  <body>
-    <article>
-      <h1>{post.data.title}</h1>
-      <time datetime={post.data.publishedAt.toISOString()}>
-        {post.data.publishedAt.toISOString().slice(0, 10)}
-      </time>
-      <Content />
-    </article>
-  </body>
-</html>
+<BaseLayout title={post.data.title} lang={lang}>
+  <article>
+    <h1>{post.data.title}</h1>
+    <time datetime={post.data.publishedAt.toISOString()}>
+      {post.data.publishedAt.toISOString().slice(0, 10)}
+    </time>
+    <Content />
+  </article>
+</BaseLayout>
