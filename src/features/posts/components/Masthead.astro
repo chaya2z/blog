@@ -1,0 +1,64 @@
+---
+interface Props {
+  title: string;
+}
+
+const { title } = Astro.props;
+
+// One short word reads as an overprint; longer titles would turn muddy.
+const ghost = !/\s/.test(title) && title.length <= 10;
+---
+
+<header>
+  <div class="container">
+    <h1 class:list={{ ghost }} data-text={ghost ? title : undefined}>{title}</h1>
+  </div>
+</header>
+
+<style>
+  header {
+    /* The ghost is shifted to the right; clip it rather than scroll the page. */
+    overflow-x: clip;
+    padding-block: clamp(2.5rem, 6vw, 5rem) clamp(2.5rem, 5vw, 4.5rem);
+    border-bottom: var(--rule-heavy) solid var(--ink);
+  }
+  /* Page names are short: set them as display type. */
+  h1 {
+    position: relative;
+    isolation: isolate;
+    margin: 0;
+    font-size: clamp(3.25rem, 9vw, 8.5rem);
+    font-weight: 860;
+    line-height: 0.86;
+    letter-spacing: -0.06em;
+    text-transform: uppercase;
+    text-wrap: balance;
+    overflow-wrap: anywhere;
+  }
+  h1:lang(ja) {
+    font-size: clamp(2.5rem, 7vw, 5.5rem);
+    line-height: 1.15;
+    letter-spacing: 0;
+  }
+  /*
+   * Misregistered outline copy behind the title, as in an overprint: same
+   * type, shifted one of twelve columns and a little down. Generated content
+   * with an empty alt, so it is not part of the heading's accessible name.
+   */
+  .ghost::after {
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    color: transparent;
+    transform: translate(calc(100cqi / 12), 0.14em);
+    -webkit-text-stroke: 2px var(--accent);
+    content: attr(data-text) / '';
+    pointer-events: none;
+  }
+  /* Forced colors would paint it solid on top of the title. */
+  @media (forced-colors: active) {
+    .ghost::after {
+      display: none;
+    }
+  }
+</style>
