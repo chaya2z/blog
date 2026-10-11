@@ -17,6 +17,7 @@
  *   --ink-muted    a 76% tint of ink: secondary text, list markers
  *   --ink-hairline a 50% tint of ink: thin rules and borders
  *   --rule-heavy   the weight of the heavy rules that divide the page
+ *   --page-width   the width of the page column and of its 12-column grid
  */
 :root {
   /* Petrol blue on newsprint */
@@ -30,6 +31,8 @@
   --ink-muted: color-mix(in oklab, var(--ink) 76%, var(--paper));
   --ink-hairline: color-mix(in oklab, var(--ink) 50%, var(--paper));
   --rule-heavy: 0.55rem;
+  /* Its 100% resolves where it is used. */
+  --page-width: min(100% - 2 * clamp(1rem, 2.5vw, 2rem), 84rem);
 }
 
 @media (prefers-color-scheme: dark) {
@@ -92,6 +95,13 @@ img,
 svg {
   max-width: 100%;
   height: auto;
+}
+
+/* The page column. A query container, so descendants can size by it (cqi). */
+.container {
+  container-type: inline-size;
+  width: var(--page-width);
+  margin-inline: auto;
 }
 
 :focus-visible {
