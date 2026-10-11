@@ -16,7 +16,9 @@
  *                  paper color; in dark mode the solid is a raised panel instead.
  *   --ink-muted    a 76% tint of ink: secondary text, list markers
  *   --ink-hairline a 50% tint of ink: thin rules and borders
+ *   --ink-grid     a 7% wash of ink: the grid lines behind the page
  *   --rule-heavy   the weight of the heavy rules that divide the page
+ *   --page-width   the width of the page column and of its 12-column grid
  */
 :root {
   /* Petrol blue on newsprint */
@@ -29,7 +31,11 @@
   /* Tints mix ink into paper, so they follow both in dark mode. */
   --ink-muted: color-mix(in oklab, var(--ink) 76%, var(--paper));
   --ink-hairline: color-mix(in oklab, var(--ink) 50%, var(--paper));
+  /* Over transparent, not paper: the grid sits behind the page's content. */
+  --ink-grid: color-mix(in oklab, var(--ink) 7%, transparent);
   --rule-heavy: 0.55rem;
+  /* Its 100% resolves where it is used. */
+  --page-width: min(100% - 2 * clamp(1rem, 2.5vw, 2rem), 84rem);
 }
 
 @media (prefers-color-scheme: dark) {
@@ -61,22 +67,16 @@ body {
   margin: 0;
   background: var(--paper);
   color: var(--ink);
-  font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  /*
+   * One stack for every language. Inter covers Latin only, so Japanese
+   * characters fall through to Noto Sans JP; Latin inside Japanese text stays
+   * in Inter. Fonts are loaded in astro.config.mjs.
+   */
+  font-family: var(--font-inter), var(--font-noto-sans-jp), sans-serif;
   font-size: 1rem;
   line-height: 1.5;
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
-}
-
-/* On body, not html: body sets its own font-family, so html's would not be inherited. */
-body:lang(ja) {
-  /*
-   * Japanese fonts sit before the generic `sans-serif`: it always matches, so a
-   * family after it would never be reached for glyphs the Latin fonts lack.
-   */
-  font-family:
-    system-ui, -apple-system, 'Segoe UI', Roboto, 'Hiragino Sans', 'Hiragino Kaku Gothic ProN',
-    'Noto Sans JP', 'Yu Gothic UI', Meiryo, sans-serif;
 }
 
 ::selection {
@@ -92,6 +92,31 @@ img,
 svg {
   max-width: 100%;
   height: auto;
+}
+
+/* The page column. A query container, so descendants can size by it (cqi). */
+.container {
+  container-type: inline-size;
+  width: var(--page-width);
+  margin-inline: auto;
+}
+
+/*
+ * The 12-column grid stays faintly visible behind the page, at the page
+ * column's width: content offset by whole columns lands on a line, so the
+ * offsets read as deliberate.
+ */
+body::before {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  width: var(--page-width);
+  margin-inline: auto;
+  border-right: 1px solid var(--ink-grid);
+  background: linear-gradient(90deg, var(--ink-grid) 1px, transparent 1px) 0 0 / calc(100% / 12)
+    100%;
+  pointer-events: none;
+  content: '';
 }
 
 :focus-visible {

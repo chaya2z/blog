@@ -1,5 +1,5 @@
 // @ts-check
-import { defineConfig } from 'astro/config';
+import { defineConfig, fontProviders } from 'astro/config';
 
 // https://astro.build/config
 export default defineConfig({
@@ -7,4 +7,29 @@ export default defineConfig({
   build: {
     format: 'directory',
   },
+  // Both fonts drop Astro's fallbacks: each variable would end in `sans-serif`,
+  // which answers for every character, so no font after it is reached. The
+  // stack, with its single generic at the end, is written in global.css.
+  fonts: [
+    {
+      provider: fontProviders.fontsource(),
+      name: 'Inter',
+      cssVariable: '--font-inter',
+      weights: ['100 900'],
+      styles: ['normal'],
+      fallbacks: [],
+    },
+    {
+      // Google, not Fontsource: Astro's Fontsource provider cannot select the
+      // Japanese unicode-range slices, and its `japanese` file does not exist.
+      // From Google, a page downloads just the slices for the characters it uses.
+      // The Japanese slices are unnamed, so `subsets` keeps them all.
+      provider: fontProviders.google(),
+      name: 'Noto Sans JP',
+      cssVariable: '--font-noto-sans-jp',
+      weights: ['100 900'],
+      styles: ['normal'],
+      fallbacks: [],
+    },
+  ],
 });

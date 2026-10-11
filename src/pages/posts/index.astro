@@ -1,0 +1,21 @@
+---
+import Masthead from '../../features/posts/components/Masthead.astro';
+import PostList from '../../features/posts/components/PostList.astro';
+import { getPosts } from '../../features/posts/content';
+import BaseLayout from '../../shared/layouts/BaseLayout.astro';
+
+const posts = await getPosts();
+---
+
+<BaseLayout title="Posts" lang="en">
+  <Masthead title="Posts" />
+  <div class="container list">
+    <PostList posts={posts} />
+  </div>
+</BaseLayout>
+
+<style>
+  .list {
+    padding-block: clamp(2.5rem, 5vw, 4.5rem);
+  }
+</style>
