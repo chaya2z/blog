@@ -1,0 +1,87 @@
+---
+const NAV = [{ href: '/posts/', label: 'Posts' }];
+
+// Posts live under /<lang>/posts/ but belong to the Posts section.
+const path = Astro.url.pathname;
+const section = path.replace(/^\/(en|ja)(?=\/posts\/)/, '');
+---
+
+{/* UI text is English, even on a Japanese page. */}
+<header lang="en">
+  <div class="container inner">
+    <a href="/" class="logo">
+      Abyssal Tarantella
+    </a>
+    <nav aria-label="Main">
+      <ul>
+        {
+          NAV.map((item) => (
+            <li>
+              <a
+                href={item.href}
+                aria-current={
+                  path === item.href ? 'page' : section.startsWith(item.href) ? 'true' : undefined
+                }
+              >
+                {item.label}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<style>
+  /* A solid with a heavy accent rule: the top edge of the poster. */
+  header {
+    color: var(--on-solid);
+    background: var(--solid);
+    border-bottom: var(--rule-heavy) solid var(--accent);
+  }
+  .inner {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.75rem 2rem;
+    min-height: 5.5rem;
+  }
+  .logo {
+    margin-right: auto;
+    font-size: 1.05rem;
+    font-weight: 850;
+    letter-spacing: -0.03em;
+    text-transform: uppercase;
+    text-decoration: none;
+  }
+  ul {
+    display: flex;
+    gap: clamp(1rem, 2.5vw, 2.25rem);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+  nav a {
+    display: block;
+    padding-block: 0.6rem;
+    border-bottom: 3px solid transparent;
+    font-size: 0.95rem;
+    font-weight: 800;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    text-decoration: none;
+  }
+  nav a:hover {
+    border-bottom-color: currentColor;
+  }
+  /* The current section is a solid bar in the text color, not color alone. */
+  nav a[aria-current] {
+    border-bottom: 0.35rem solid currentColor;
+  }
+  @media (max-width: 40rem) {
+    .inner {
+      min-height: 4.5rem;
+    }
+  }
+</style>

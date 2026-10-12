@@ -14,6 +14,7 @@
  *   --solid        a solid: an area fully covered in ink
  *   --on-solid     type on a solid. In light mode it is reversed out to the
  *                  paper color; in dark mode the solid is a raised panel instead.
+ *   --on-solid-muted  a 78% tint of type on a solid: secondary text on it
  *   --ink-muted    a 76% tint of ink: secondary text, list markers
  *   --ink-hairline a 50% tint of ink: thin rules and borders
  *   --ink-grid     a 7% wash of ink: the grid lines behind the page
@@ -31,6 +32,7 @@
   /* Tints mix ink into paper, so they follow both in dark mode. */
   --ink-muted: color-mix(in oklab, var(--ink) 76%, var(--paper));
   --ink-hairline: color-mix(in oklab, var(--ink) 50%, var(--paper));
+  --on-solid-muted: color-mix(in oklab, var(--on-solid) 78%, var(--solid));
   /* Over transparent, not paper: the grid sits behind the page's content. */
   --ink-grid: color-mix(in oklab, var(--ink) 7%, transparent);
   --rule-heavy: 0.55rem;
@@ -63,7 +65,11 @@ html {
   text-size-adjust: 100%;
 }
 
+/* On short pages the footer still sits at the bottom of the window. */
 body {
+  display: flex;
+  flex-direction: column;
+  min-height: 100dvh;
   margin: 0;
   background: var(--paper);
   color: var(--ink);
@@ -82,6 +88,10 @@ body {
 ::selection {
   color: var(--ink);
   background: color-mix(in oklab, var(--accent) 30%, var(--paper));
+}
+
+main {
+  flex: 1;
 }
 
 a {
