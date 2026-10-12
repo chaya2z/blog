@@ -1,0 +1,80 @@
+---
+const BUILD_YEAR = new Date().getFullYear();
+---
+
+{/* UI text is English, even on a Japanese page. */}
+<footer lang="en">
+  <div class="container inner">
+    <div>
+      {/* Heavy and hairline, the second name stepped one column in. */}
+      <p class="name">Abyssal <span class="last">Tarantella</span></p>
+      <p class="small">
+        © {BUILD_YEAR} · Built with Astro, deployed on Cloudflare.{' '}
+        <a href="https://github.com/chaya2z/blog">Source</a>
+      </p>
+    </div>
+    <ul>
+      <li><a href="https://github.com/chaya2z">GitHub</a></li>
+    </ul>
+  </div>
+</footer>
+
+<style>
+  /* The page closes on a solid, mirroring the header. */
+  footer {
+    padding-block: clamp(3rem, 6vw, 4.5rem);
+    color: var(--on-solid-muted);
+    background: var(--solid);
+    border-top: var(--rule-heavy) solid var(--accent);
+  }
+  .inner {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: flex-end;
+    gap: 2rem;
+  }
+  .name {
+    margin: 0;
+    color: var(--on-solid);
+    font-size: clamp(2.5rem, 7vw, 5.5rem);
+    font-weight: 860;
+    line-height: 0.9;
+    letter-spacing: -0.06em;
+    text-transform: uppercase;
+  }
+  .last {
+    display: block;
+    margin-left: calc(100cqi / 12);
+    font-weight: 250;
+  }
+  .small {
+    margin: 1rem 0 0;
+    font-size: 0.9rem;
+  }
+  ul {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem 1.5rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    font-size: 0.9rem;
+    font-weight: 750;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+  }
+  a {
+    color: var(--on-solid);
+  }
+  ul a {
+    display: inline-block;
+    padding-block: 0.5rem;
+    text-decoration: none;
+  }
+  a:hover {
+    text-decoration: underline;
+    text-decoration-thickness: 2px;
+    text-underline-offset: 0.25em;
+  }
+</style>
