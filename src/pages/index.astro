@@ -20,6 +20,21 @@ const posts = (await getPosts()).slice(0, 5);
 </BaseLayout>
 
 <style>
+  /*
+   * The top page prints its second ink in red instead of petrol blue.
+   * Its paper and ink match global.css, so only the accent changes. `html`
+   * outranks global.css, which may load after this page's styles.
+   */
+  :global(html:root) {
+    --accent: #b8281d;
+    --accent-text: #a32219;
+  }
+  @media (prefers-color-scheme: dark) {
+    :global(html:root) {
+      --accent: #c2302a;
+      --accent-text: #ff9384;
+    }
+  }
   .latest {
     padding-block: clamp(2.5rem, 5vw, 4.5rem);
   }
