@@ -13,7 +13,9 @@ const { title, publishedAt } = Astro.props;
   <h1>{title}</h1>
   <div class="meta">
     {/* The date is English UI text, even inside a Japanese post. */}
-    <time datetime={publishedAt.toISOString().slice(0, 10)} lang="en">{formatDate(publishedAt)}</time>
+    <time datetime={publishedAt.toISOString().slice(0, 10)} lang="en">
+      {formatDate(publishedAt)}
+    </time>
   </div>
 </header>
 

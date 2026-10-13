@@ -12,21 +12,19 @@ const { posts } = Astro.props;
 ---
 
 <ul>
-  {
-    posts.map((post) => (
-      <li>
-        <article lang={parsePostId(post.id).lang}>
-          {/* The date is English UI text, even beside a Japanese title. */}
-          <time datetime={post.data.publishedAt.toISOString().slice(0, 10)} lang="en">
-            {formatDate(post.data.publishedAt)}
-          </time>
-          <h2>
-            <a href={getPostPath(post.id)}>{post.data.title}</a>
-          </h2>
-        </article>
-      </li>
-    ))
-  }
+  {posts.map((post) => (
+    <li>
+      <article lang={parsePostId(post.id).lang}>
+        {/* The date is English UI text, even beside a Japanese title. */}
+        <time datetime={post.data.publishedAt.toISOString().slice(0, 10)} lang="en">
+          {formatDate(post.data.publishedAt)}
+        </time>
+        <h2>
+          <a href={getPostPath(post.id)}>{post.data.title}</a>
+        </h2>
+      </article>
+    </li>
+  ))}
 </ul>
 
 <style>

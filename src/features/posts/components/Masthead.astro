@@ -11,7 +11,9 @@ const ghost = !/\s/.test(title) && title.length <= 10;
 
 <header>
   <div class="container">
-    <h1 class:list={{ ghost }} data-text={ghost ? title : undefined}>{title}</h1>
+    <h1 class:list={{ ghost }} data-text={ghost ? title : undefined}>
+      {title}
+    </h1>
   </div>
 </header>
 
