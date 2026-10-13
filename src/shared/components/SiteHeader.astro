@@ -14,20 +14,18 @@ const section = path.replace(/^\/(en|ja)(?=\/posts\/)/, '');
     </a>
     <nav aria-label="Main">
       <ul>
-        {
-          NAV.map((item) => (
-            <li>
-              <a
-                href={item.href}
-                aria-current={
-                  path === item.href ? 'page' : section.startsWith(item.href) ? 'true' : undefined
-                }
-              >
-                {item.label}
-              </a>
-            </li>
-          ))
-        }
+        {NAV.map((item) => (
+          <li>
+            <a
+              href={item.href}
+              aria-current={
+                path === item.href ? 'page' : section.startsWith(item.href) ? 'true' : undefined
+              }
+            >
+              {item.label}
+            </a>
+          </li>
+        ))}
       </ul>
     </nav>
   </div>

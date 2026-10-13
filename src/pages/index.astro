@@ -13,7 +13,9 @@ const posts = (await getPosts()).slice(0, 5);
       <h1 id="latest" class="title">
         <span class="num">01</span> Latest posts
       </h1>
-      <a href="/posts/" class="more">All posts <span aria-hidden="true">→</span></a>
+      <a href="/posts/" class="more">
+        All posts <span aria-hidden="true">→</span>
+      </a>
     </div>
     <PostList posts={posts} />
   </section>
