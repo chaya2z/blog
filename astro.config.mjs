@@ -1,11 +1,21 @@
 // @ts-check
 import { defineConfig, fontProviders } from 'astro/config';
+import { satteri } from '@astrojs/markdown-satteri';
+import { katexPlugin } from './src/features/posts/markdown/katex.ts';
 
 // https://astro.build/config
 export default defineConfig({
   trailingSlash: 'always',
   build: {
     format: 'directory',
+  },
+  // `math` parses conventional Markdown math (`$...$` / `$$...$$`) into AST nodes;
+  // `katexPlugin` renders those nodes as HTML with KaTeX.
+  markdown: {
+    processor: satteri({
+      features: { math: true },
+      mdastPlugins: [katexPlugin],
+    }),
   },
   // Both fonts drop Astro's fallbacks: each variable would end in `sans-serif`,
   // which answers for every character, so no font after it is reached. The
