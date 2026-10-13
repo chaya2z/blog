@@ -1,6 +1,7 @@
 ---
 import type { GetStaticPaths } from 'astro';
 import { render } from 'astro:content';
+import 'katex/dist/katex.min.css';
 import ArticleHeader from '../../../features/posts/components/ArticleHeader.astro';
 import Breadcrumbs from '../../../features/posts/components/Breadcrumbs.astro';
 import { getPosts, type PostEntry } from '../../../features/posts/content';

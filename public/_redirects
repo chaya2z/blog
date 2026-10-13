@@ -1,0 +1,32 @@
+# https://developers.cloudflare.com/workers/static-assets/redirects/
+
+# Posts from the previous blog, which used /posts/YYYY/MM/DD/post01/.
+# Each source is listed with and without the trailing slash: Cloudflare matches them separately.
+/posts/2019/12/23/post01    /ja/posts/z80-parts-in-akihabara/                301
+/posts/2019/12/23/post01/   /ja/posts/z80-parts-in-akihabara/                301
+/posts/2020/04/28/post01    /ja/posts/tower-of-hanoi-and-recursion/          301
+/posts/2020/04/28/post01/   /ja/posts/tower-of-hanoi-and-recursion/          301
+/posts/2020/12/03/post01    /ja/posts/trying-ebpf-syscall-monitoring/        301
+/posts/2020/12/03/post01/   /ja/posts/trying-ebpf-syscall-monitoring/        301
+/posts/2021/08/17/post01    /ja/posts/opnsense-firewall-notes/               301
+/posts/2021/08/17/post01/   /ja/posts/opnsense-firewall-notes/               301
+/posts/2021/12/04/post01    /ja/posts/vyos-on-conoha-vps/                    301
+/posts/2021/12/04/post01/   /ja/posts/vyos-on-conoha-vps/                    301
+/posts/2021/12/06/post01    /ja/posts/my-first-vyos-contribution/            301
+/posts/2021/12/06/post01/   /ja/posts/my-first-vyos-contribution/            301
+/posts/2022/06/27/post01    /ja/posts/homelab-2022/                          301
+/posts/2022/06/27/post01/   /ja/posts/homelab-2022/                          301
+/posts/2022/08/17/post01    /ja/posts/linux-desktop-2022/                    301
+/posts/2022/08/17/post01/   /ja/posts/linux-desktop-2022/                    301
+/posts/2023/07/27/post01    /ja/posts/kinesis-advantage360-switch-profiles/  301
+/posts/2023/07/27/post01/   /ja/posts/kinesis-advantage360-switch-profiles/  301
+/posts/2023/07/31/post01    /ja/posts/jetbrains-all-products-pack/           301
+/posts/2023/07/31/post01/   /ja/posts/jetbrains-all-products-pack/           301
+
+# Date archive pages of the previous blog.
+/posts/:year                /posts/                                          301
+/posts/:year/               /posts/                                          301
+/posts/:year/:month         /posts/                                          301
+/posts/:year/:month/        /posts/                                          301
+/posts/:year/:month/:date   /posts/                                          301
+/posts/:year/:month/:date/  /posts/                                          301
