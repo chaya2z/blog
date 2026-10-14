@@ -4,6 +4,7 @@ import { render } from 'astro:content';
 import 'katex/dist/katex.min.css';
 import ArticleHeader from '../../../features/posts/components/ArticleHeader.astro';
 import Breadcrumbs from '../../../features/posts/components/Breadcrumbs.astro';
+import ShareLinks from '../../../features/posts/components/ShareLinks.astro';
 import { getPosts, type PostEntry } from '../../../features/posts/content';
 import { parsePostId } from '../../../features/posts/id';
 import '../../../features/posts/prose.css';
@@ -24,6 +25,7 @@ interface Props {
 const { post } = Astro.props;
 const { lang } = parsePostId(post.id);
 const { Content } = await render(post);
+const url = new URL(Astro.url.pathname, Astro.site).href;
 ---
 
 <BaseLayout title={post.data.title} lang={lang}>
@@ -40,6 +42,9 @@ const { Content } = await render(post);
     <div class="container body">
       <div class="prose">
         <Content />
+      </div>
+      <div class="share">
+        <ShareLinks url={url} title={post.data.title} />
       </div>
     </div>
   </article>
@@ -58,5 +63,8 @@ const { Content } = await render(post);
   }
   .prose {
     max-width: 68ch;
+  }
+  .share {
+    margin-top: clamp(2.5rem, 5vw, 4.5rem);
   }
 </style>
