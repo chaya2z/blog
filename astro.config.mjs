@@ -1,6 +1,7 @@
 // @ts-check
 import { defineConfig, fontProviders } from 'astro/config';
 import { satteri } from '@astrojs/markdown-satteri';
+import sitemap from '@astrojs/sitemap';
 import { katexPlugin } from './src/features/posts/markdown/katex.ts';
 
 // https://astro.build/config
@@ -10,6 +11,7 @@ export default defineConfig({
   build: {
     format: 'directory',
   },
+  integrations: [sitemap()],
   // `math` parses conventional Markdown math (`$...$` / `$$...$$`) into AST nodes;
   // `katexPlugin` renders those nodes as HTML with KaTeX.
   markdown: {
