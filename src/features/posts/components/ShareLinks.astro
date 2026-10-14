@@ -1,0 +1,265 @@
+---
+import { getImage } from 'astro:assets';
+import BlueskyLogo from '../../../shared/icons/bluesky.svg';
+import CheckIcon from '../../../shared/icons/check.svg';
+import linkedinBlack from '../../../shared/icons/linkedin-black.png';
+import linkedinWhite from '../../../shared/icons/linkedin-white.png';
+import LinkIcon from '../../../shared/icons/link.svg';
+import ShareIcon from '../../../shared/icons/share.svg';
+import XLogo from '../../../shared/icons/x.svg';
+
+interface Props {
+  url: string;
+  title: string;
+}
+
+const { url, title } = Astro.props;
+
+/*
+ * Logos are the brands' own files, unaltered except that the SVG fills follow
+ * currentColor. Each brand allows its logo only in pure black or white, so they
+ * do not take the ink color. They share a height and keep their own widths.
+ */
+const LOGO_HEIGHT = 20;
+const widthAt = (w: number, h: number) => Math.round((LOGO_HEIGHT * w) / h);
+
+// UI icons are Material Symbols at their 24px optical size.
+const ICON_SIZE = 24;
+
+// LinkedIn ships PNGs only: one per theme, at 1x and 2x.
+const [linkedinLight, linkedinDark] = await Promise.all([
+  getImage({
+    src: linkedinBlack,
+    height: LOGO_HEIGHT,
+    densities: [1, 2],
+  }),
+  getImage({
+    src: linkedinWhite,
+    height: LOGO_HEIGHT,
+    densities: [1, 2],
+  }),
+]);
+
+const u = encodeURIComponent(url);
+const t = encodeURIComponent(title);
+
+// Each service takes the shared page in its own query parameters.
+const shareUrls = {
+  // The link and the post text are separate parameters.
+  // ref: https://docs.x.com/x-for-websites/post-button/guides/web-intent
+  x: `https://x.com/intent/tweet?url=${u}&text=${t}`,
+  // `text` is the whole post, so the link goes inside it.
+  // ref: https://bsky.network/docs/intent-links
+  bluesky: `https://bsky.app/intent/compose?text=${t}%20${u}`,
+  // LinkedIn documents only its JavaScript share plugin, not a share URL. It
+  // takes the link alone and builds the preview from the page's og: tags.
+  // ref: https://www.linkedin.com/help/linkedin/answer/46687
+  // ref: https://learn.microsoft.com/en-us/linkedin/consumer/integrations/self-serve/plugins/share-plugin
+  linkedin: `https://www.linkedin.com/sharing/share-offsite/?url=${u}`,
+};
+---
+
+{/*
+  Labels are English UI text, even on a Japanese page. Share links open in a
+  new tab, and their names say so in advance.
+  ref: https://www.w3.org/WAI/WCAG22/Techniques/general/G201
+*/}
+<ul aria-label="Share" lang="en">
+  <li>
+    <a href={shareUrls.x} target="_blank" aria-label="Share on X (opens in new tab)">
+      <XLogo class="logo" width={widthAt(1200, 1227)} height={LOGO_HEIGHT} aria-hidden="true" />
+    </a>
+  </li>
+  <li>
+    <a href={shareUrls.bluesky} target="_blank" aria-label="Share on Bluesky (opens in new tab)">
+      <BlueskyLogo class="logo" width={widthAt(568, 501)} height={LOGO_HEIGHT} aria-hidden="true" />
+    </a>
+  </li>
+  <li>
+    <a href={shareUrls.linkedin} target="_blank" aria-label="Share on LinkedIn (opens in new tab)">
+      <picture>
+        <source media="(prefers-color-scheme: dark)" srcset={linkedinDark.srcSet.attribute} />
+        <img
+          class="logo"
+          src={linkedinLight.src}
+          srcset={linkedinLight.srcSet.attribute}
+          {...linkedinLight.attributes}
+          alt=""
+        />
+      </picture>
+    </a>
+  </li>
+  <li>
+    <button type="button" data-copy-url={url} aria-label="Copy link">
+      <LinkIcon
+        class="icon link-icon"
+        width={ICON_SIZE}
+        height={ICON_SIZE}
+        fill="currentColor"
+        aria-hidden="true"
+      />
+      <CheckIcon
+        class="icon done-icon"
+        width={ICON_SIZE}
+        height={ICON_SIZE}
+        fill="currentColor"
+        aria-hidden="true"
+      />
+    </button>
+    <span class="visually-hidden" role="status" data-copy-status></span>
+  </li>
+  {/* Hidden until the script finds the Web Share API (HTTPS, supported browsers). */}
+  <li hidden data-native-share>
+    <button
+      type="button"
+      data-share-url={url}
+      data-share-title={title}
+      aria-label="Share with other apps"
+    >
+      <ShareIcon
+        class="icon"
+        width={ICON_SIZE}
+        height={ICON_SIZE}
+        fill="currentColor"
+        aria-hidden="true"
+      />
+    </button>
+  </li>
+</ul>
+
+<script>
+  const RESET_AFTER_MS = 1500;
+
+  document.querySelectorAll<HTMLButtonElement>('[data-copy-url]').forEach((button) => {
+    const url = button.dataset.copyUrl;
+    if (!url) return;
+
+    const status = button.parentElement?.querySelector('[data-copy-status]');
+    let timer: ReturnType<typeof setTimeout> | undefined;
+
+    // Swap to a check mark and announce through the status region next to it.
+    const showCopied = () => {
+      button.dataset.copied = '';
+      if (status) status.textContent = 'Link copied';
+
+      clearTimeout(timer);
+      timer = setTimeout(() => {
+        delete button.dataset.copied;
+        if (status) status.textContent = '';
+      }, RESET_AFTER_MS);
+    };
+
+    button.addEventListener('click', async () => {
+      try {
+        // Missing on insecure origins and old browsers; rejects when denied.
+        await navigator.clipboard.writeText(url);
+      } catch {
+        // Hand the link over to copy by hand instead of failing silently.
+        window.prompt('Copy this link', url);
+        return;
+      }
+
+      showCopied();
+    });
+  });
+
+  // Hands the page to the system share sheet where the browser offers one.
+  // ref: https://www.w3.org/TR/web-share/
+  // ref: https://developer.mozilla.org/en-US/docs/Web/API/Navigator/share
+  document.querySelectorAll<HTMLButtonElement>('[data-share-url]').forEach((button) => {
+    const { shareUrl: url, shareTitle: title } = button.dataset;
+    const item = button.closest<HTMLElement>('[data-native-share]');
+    if (!url || !item || !navigator.canShare?.({ url, title })) return;
+
+    item.hidden = false;
+
+    button.addEventListener('click', async () => {
+      try {
+        await navigator.share({ url, title });
+      } catch (error) {
+        // Closing the share sheet rejects with AbortError; that is not a failure.
+        if (error instanceof DOMException && error.name === 'AbortError') return;
+
+        // Hand the link over to share by hand instead of failing silently.
+        window.prompt('Copy this link', url);
+      }
+    });
+  });
+</script>
+
+<style>
+  ul {
+    --logo: #000;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+  @media (prefers-color-scheme: dark) {
+    ul {
+      --logo: #fff;
+    }
+  }
+  /*
+   * A slot too narrow for one row, such as the side rail, stacks the links into
+   * a column. One row needs 5 × 2.75rem buttons + 4 × 0.5rem gaps = 15.75rem.
+   */
+  @container (width < 15.75rem) {
+    ul {
+      flex-direction: column;
+    }
+  }
+  li {
+    position: relative;
+  }
+  /*
+   * 44px squares meet the enhanced target size. Hover changes only the frame,
+   * matching the site's focus ring.
+   * ref: https://www.w3.org/WAI/WCAG22/Understanding/target-size-enhanced.html
+   */
+  a,
+  button {
+    display: inline-grid;
+    place-items: center;
+    width: 2.75rem;
+    height: 2.75rem;
+    padding: 0;
+    color: var(--logo);
+    background: transparent;
+    border: 2px solid var(--ink);
+    cursor: pointer;
+  }
+  a:hover,
+  button:hover {
+    outline: 3px solid currentColor;
+    outline-offset: 3px;
+  }
+  /* Undo the global `height: auto`, which would size logos from the viewBox. */
+  .logo {
+    display: block;
+    height: 20px;
+    width: auto;
+  }
+  .icon {
+    display: block;
+    width: 24px;
+    height: 24px;
+  }
+  .done-icon,
+  [data-copied] .link-icon {
+    display: none;
+  }
+  [data-copied] .done-icon {
+    display: block;
+  }
+  .visually-hidden {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+</style>
