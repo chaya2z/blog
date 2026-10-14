@@ -161,6 +161,15 @@ const shareUrls = {
       --logo: #fff;
     }
   }
+  /*
+   * A slot too narrow for one row, such as the side rail, stacks the links into
+   * a column. One row needs 4 × 2.75rem buttons + 3 × 0.5rem gaps = 12.5rem.
+   */
+  @container (width < 12.5rem) {
+    ul {
+      flex-direction: column;
+    }
+  }
   li {
     position: relative;
   }

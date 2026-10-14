@@ -43,8 +43,11 @@ const url = new URL(Astro.url.pathname, Astro.site).href;
       <div class="prose">
         <Content />
       </div>
+      {/* After the text in source order; wide screens move it to a side rail. */}
       <div class="share">
-        <ShareLinks url={url} title={post.data.title} />
+        <div class="share-inner">
+          <ShareLinks url={url} title={post.data.title} />
+        </div>
       </div>
     </div>
   </article>
@@ -66,5 +69,34 @@ const url = new URL(Astro.url.pathname, Astro.site).href;
   }
   .share {
     margin-top: clamp(2.5rem, 5vw, 4.5rem);
+    /* The share links stack into a column when queried against this width. */
+    container-type: inline-size;
+  }
+
+  /*
+   * Wide screens sit on the 12-column grid drawn behind the page: share links
+   * follow the reader down column 1, and the text runs from column 2 to 9,
+   * leaving 10 to 12 for a table of contents. From 75rem, column 1 is about
+   * 5.9rem wide, so the 2.75rem buttons keep about 3.2rem clear of the text.
+   */
+  @media (min-width: 75rem) {
+    .body {
+      display: grid;
+      grid-template-columns: repeat(12, minmax(0, 1fr));
+    }
+    .prose {
+      grid-column: 2 / 10;
+      grid-row: 1;
+    }
+    /* Spans the text's full height, so the inner block can stick within it. */
+    .share {
+      grid-column: 1;
+      grid-row: 1;
+      margin-top: 0;
+    }
+    .share-inner {
+      position: sticky;
+      top: 2rem;
+    }
   }
 </style>
