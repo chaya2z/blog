@@ -1,8 +1,10 @@
 ---
 import { getImage } from 'astro:assets';
 import BlueskyLogo from '../../../shared/icons/bluesky.svg';
+import CheckIcon from '../../../shared/icons/check.svg';
 import linkedinBlack from '../../../shared/icons/linkedin-black.png';
 import linkedinWhite from '../../../shared/icons/linkedin-white.png';
+import LinkIcon from '../../../shared/icons/link.svg';
 import XLogo from '../../../shared/icons/x.svg';
 
 interface Props {
@@ -19,6 +21,9 @@ const { url, title } = Astro.props;
  */
 const LOGO_HEIGHT = 20;
 const widthAt = (w: number, h: number) => Math.round((LOGO_HEIGHT * w) / h);
+
+// UI icons are Material Symbols at their 24px optical size.
+const ICON_SIZE = 24;
 
 // LinkedIn ships PNGs only: one per theme, at 1x and 2x.
 const [linkedinLight, linkedinDark] = await Promise.all([
@@ -83,7 +88,63 @@ const shareUrls = {
       </picture>
     </a>
   </li>
+  <li>
+    <button type="button" data-copy-url={url} aria-label="Copy link">
+      <LinkIcon
+        class="icon link-icon"
+        width={ICON_SIZE}
+        height={ICON_SIZE}
+        fill="currentColor"
+        aria-hidden="true"
+      />
+      <CheckIcon
+        class="icon done-icon"
+        width={ICON_SIZE}
+        height={ICON_SIZE}
+        fill="currentColor"
+        aria-hidden="true"
+      />
+    </button>
+    <span class="visually-hidden" role="status" data-copy-status></span>
+  </li>
 </ul>
+
+<script>
+  const RESET_AFTER_MS = 1500;
+
+  document.querySelectorAll<HTMLButtonElement>('[data-copy-url]').forEach((button) => {
+    const url = button.dataset.copyUrl;
+    if (!url) return;
+
+    const status = button.parentElement?.querySelector('[data-copy-status]');
+    let timer: ReturnType<typeof setTimeout> | undefined;
+
+    // Swap to a check mark and announce through the status region next to it.
+    const showCopied = () => {
+      button.dataset.copied = '';
+      if (status) status.textContent = 'Link copied';
+
+      clearTimeout(timer);
+      timer = setTimeout(() => {
+        delete button.dataset.copied;
+        if (status) status.textContent = '';
+      }, RESET_AFTER_MS);
+    };
+
+    button.addEventListener('click', async () => {
+      try {
+        // Missing on insecure origins and old browsers; rejects when denied.
+        await navigator.clipboard.writeText(url);
+      } catch {
+        // Hand the link over to copy by hand instead of failing silently.
+        window.prompt('Copy this link', url);
+        return;
+      }
+
+      showCopied();
+    });
+  });
+</script>
 
 <style>
   ul {
@@ -100,12 +161,16 @@ const shareUrls = {
       --logo: #fff;
     }
   }
+  li {
+    position: relative;
+  }
   /*
    * 44px squares meet the enhanced target size. Hover changes only the frame,
    * matching the site's focus ring.
    * ref: https://www.w3.org/WAI/WCAG22/Understanding/target-size-enhanced.html
    */
-  a {
+  a,
+  button {
     display: inline-grid;
     place-items: center;
     width: 2.75rem;
@@ -114,8 +179,10 @@ const shareUrls = {
     color: var(--logo);
     background: transparent;
     border: 2px solid var(--ink);
+    cursor: pointer;
   }
-  a:hover {
+  a:hover,
+  button:hover {
     outline: 3px solid currentColor;
     outline-offset: 3px;
   }
@@ -124,5 +191,25 @@ const shareUrls = {
     display: block;
     height: 20px;
     width: auto;
+  }
+  .icon {
+    display: block;
+    width: 24px;
+    height: 24px;
+  }
+  .done-icon,
+  [data-copied] .link-icon {
+    display: none;
+  }
+  [data-copied] .done-icon {
+    display: block;
+  }
+  .visually-hidden {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
   }
 </style>
