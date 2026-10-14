@@ -5,6 +5,7 @@ import { katexPlugin } from './src/features/posts/markdown/katex.ts';
 
 // https://astro.build/config
 export default defineConfig({
+  site: 'https://blog.chaya2z.com',
   trailingSlash: 'always',
   build: {
     format: 'directory',
