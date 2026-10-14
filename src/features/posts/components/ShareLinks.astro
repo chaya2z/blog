@@ -5,6 +5,7 @@ import CheckIcon from '../../../shared/icons/check.svg';
 import linkedinBlack from '../../../shared/icons/linkedin-black.png';
 import linkedinWhite from '../../../shared/icons/linkedin-white.png';
 import LinkIcon from '../../../shared/icons/link.svg';
+import ShareIcon from '../../../shared/icons/share.svg';
 import XLogo from '../../../shared/icons/x.svg';
 
 interface Props {
@@ -107,6 +108,23 @@ const shareUrls = {
     </button>
     <span class="visually-hidden" role="status" data-copy-status></span>
   </li>
+  {/* Hidden until the script finds the Web Share API (HTTPS, supported browsers). */}
+  <li hidden data-native-share>
+    <button
+      type="button"
+      data-share-url={url}
+      data-share-title={title}
+      aria-label="Share with other apps"
+    >
+      <ShareIcon
+        class="icon"
+        width={ICON_SIZE}
+        height={ICON_SIZE}
+        fill="currentColor"
+        aria-hidden="true"
+      />
+    </button>
+  </li>
 </ul>
 
 <script>
@@ -144,6 +162,29 @@ const shareUrls = {
       showCopied();
     });
   });
+
+  // Hands the page to the system share sheet where the browser offers one.
+  // ref: https://www.w3.org/TR/web-share/
+  // ref: https://developer.mozilla.org/en-US/docs/Web/API/Navigator/share
+  document.querySelectorAll<HTMLButtonElement>('[data-share-url]').forEach((button) => {
+    const { shareUrl: url, shareTitle: title } = button.dataset;
+    const item = button.closest<HTMLElement>('[data-native-share]');
+    if (!url || !item || !navigator.canShare?.({ url, title })) return;
+
+    item.hidden = false;
+
+    button.addEventListener('click', async () => {
+      try {
+        await navigator.share({ url, title });
+      } catch (error) {
+        // Closing the share sheet rejects with AbortError; that is not a failure.
+        if (error instanceof DOMException && error.name === 'AbortError') return;
+
+        // Hand the link over to share by hand instead of failing silently.
+        window.prompt('Copy this link', url);
+      }
+    });
+  });
 </script>
 
 <style>
@@ -163,9 +204,9 @@ const shareUrls = {
   }
   /*
    * A slot too narrow for one row, such as the side rail, stacks the links into
-   * a column. One row needs 4 × 2.75rem buttons + 3 × 0.5rem gaps = 12.5rem.
+   * a column. One row needs 5 × 2.75rem buttons + 4 × 0.5rem gaps = 15.75rem.
    */
-  @container (width < 12.5rem) {
+  @container (width < 15.75rem) {
     ul {
       flex-direction: column;
     }
