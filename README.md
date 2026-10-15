@@ -73,16 +73,19 @@ by feature. Below is the target layout.
 │   ├── assets/
 │   │   └── icons/         # Icons, with their sources and terms
 │   ├── plugins/           # Build plugins, such as Markdown processing
-│   └── styles/            # Global CSS, design tokens and shared stylesheets
+│   ├── styles/            # Global CSS, design tokens and shared stylesheets
+│   └── utils/             # Helpers that no single feature owns, one file per subject
 └── astro.config.mjs
 ```
 
 - Code used by only one feature lives in `features/<name>/`. Only code that spans
-  features goes in the top-level `components/`, `layouts/`, `assets/`, `plugins/` and
-  `styles/`.
+  features goes in the top-level `components/`, `layouts/`, `assets/`, `plugins/`,
+  `styles/` and `utils/`.
 - `pages/` handles routing and page assembly. Queries, URL builders and other feature
   logic belong in `features/`.
-- There are no catch-all folders such as `utils/` or `lib/`.
+- Each file in `utils/` covers one subject and is named after it, for example `date.ts`.
+  There are no grab-bag files such as `helpers.ts`, and no `index.ts` that re-exports
+  the rest.
 - Unit tests sit next to the code they test, for example `queries.test.ts`.
 - The styling approach (CSS Modules, global CSS, or a mix) is not decided yet.
 
