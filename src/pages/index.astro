@@ -1,7 +1,7 @@
 ---
-import PostList from '../features/posts/components/PostList.astro';
-import { getPosts } from '../features/posts/content';
-import BaseLayout from '../layouts/BaseLayout.astro';
+import PostList from '@/features/posts/components/PostList.astro';
+import { getPosts } from '@/features/posts/content';
+import BaseLayout from '@/layouts/BaseLayout.astro';
 
 const posts = (await getPosts()).slice(0, 5);
 ---
