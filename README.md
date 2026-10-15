@@ -61,10 +61,12 @@ by feature. Below is the target layout.
 │   ├── pages/             # Routes: URLs, getStaticPaths(), page assembly
 │   ├── content.config.ts  # Content Collection schemas
 │   ├── content/
-│   │   └── posts/
-│   │       └── <lang>/<slug>/
-│   │           ├── index.md   # Post body
-│   │           └── image.png  # Images used by the post
+│   │   ├── posts/
+│   │   │   └── <lang>/<slug>/
+│   │   │       ├── index.md   # Post body
+│   │   │       └── image.png  # Images used by the post
+│   │   └── pages/
+│   │       └── <id>.md        # Standalone page, such as privacy.md
 │   ├── features/          # Code that belongs to one feature
 │   │   ├── posts/
 │   │   └── home/
