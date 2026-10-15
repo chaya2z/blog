@@ -1,8 +1,8 @@
 ---
-import Masthead from '../../features/posts/components/Masthead.astro';
-import PostList from '../../features/posts/components/PostList.astro';
-import { getPosts } from '../../features/posts/content';
-import BaseLayout from '../../shared/layouts/BaseLayout.astro';
+import Masthead from '@/components/Masthead.astro';
+import PostList from '@/features/posts/components/PostList.astro';
+import { getPosts } from '@/features/posts/content';
+import BaseLayout from '@/layouts/BaseLayout.astro';
 
 const posts = await getPosts();
 ---

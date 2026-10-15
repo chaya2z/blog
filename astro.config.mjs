@@ -2,7 +2,7 @@
 import { defineConfig, fontProviders } from 'astro/config';
 import { satteri } from '@astrojs/markdown-satteri';
 import sitemap from '@astrojs/sitemap';
-import { katexPlugin } from './src/features/posts/markdown/katex.ts';
+import { katexPlugin } from './src/plugins/katex.ts';
 
 // https://astro.build/config
 export default defineConfig({
