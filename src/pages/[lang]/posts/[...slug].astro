@@ -7,8 +7,8 @@ import Breadcrumbs from '../../../features/posts/components/Breadcrumbs.astro';
 import ShareLinks from '../../../features/posts/components/ShareLinks.astro';
 import { getPosts, type PostEntry } from '../../../features/posts/content';
 import { parsePostId } from '../../../features/posts/id';
-import '../../../features/posts/prose.css';
-import BaseLayout from '../../../shared/layouts/BaseLayout.astro';
+import '../../../styles/prose.css';
+import BaseLayout from '../../../layouts/BaseLayout.astro';
 
 export const getStaticPaths = (async () => {
   const posts = await getPosts();

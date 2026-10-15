@@ -68,15 +68,18 @@ by feature. Below is the target layout.
 │   ├── features/          # Code that belongs to one feature
 │   │   ├── posts/
 │   │   └── home/
-│   ├── shared/            # Code that no single feature owns
-│   │   ├── components/
-│   │   └── layouts/
-│   └── styles/            # Global CSS and design tokens
+│   ├── components/        # Components that no single feature owns
+│   ├── layouts/           # Page layouts
+│   ├── assets/
+│   │   └── icons/         # Icons, with their sources and terms
+│   ├── plugins/           # Build plugins, such as Markdown processing
+│   └── styles/            # Global CSS, design tokens and shared stylesheets
 └── astro.config.mjs
 ```
 
 - Code used by only one feature lives in `features/<name>/`. Only code that spans
-  features goes in `shared/`.
+  features goes in the top-level `components/`, `layouts/`, `assets/`, `plugins/` and
+  `styles/`.
 - `pages/` handles routing and page assembly. Queries, URL builders and other feature
   logic belong in `features/`.
 - There are no catch-all folders such as `utils/` or `lib/`.
