@@ -1,5 +1,10 @@
 ---
-const BUILD_YEAR = new Date().getFullYear();
+const COPYRIGHT_FIRST_YEAR = 2019;
+const BUILD_YEAR = new Date().getUTCFullYear();
+const COPYRIGHT_YEARS =
+  COPYRIGHT_FIRST_YEAR === BUILD_YEAR
+    ? `${COPYRIGHT_FIRST_YEAR}`
+    : `${COPYRIGHT_FIRST_YEAR}–${BUILD_YEAR}`;
 ---
 
 {/* UI text is English, even on a Japanese page. */}
@@ -10,10 +15,7 @@ const BUILD_YEAR = new Date().getFullYear();
       <p class="name">
         Abyssal <span class="last">Tarantella</span>
       </p>
-      <p class="small">
-        © {BUILD_YEAR} · Built with Astro, deployed on Cloudflare.{' '}
-        <a href="https://github.com/chaya2z/blog">Source</a>
-      </p>
+      <p class="small">&copy; {COPYRIGHT_YEARS} chaya2z</p>
     </div>
     <ul>
       <li>
