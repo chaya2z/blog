@@ -28,7 +28,12 @@ const { Content } = await render(post);
 const url = new URL(Astro.url.pathname, Astro.site).href;
 ---
 
-<BaseLayout title={post.data.title} lang={lang} description={post.data.description}>
+<BaseLayout
+  title={post.data.title}
+  lang={lang}
+  description={post.data.description}
+  article={{ publishedTime: post.data.publishedAt }}
+>
   {/* Breadcrumbs are site navigation, so they stay outside the article. */}
   <div class="container crumbs">
     <Breadcrumbs title={post.data.title} lang={lang} />
