@@ -7,9 +7,10 @@ import SiteHeader from '@/components/SiteHeader.astro';
 interface Props {
   title: string;
   lang: string;
+  description: string;
 }
 
-const { title, lang } = Astro.props;
+const { title, lang, description } = Astro.props;
 // Absolute, as Google recommends; `trailingSlash: 'always'` keeps the path
 // identical to the served URL, so it never names a redirect source.
 const canonicalUrl = new URL(Astro.url.pathname, Astro.site).href;
@@ -21,6 +22,7 @@ const canonicalUrl = new URL(Astro.url.pathname, Astro.site).href;
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>{title}</title>
+    <meta name="description" content={description} />
     <link rel="canonical" href={canonicalUrl} />
     <Font cssVariable="--font-inter" />
     <Font cssVariable="--font-noto-sans-jp" />

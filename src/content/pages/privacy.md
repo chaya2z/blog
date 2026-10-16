@@ -1,5 +1,6 @@
 ---
 title: Privacy Policy
+description: 'This site asks for no contact details and sets no analytics or advertising cookies. Here is what Cloudflare Web Analytics records about visits, and what Cloudflare processes to deliver the site.'
 updatedAt: 2026-10-15
 ---
 

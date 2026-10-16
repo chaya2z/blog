@@ -1,5 +1,6 @@
 ---
 title: '自宅インフラ構成の紹介（2022年）'
+description: 'ProLiant サーバ 3 台と Cisco Catalyst のスイッチで組んだ自宅インフラの構成。ESXi と直結した SAN、Sophos Firewall、OSPF によるルーティング、VLAN ID に合わせたアドレス設計を紹介する。'
 publishedAt: '2022-06-27'
 ---
 

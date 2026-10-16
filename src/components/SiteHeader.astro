@@ -1,4 +1,6 @@
 ---
+import { SITE_TITLE } from '@/site';
+
 const NAV = [
   { href: '/posts/', label: 'Posts' },
   { href: '/about/', label: 'About' },
@@ -13,7 +15,7 @@ const section = path.replace(/^\/(en|ja)(?=\/posts\/)/, '');
 <header lang="en">
   <div class="container inner">
     <a href="/" class="logo">
-      Abyssal Tarantella
+      {SITE_TITLE}
     </a>
     <nav aria-label="Main">
       <ul>

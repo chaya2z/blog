@@ -8,6 +8,7 @@ const posts = defineCollection({
   loader: glob({ pattern: '**/index.md', base: './src/content/posts' }),
   schema: z.object({
     title: z.string(),
+    description: z.string().min(1),
     publishedAt: z.coerce.date(),
   }),
 });
@@ -17,6 +18,7 @@ const pages = defineCollection({
   loader: glob({ pattern: '*.md', base: './src/content/pages' }),
   schema: z.object({
     title: z.string(),
+    description: z.string().min(1),
     updatedAt: z.coerce.date(),
   }),
 });

@@ -1,5 +1,6 @@
 ---
 title: 'Tkinterで画面の明るさを調整するアプリを作った'
+description: 'i3 には GNOME や KDE のような明るさの設定アプリがないため、Python の Tkinter で画面の明るさを変えるだけの GUI アプリを作った。polybar から呼び出して使う予定。'
 publishedAt: '2020-10-02'
 ---
 

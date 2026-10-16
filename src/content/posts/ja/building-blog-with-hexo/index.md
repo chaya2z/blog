@@ -1,5 +1,6 @@
 ---
 title: 'Hexoでブログを作った'
+description: 'Blogger、HTML の手書き、Pelican と半年で 3 回ブログを作り替え、Netlify CMS が使える Hexo に落ち着いた。ブログの作り方を選ぶときに重視した 4 つの基準も挙げる。'
 publishedAt: '2019-12-09'
 ---
 

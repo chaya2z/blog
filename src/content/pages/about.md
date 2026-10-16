@@ -1,5 +1,6 @@
 ---
 title: About
+description: 'Who writes Abyssal Tarantella, how the blog has been rebuilt since 2019, and where to find its source code.'
 updatedAt: 2026-10-16
 ---
 

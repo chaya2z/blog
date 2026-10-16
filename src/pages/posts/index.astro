@@ -3,11 +3,12 @@ import Masthead from '@/components/Masthead.astro';
 import PostList from '@/features/posts/components/PostList.astro';
 import { getPosts } from '@/features/posts/content';
 import BaseLayout from '@/layouts/BaseLayout.astro';
+import { SITE_DESCRIPTION } from '@/site';
 
 const posts = await getPosts();
 ---
 
-<BaseLayout title="Posts" lang="en">
+<BaseLayout title="Posts" lang="en" description={SITE_DESCRIPTION}>
   <Masthead title="Posts" />
   <div class="container list">
     <PostList posts={posts} />
