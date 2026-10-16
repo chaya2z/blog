@@ -1,5 +1,6 @@
 ---
 title: '自宅インフラ構成の紹介（2021年）'
+description: 'IPv6 が来ていない自宅に、ConoHa VPS と OpenVPN の L2 接続で IPv6 アドレスを引き込んだ。VyOS の L2TPv3 over WireGuard から乗り換えて、VPS までのレイテンシは 40ms から 5ms に下がった。'
 publishedAt: '2021-12-01'
 ---
 

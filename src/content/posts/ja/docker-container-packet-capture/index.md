@@ -1,5 +1,6 @@
 ---
 title: 'Dockerコンテナ間のパケットをキャプチャしてみた'
+description: 'Ubuntu と nginx のコンテナ間で ping を送り、docker0 を Wireshark でキャプチャした。コンテナ間を流れていたのは、Ethernet、IPv4、ICMP からなる普通のパケットだった。'
 publishedAt: '2020-12-14'
 ---
 

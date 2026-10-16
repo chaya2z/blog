@@ -1,5 +1,6 @@
 ---
 title: 'ConoHa-VPSにVyOSをインストールする'
+description: 'ConoHa VPS は ISO イメージを http でしか取得できないので、nginx で VyOS の ISO を公開し、conoha-iso でダウンロードしてインストールした。この手順なら任意の ISO イメージでサーバを作れる。'
 publishedAt: '2021-12-04'
 ---
 

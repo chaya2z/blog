@@ -1,5 +1,6 @@
 ---
 title: 'Kinesis Advantage360 Pro で接続先を切り替える'
+description: 'Advantage360 Pro には最大 5 台の端末を登録でき、Mod + 1〜5 で接続先を切り替えられる。2 台目以降を登録する手順と、Mod + Right Windows でプロファイルを消す方法もまとめた。'
 publishedAt: '2023-07-27'
 ---
 

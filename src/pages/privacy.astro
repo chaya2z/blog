@@ -10,11 +10,11 @@ if (!page) {
   throw new Error('Missing src/content/pages/privacy.md');
 }
 const { Content } = await render(page);
-const { title, updatedAt } = page.data;
+const { title, description, updatedAt } = page.data;
 ---
 
 {/* English only, like the rest of the UI. */}
-<BaseLayout title={title} lang="en">
+<BaseLayout title={title} lang="en" description={description}>
   <Masthead title="Privacy" />
   <div class="container body">
     <p class="updated">

@@ -1,5 +1,6 @@
 ---
 title: 'JetBrainsのAll Products Packを購入した'
+description: '学生ライセンスが切れたので、2023 年に 25% から 40% に上がった卒業割引で All Products Pack を買った。会社が買ってくれるのは業務で使う IDE だけで、趣味で使う IDE は自分で買う必要があった。'
 publishedAt: '2023-07-31'
 ---
 

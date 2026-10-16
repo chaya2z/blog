@@ -1,5 +1,6 @@
 ---
 title: 'Gatsbyでブログを作った'
+description: 'テーマを入れただけだった Hexo のブログを、React と GraphQL を学びながら Gatsby で作り直した。ブログ用テーマは使わずに記事の読み込みを自作し、記事一覧は CSS Grid で組んだ。'
 publishedAt: '2020-09-27'
 ---
 

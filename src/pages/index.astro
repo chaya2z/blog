@@ -2,11 +2,12 @@
 import PostList from '@/features/posts/components/PostList.astro';
 import { getPosts } from '@/features/posts/content';
 import BaseLayout from '@/layouts/BaseLayout.astro';
+import { SITE_DESCRIPTION, SITE_TITLE } from '@/site';
 
 const posts = (await getPosts()).slice(0, 5);
 ---
 
-<BaseLayout title="Abyssal Tarantella" lang="en">
+<BaseLayout title={SITE_TITLE} lang="en" description={SITE_DESCRIPTION}>
   <section class="container latest" aria-labelledby="latest">
     <div class="head">
       {/* The page's only heading above the post titles, so the outline stays h1 > h2. */}
