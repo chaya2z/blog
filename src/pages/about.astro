@@ -1,0 +1,72 @@
+---
+import { getEntry, render } from 'astro:content';
+import Masthead from '@/components/Masthead.astro';
+import { formatDate } from '@/utils/date';
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import '@/styles/prose.css';
+
+const page = await getEntry('pages', 'about');
+if (!page) {
+  throw new Error('Missing src/content/pages/about.md');
+}
+const { Content } = await render(page);
+const { title, updatedAt } = page.data;
+---
+
+{/* English only, like the rest of the UI. */}
+<BaseLayout title={title} lang="en">
+  <Masthead title="About" />
+  <div class="container body">
+    <p class="updated">
+      Last updated:{' '}
+      <time datetime={updatedAt.toISOString().slice(0, 10)}>{formatDate(updatedAt)}</time>
+    </p>
+    <div class="prose">
+      <Content />
+    </div>
+  </div>
+</BaseLayout>
+
+<style>
+  .body {
+    padding-block: clamp(2.5rem, 5vw, 4.5rem);
+  }
+  .updated {
+    margin: 0 0 2rem;
+    color: var(--ink-muted);
+  }
+  .prose {
+    max-width: 68ch;
+  }
+
+  /*
+   * The history is the page's only ordered list, drawn as a newest-first
+   * timeline: a rule down the left, a dot per entry, and the leading bold date
+   * set on its own line.
+   */
+  .prose :global(ol) {
+    padding-left: 1.75rem;
+    border-left: 2px solid var(--ink-hairline);
+    list-style: none;
+  }
+  .prose :global(ol > li) {
+    position: relative;
+  }
+  .prose :global(ol > li + li) {
+    margin-top: 1.25em;
+  }
+  .prose :global(ol > li)::before {
+    position: absolute;
+    top: 0.45em;
+    left: calc(-1.75rem - 1px - 0.4rem);
+    width: 0.8rem;
+    height: 0.8rem;
+    background: var(--accent);
+    content: '';
+  }
+  .prose :global(ol > li > strong:first-child) {
+    display: block;
+    font-variant-numeric: tabular-nums;
+    letter-spacing: 0.04em;
+  }
+</style>
