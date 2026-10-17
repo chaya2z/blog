@@ -27,7 +27,7 @@ The cards are a separate Astro site in `og/`, so their pages and fonts never rea
 blog's build. `pnpm og` builds that site and shoots each page with Chromium. Every card is
 shot before any image is replaced, so a failed run leaves the committed images as they were.
 While designing, `pnpm og:dev` shows the site's card at `/site/` and each post's at
-`/posts/<lang>/<slug>/`.
+`/posts/<lang>/<slug>/`, the About page's at `/about/` and the post list's at `/posts/`.
 
 A post's card draws one of nine patterns, chosen from the post's id alone, so adding a post
 never changes another post's image.

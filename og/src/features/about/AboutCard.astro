@@ -1,0 +1,22 @@
+---
+import { drawRebuilds } from './rebuilds';
+import CardLayout from '../../components/CardLayout.astro';
+
+const art = drawRebuilds();
+---
+
+{/* The blog's rebuilds since 2019, drawn as a staircase over the whole card. */}
+<CardLayout lang="en">
+  <div class="art" set:html={art} />
+</CardLayout>
+
+<script is:inline>
+  window.cardReady = document.fonts.ready.then(() => {});
+</script>
+
+<style>
+  .art {
+    height: 100%;
+    line-height: 0;
+  }
+</style>
