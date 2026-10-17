@@ -1,0 +1,47 @@
+/*
+ * Custom properties hold the colors, which change between light and dark, and
+ * any other value once it is needed in several places. Values used once are
+ * written where they are used.
+ *
+ * Each color gives its light and dark values side by side in light-dark(),
+ * which picks one by the `color-scheme` of the element using it. The blog
+ * follows the reader's preference; a page can pin one scheme, as the Open
+ * Graph cards do with `color-scheme: light`.
+ *
+ * Names follow print, in keeping with the Type Poster direction: the page is
+ * paper, and everything on it is ink.
+ *
+ *   --paper        the stock: page background
+ *   --ink          the main ink: body text, rules, borders
+ *   --accent       the second ink as a fill (blocks, rules)
+ *   --accent-text  the second ink as text on --paper. Screen-only: in print one
+ *                  ink serves both, but here text needs 4.5:1 contrast.
+ *   --solid        a solid: an area fully covered in ink
+ *   --on-solid     type on a solid. In light mode it is reversed out to the
+ *                  paper color; in dark mode the solid is a raised panel instead.
+ *   --on-solid-muted  a 78% tint of type on a solid: secondary text on it
+ *   --ink-muted    a 76% tint of ink: secondary text, list markers
+ *   --ink-hairline a 50% tint of ink: thin rules and borders
+ *   --ink-grid     a 7% wash of ink: the grid lines behind the page
+ *   --rule-heavy   the weight of the heavy rules that divide the page
+ *   --page-width   the width of the page column and of its 12-column grid
+ */
+:root {
+  /* Petrol blue on newsprint; dark is graphite rather than black, for long reading. */
+  --paper: light-dark(#e3e0d7, #252422);
+  --ink: light-dark(#1d1c1a, #e3e0d7);
+  --accent: light-dark(#005a78, #00698a);
+  --accent-text: light-dark(#005a78, #78c6e4);
+  /* In dark mode a solid lifts slightly off the page instead of reversing. */
+  --solid: light-dark(var(--ink), color-mix(in oklab, var(--ink) 9%, var(--paper)));
+  --on-solid: light-dark(var(--paper), var(--ink));
+  /* Tints mix ink into paper, so they follow both in dark mode. */
+  --ink-muted: color-mix(in oklab, var(--ink) 76%, var(--paper));
+  --ink-hairline: color-mix(in oklab, var(--ink) 50%, var(--paper));
+  --on-solid-muted: color-mix(in oklab, var(--on-solid) 78%, var(--solid));
+  /* Over transparent, not paper: the grid sits behind the page's content. */
+  --ink-grid: color-mix(in oklab, var(--ink) 7%, transparent);
+  --rule-heavy: 0.55rem;
+  /* Its 100% resolves where it is used. */
+  --page-width: min(100% - 2 * clamp(1rem, 2.5vw, 2rem), 84rem);
+}

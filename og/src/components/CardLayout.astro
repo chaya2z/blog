@@ -1,0 +1,52 @@
+---
+import { Font } from 'astro:assets';
+import { OG_IMAGE_HEIGHT, OG_IMAGE_WIDTH } from '@blog/features/og-image/image';
+import '@blog/styles/tokens.css';
+
+interface Props {
+  lang: string;
+}
+
+const { lang } = Astro.props;
+
+// A page that only exists to be screenshotted: `render.ts` shoots it into a
+// PNG. It takes the blog's colors but none of its page styles, which are set
+// for reading, not for a card.
+
+// The image size, so the dev server shows the card as it is shot.
+const size = `width: ${OG_IMAGE_WIDTH}px; height: ${OG_IMAGE_HEIGHT}px`;
+---
+
+<!doctype html>
+<html lang={lang}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="robots" content="noindex" />
+    <Font cssVariable="--font-schibsted-grotesk" />
+  </head>
+  <body style={size}>
+    <slot />
+  </body>
+</html>
+
+<style>
+  /* The cards print in the light palette, whatever the machine prefers. */
+  :global(html) {
+    color-scheme: light;
+  }
+  :global(*),
+  :global(*::before),
+  :global(*::after) {
+    box-sizing: border-box;
+  }
+  /* Sized in the markup; the screenshot itself is clipped to the viewport. */
+  :global(body) {
+    margin: 0;
+    overflow: hidden;
+    background: var(--paper);
+    color: var(--ink);
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+</style>

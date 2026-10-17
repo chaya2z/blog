@@ -2,6 +2,8 @@
 dist/
 # generated types
 .astro/
+# the previous Open Graph images, left behind only if `pnpm og` is killed mid-swap
+og/.backup-*/
 
 # dependencies
 node_modules/

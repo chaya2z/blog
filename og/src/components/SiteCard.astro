@@ -1,0 +1,113 @@
+---
+import { SITE_TAGLINE, SITE_TITLE } from '@blog/site';
+import { drawMaze } from '../maze';
+import CardLayout from './CardLayout.astro';
+
+const maze = drawMaze('site');
+---
+
+{/* The site name on ink bars over a maze that fills the card. */}
+<CardLayout lang="en">
+  <div class="card">
+    <div class="art" set:html={maze} />
+    <div class="author">chaya2z</div>
+    <h1>
+      <span>{SITE_TITLE.split(' ').map((word, i) => (i === 0 ? word : [<br />, word]))}</span>
+    </h1>
+    <p>
+      <span>{SITE_TAGLINE}</span>
+    </p>
+  </div>
+</CardLayout>
+
+{/*
+  Pads each bar so its lines meet. A line box is taller than the backgrounds
+  of its inline boxes, which only cover the font's content area.
+*/}
+<script is:inline>
+  window.cardReady = document.fonts.ready.then(() => {
+    for (const bar of document.querySelectorAll('h1 span, p span')) {
+      const [line] = bar.getClientRects();
+      const pitch = parseFloat(getComputedStyle(bar.parentElement).lineHeight);
+      bar.style.paddingBlock = `${(pitch - line.height) / 2}px`;
+    }
+  });
+</script>
+
+<style>
+  .card {
+    /* Past a maze stroke's square cap, which reaches 5√2px beyond its end. */
+    --overhang: 8px;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    padding: 56px 80px 60px;
+    font-family: var(--font-schibsted-grotesk), sans-serif;
+  }
+  .art {
+    position: absolute;
+    inset: 0;
+    line-height: 0;
+  }
+  /* Positioned, so they paint above the maze. */
+  .author,
+  h1,
+  p {
+    position: relative;
+  }
+  /*
+   * Set on paper, as the maze would cut through bare type. This and the bars
+   * below reach past the grid line their type starts on: a stroke from the
+   * cell corner there would otherwise peek out to their left as a wedge.
+   */
+  .author {
+    margin-left: calc(-1 * var(--overhang));
+    display: flex;
+    align-self: flex-start;
+    align-items: center;
+    gap: 16px;
+    padding: 10px 16px 10px calc(16px + var(--overhang));
+    background: var(--paper);
+    font-size: 28px;
+    font-weight: 900;
+    letter-spacing: -0.03em;
+    text-transform: uppercase;
+  }
+  .author::before {
+    width: 28px;
+    height: 28px;
+    background: var(--accent);
+    content: '';
+  }
+  h1 {
+    margin: auto 0 0 calc(-1 * var(--overhang));
+    font-size: 104px;
+    font-weight: 900;
+    line-height: 1.12;
+    letter-spacing: -0.02em;
+    text-transform: uppercase;
+  }
+  h1 span,
+  p span {
+    padding-inline: calc(20px + var(--overhang)) 20px;
+    color: var(--paper);
+    background: var(--ink);
+    box-decoration-break: clone;
+  }
+  p {
+    max-width: calc(640px + var(--overhang));
+    margin: 28px 0 0 calc(-1 * var(--overhang));
+    font-size: 24px;
+    font-weight: 800;
+    line-height: 1.5;
+    /* Capitals, opened up as the blog sets its small labels. */
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+  p span {
+    padding-inline: calc(12px + var(--overhang)) 12px;
+    color: var(--ink);
+    background: var(--paper);
+  }
+</style>

@@ -5,12 +5,30 @@ A personal tech blog built with [Astro](https://astro.build) and served from
 
 ## Quick start
 
-Requires Node.js 22.12+ and pnpm.
+Requires Node.js 24.4+ and pnpm.
 
 ```sh
 pnpm install
 pnpm dev
 ```
+
+## Open Graph images
+
+The Open Graph images are rendered ahead of time and committed under `public/og/`.
+After changing a card's design, render them again:
+
+```sh
+pnpm exec playwright install chromium  # once
+pnpm og
+```
+
+The cards are a separate Astro site in `og/`, so their pages and fonts never reach the
+blog's build. `pnpm og` builds that site and shoots each page with Chromium. Every card is
+shot before any image is replaced, so a failed run leaves the committed images as they were.
+While designing, `pnpm og:dev` shows the site's card at `/site/`.
+
+The cards import the blog's text and styles through `@blog/*`. The blog imports nothing
+from `og/`; it only links the images.
 
 ## Why Astro
 
@@ -77,6 +95,7 @@ by feature. Below is the target layout.
 │   ├── plugins/           # Build plugins, such as Markdown processing
 │   ├── styles/            # Global CSS, design tokens and shared stylesheets
 │   └── utils/             # Helpers that no single feature owns, one file per subject
+├── og/                    # The Open Graph cards, a separate Astro site
 └── astro.config.mjs
 ```
 
