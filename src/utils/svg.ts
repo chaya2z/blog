@@ -1,7 +1,7 @@
 /*
- * What the cards' pictures are drawn with. The colors are the blog's, from
- * tokens.css, and the tints CardLayout mixes from them. They resolve in the
- * page each SVG is inlined into, through style attributes: `var()` is not
+ * What the pictures on the Open Graph cards and the post pages are drawn with.
+ * The colors and their tints are the blog's, from tokens.css. They resolve in
+ * the page each SVG is inlined into, through style attributes: `var()` is not
  * certain to work in a presentation attribute.
  */
 

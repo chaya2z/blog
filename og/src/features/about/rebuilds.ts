@@ -1,5 +1,5 @@
 import { OG_IMAGE_HEIGHT, OG_IMAGE_WIDTH } from '@blog/features/og-image/image';
-import { ACCENT, INK, fill, stroke, svg } from '../../utils/svg';
+import { ACCENT, INK, fill, stroke, svg } from '@blog/utils/svg';
 
 /**
  * The blog's versions, from the History of the About page

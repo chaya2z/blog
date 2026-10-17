@@ -1,6 +1,6 @@
 import { OG_IMAGE_HEIGHT } from '@blog/features/og-image/image';
-import { fnv1a, randomInt, splitmix32 } from '../../utils/random';
-import { ACCENT, DEEP, INK, MIST, PAPER, SHALLOW, fill, stroke, svg } from '../../utils/svg';
+import { fnv1a, randomInt, splitmix32 } from '@blog/utils/random';
+import { ACCENT, DEEP, INK, MIST, PAPER, SHALLOW, fill, stroke, svg } from '@blog/utils/svg';
 
 const WIDTH = 500;
 const H = OG_IMAGE_HEIGHT;

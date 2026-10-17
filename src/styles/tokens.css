@@ -23,6 +23,9 @@
  *   --ink-muted    a 76% tint of ink: secondary text, list markers
  *   --ink-hairline a 50% tint of ink: thin rules and borders
  *   --ink-grid     a 7% wash of ink: the grid lines behind the page
+ *   --mist, --shallow, --deep
+ *                  tints of the accent toward paper (14%, 50%) and toward ink
+ *                  (50%), mixed into the posts' pictures (utils/svg.ts)
  *   --rule-heavy   the weight of the heavy rules that divide the page
  *   --page-width   the width of the page column and of its 12-column grid
  */
@@ -41,6 +44,9 @@
   --on-solid-muted: color-mix(in oklab, var(--on-solid) 78%, var(--solid));
   /* Over transparent, not paper: the grid sits behind the page's content. */
   --ink-grid: color-mix(in oklab, var(--ink) 7%, transparent);
+  --mist: color-mix(in oklab, var(--accent) 14%, var(--paper));
+  --shallow: color-mix(in oklab, var(--accent) 50%, var(--paper));
+  --deep: color-mix(in oklab, var(--accent) 50%, var(--ink));
   --rule-heavy: 0.55rem;
   /* Its 100% resolves where it is used. */
   --page-width: min(100% - 2 * clamp(1rem, 2.5vw, 2rem), 84rem);

@@ -1,6 +1,6 @@
 import { OG_IMAGE_HEIGHT, OG_IMAGE_WIDTH } from '@blog/features/og-image/image';
-import { fnv1a, splitmix32 } from '../../utils/random';
-import { ACCENT, INK, stroke, svg } from '../../utils/svg';
+import { fnv1a, splitmix32 } from '@blog/utils/random';
+import { ACCENT, INK, stroke, svg } from '@blog/utils/svg';
 
 const W = OG_IMAGE_WIDTH;
 const H = OG_IMAGE_HEIGHT;
