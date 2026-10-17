@@ -29,6 +29,7 @@
   "devDependencies": {
     "@astrojs/check": "^0.9.10",
     "@astrojs/compiler-rs": "^0.5.1",
+    "budoux": "^0.9.3",
     "oxfmt": "^0.73.0",
     "oxlint": "^1.87.0",
     "playwright": "1.64.1",

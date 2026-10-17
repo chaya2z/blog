@@ -1,10 +1,11 @@
 ---
 import { Font } from 'astro:assets';
 import { OG_IMAGE_HEIGHT, OG_IMAGE_WIDTH } from '@blog/features/og-image/image';
+import type { Lang } from '@blog/features/posts/languages';
 import '@blog/styles/tokens.css';
 
 interface Props {
-  lang: string;
+  lang: Lang;
 }
 
 const { lang } = Astro.props;
@@ -23,6 +24,7 @@ const size = `width: ${OG_IMAGE_WIDTH}px; height: ${OG_IMAGE_HEIGHT}px`;
     <meta charset="utf-8" />
     <meta name="robots" content="noindex" />
     <Font cssVariable="--font-schibsted-grotesk" />
+    <Font cssVariable="--font-murecho" />
   </head>
   <body style={size}>
     <slot />

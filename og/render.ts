@@ -6,7 +6,7 @@ import { fileURLToPath } from 'node:url';
 import { build, preview } from 'astro';
 import { chromium, type Page } from 'playwright';
 import {
-  OG_IMAGE_DIR,
+  OG_IMAGE_URL_DIR,
   OG_IMAGE_HEIGHT,
   OG_IMAGE_WIDTH,
   ogImagePath,
@@ -47,7 +47,7 @@ if (cards.length === 0) {
 // Removed however the run ends, after the server and browser below close.
 await using shots = await mkdtempDisposable(join(tmpdir(), 'og-images-'));
 // The shots are laid out as public/ is.
-const images = join(shots.path, OG_IMAGE_DIR);
+const images = join(shots.path, OG_IMAGE_URL_DIR);
 {
   // Port 0 takes any free port, so a running dev server is never in the way.
   const server = await preview({ root, logLevel: 'warn', server: { port: 0 } });
@@ -65,10 +65,10 @@ const images = join(shots.path, OG_IMAGE_DIR);
     );
   }
 }
-await replaceDirectory(images, join(publicDir, OG_IMAGE_DIR));
+await replaceDirectory(images, join(publicDir, OG_IMAGE_URL_DIR));
 
 process.stdout.write(
-  `Rendered ${cards.length} Open Graph image${cards.length === 1 ? '' : 's'} into public${OG_IMAGE_DIR}\n`,
+  `Rendered ${cards.length} Open Graph image${cards.length === 1 ? '' : 's'} into public${OG_IMAGE_URL_DIR}\n`,
 );
 
 async function shoot(page: Page, url: string, png: string): Promise<void> {

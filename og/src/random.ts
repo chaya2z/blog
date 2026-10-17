@@ -31,3 +31,8 @@ export function splitmix32(seed: number): () => number {
     return (t >>> 0) / 2 ** 32;
   };
 }
+
+/** An integer in [0, n) from a generator of numbers in [0, 1). */
+export function randomInt(random: () => number, n: number): number {
+  return Math.floor(random() * n);
+}

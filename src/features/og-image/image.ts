@@ -8,10 +8,21 @@
 export const OG_IMAGE_WIDTH = 1200;
 export const OG_IMAGE_HEIGHT = 630;
 
-/** The directory the images are served from, holding nothing else. */
-export const OG_IMAGE_DIR = '/og/';
+/**
+ * The URL path the images are served under, holding nothing else. They sit at
+ * the same path under public/.
+ */
+export const OG_IMAGE_URL_DIR = '/og/';
 
 /** The path the image of a card is served at: `/og/site.png` for `site`. */
 export function ogImagePath(card: string): string {
-  return `${OG_IMAGE_DIR}${card}.png`;
+  return `${OG_IMAGE_URL_DIR}${card}.png`;
+}
+
+/**
+ * The path of a post's image: `/og/posts/ja/vlan-notes.png` for `ja/vlan-notes`.
+ * The card site serves each post's card at `posts/<id>/` to match.
+ */
+export function postOgImagePath(postId: string): string {
+  return ogImagePath(`posts/${postId}`);
 }

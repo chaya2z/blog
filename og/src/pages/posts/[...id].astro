@@ -1,0 +1,26 @@
+---
+import type { GetStaticPaths } from 'astro';
+import { getPosts, type PostEntry } from '@blog/features/posts/content';
+import { parsePostId } from '@blog/features/posts/id';
+import PostCard from '../../components/PostCard.astro';
+
+// Each post's card, at `posts/<id>/` so that render.ts shoots it to the path
+// the blog links: postOgImagePath() in features/og-image/image.ts.
+export const getStaticPaths = (async () => {
+  const posts = await getPosts();
+  return posts.map((post) => ({ params: { id: post.id }, props: { post } }));
+}) satisfies GetStaticPaths;
+
+interface Props {
+  post: PostEntry;
+}
+
+const { post } = Astro.props;
+---
+
+<PostCard
+  id={post.id}
+  title={post.data.title}
+  lang={parsePostId(post.id).lang}
+  publishedAt={post.data.publishedAt}
+/>
