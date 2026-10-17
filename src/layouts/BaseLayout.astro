@@ -3,7 +3,8 @@ import { Font } from 'astro:assets';
 import '@/styles/global.css';
 import SiteFooter from '@/components/SiteFooter.astro';
 import SiteHeader from '@/components/SiteHeader.astro';
-import { SITE_TITLE } from '@/site';
+import { OG_IMAGE_HEIGHT, OG_IMAGE_WIDTH, ogImagePath } from '@/features/og-image/image';
+import { SITE_TAGLINE, SITE_TITLE } from '@/site';
 
 interface Props {
   title: string;
@@ -22,6 +23,13 @@ const { title, lang, description, article } = Astro.props;
 // Absolute, as Google recommends; `trailingSlash: 'always'` keeps the path
 // identical to the served URL, so it never names a redirect source.
 const canonicalUrl = new URL(Astro.url.pathname, Astro.site).href;
+// Every page shares the site's image for now. Absolute, as the Open Graph URL
+// type takes only http(s) URLs.
+// ref: https://ogp.me/#types
+const ogImageUrl = new URL(ogImagePath('site'), Astro.site).href;
+// What the image says, not a caption, as Open Graph asks.
+// ref: https://ogp.me/#structured
+const ogImageAlt = `${SITE_TITLE}: ${SITE_TAGLINE}`;
 ---
 
 <!doctype html>
@@ -52,8 +60,12 @@ const canonicalUrl = new URL(Astro.url.pathname, Astro.site).href;
     <meta property="og:description" content={description} />
     <meta property="og:url" content={canonicalUrl} />
     {OG_LOCALES[lang] && <meta property="og:locale" content={OG_LOCALES[lang]} />}
+    <meta property="og:image" content={ogImageUrl} />
+    <meta property="og:image:width" content={String(OG_IMAGE_WIDTH)} />
+    <meta property="og:image:height" content={String(OG_IMAGE_HEIGHT)} />
+    <meta property="og:image:alt" content={ogImageAlt} />
     {/* X falls back to the og: tags above, so only its card type is set here. */}
-    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:card" content="summary_large_image" />
     <Font cssVariable="--font-inter" />
     <Font cssVariable="--font-noto-sans-jp" />
   </head>
