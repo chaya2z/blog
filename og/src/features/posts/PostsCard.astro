@@ -1,0 +1,58 @@
+---
+import { POSTS_TAGLINE } from '@blog/site';
+import { drawStrata } from './strata';
+import CardLayout from '../../components/CardLayout.astro';
+import SiteMark from '../../components/SiteMark.astro';
+
+const art = drawStrata('posts');
+---
+
+{/* The page's name over a section through the ocean, under the site's name. */}
+<CardLayout lang="en">
+  <div class="card">
+    <div class="art" set:html={art} />
+    <SiteMark />
+    <h1>POSTS</h1>
+    <p>{POSTS_TAGLINE}</p>
+  </div>
+</CardLayout>
+
+<script is:inline>
+  window.cardReady = document.fonts.ready.then(() => {});
+</script>
+
+<style>
+  .card {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    padding: 56px 80px 60px;
+  }
+  .art {
+    position: absolute;
+    top: 0;
+    right: 0;
+    line-height: 0;
+  }
+  /* Positioned, so they paint above the picture. */
+  h1,
+  p {
+    position: relative;
+  }
+  h1 {
+    margin: auto 0 0;
+    font-size: 140px;
+    font-weight: 900;
+    line-height: 0.86;
+    letter-spacing: -0.06em;
+  }
+  p {
+    max-width: 560px;
+    margin: 26px 0 0;
+    color: var(--ink-muted);
+    font-size: 26px;
+    font-weight: 500;
+    line-height: 1.5;
+  }
+</style>

@@ -1,14 +1,7 @@
 import { OG_IMAGE_HEIGHT } from '@blog/features/og-image/image';
-import { fnv1a, randomInt, splitmix32 } from './random';
+import { fnv1a, randomInt, splitmix32 } from '../../utils/random';
+import { ACCENT, DEEP, INK, MIST, PAPER, fill, stroke, svg } from '../../utils/svg';
 
-// The blog's colors from tokens.css, and two tints of them that the card
-// defines. They resolve in the page the SVG is inlined into, through style
-// attributes: `var()` is not certain to work in a presentation attribute.
-const INK = 'var(--ink)';
-const PAPER = 'var(--paper)';
-const ACCENT = 'var(--accent)';
-const DEEP = 'var(--deep)';
-const MIST = 'var(--mist)';
 const H = OG_IMAGE_HEIGHT;
 // One column of the site's 12-column grid, on a 1200px card with 80px margins.
 const COLUMN = 1040 / 12;
@@ -17,9 +10,6 @@ type Point = [number, number];
 
 const points = (list: Point[]): string =>
   list.map(([x, y]) => `${x.toFixed(1)},${y.toFixed(1)}`).join(' ');
-
-const fill = (color: string): string => `style="fill: ${color}"`;
-const stroke = (color: string): string => `fill="none" style="stroke: ${color}"`;
 
 const randomFor = (id: string) => splitmix32(fnv1a(id));
 
@@ -295,5 +285,5 @@ export function patternNameFor(
  */
 export function drawPattern(name: PatternName, seed: string): string {
   const { width, draw } = PATTERNS[name];
-  return `<svg xmlns="http://www.w3.org/2000/svg" width="${width}" height="${H}" viewBox="0 0 ${width} ${H}">${draw(seed)}</svg>`;
+  return svg(width, H, draw(seed));
 }

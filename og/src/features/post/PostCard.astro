@@ -1,10 +1,10 @@
 ---
-import { SITE_TITLE } from '@blog/site';
 import type { Lang } from '@blog/features/posts/languages';
 import { formatDate } from '@blog/utils/date';
 import { loadDefaultJapaneseParser } from 'budoux';
-import { drawPattern, patternNameFor } from '../patterns';
-import CardLayout from './CardLayout.astro';
+import { drawPattern, patternNameFor } from './patterns';
+import CardLayout from '../../components/CardLayout.astro';
+import SiteMark from '../../components/SiteMark.astro';
 
 interface Props {
   id: string;
@@ -35,9 +35,7 @@ const phrases =
 <CardLayout lang={lang}>
   <div class="card">
     <div class="art" set:html={art} />
-    <div class="site" lang="en">
-      {SITE_TITLE}
-    </div>
+    <SiteMark />
     <h1>
       <span>{phrases.map((phrase, i) => (i === 0 ? phrase : [<wbr />, phrase]))}</span>
     </h1>
@@ -76,38 +74,17 @@ const phrases =
     flex-direction: column;
     height: 100%;
     padding: 56px 80px 60px;
-    /* Latin first, so Latin inside a Japanese title stays in Schibsted Grotesk. */
-    font-family: var(--font-schibsted-grotesk), var(--font-murecho), sans-serif;
   }
   .art {
-    /* Tints the patterns mix in, from the blog's colors. */
-    --deep: color-mix(in oklab, var(--accent) 50%, var(--ink));
-    --mist: color-mix(in oklab, var(--accent) 14%, var(--paper));
     position: absolute;
     top: 0;
     right: 0;
     line-height: 0;
   }
   /* Positioned, so they paint above the pattern. */
-  .site,
   h1,
   .meta {
     position: relative;
-  }
-  .site {
-    display: flex;
-    align-items: center;
-    gap: 16px;
-    font-size: 28px;
-    font-weight: 900;
-    letter-spacing: -0.03em;
-    text-transform: uppercase;
-  }
-  .site::before {
-    width: 28px;
-    height: 28px;
-    background: var(--accent);
-    content: '';
   }
   h1 {
     max-width: 760px;

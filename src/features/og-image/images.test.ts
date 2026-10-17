@@ -23,9 +23,14 @@ async function sizeOf(path: string) {
 const SIZE = { width: OG_IMAGE_WIDTH, height: OG_IMAGE_HEIGHT };
 
 describe('Open Graph images', () => {
-  it('has the image of the site at the announced size; run `pnpm og` if not', async () => {
-    expect(await sizeOf(ogImagePath('site'))).toEqual(SIZE);
-  });
+  // The site's card, which pages without one share, and the cards of the
+  // pages that link their own.
+  it.each(['site', 'about', 'posts'])(
+    'has the image of %s at the announced size; run `pnpm og` if not',
+    async (card) => {
+      expect(await sizeOf(ogImagePath(card))).toEqual(SIZE);
+    },
+  );
 
   it('finds the posts', () => {
     expect(POST_IDS.length).toBeGreaterThan(0);

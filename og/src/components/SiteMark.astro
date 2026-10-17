@@ -1,0 +1,28 @@
+---
+import { SITE_TITLE } from '@blog/site';
+---
+
+{/* The site's name behind an accent square, at the top of a card. */}
+<div class="site-mark" lang="en">
+  {SITE_TITLE}
+</div>
+
+<style>
+  .site-mark {
+    /* Positioned, so it paints above the card's picture. */
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    font-size: 28px;
+    font-weight: 900;
+    letter-spacing: -0.03em;
+    text-transform: uppercase;
+  }
+  .site-mark::before {
+    width: 28px;
+    height: 28px;
+    background: var(--accent);
+    content: '';
+  }
+</style>

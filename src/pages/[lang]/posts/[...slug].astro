@@ -32,7 +32,7 @@ const url = new URL(Astro.url.pathname, Astro.site).href;
 // The post's card shows its title, the site's name and the date.
 const ogImage = {
   path: postOgImagePath(post.id),
-  alt: `${post.data.title} — ${SITE_TITLE}, ${formatDate(post.data.publishedAt)}`,
+  alt: `${post.data.title} on ${SITE_TITLE}, ${formatDate(post.data.publishedAt)}`,
 };
 ---
 

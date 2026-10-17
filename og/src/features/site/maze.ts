@@ -1,11 +1,7 @@
 import { OG_IMAGE_HEIGHT, OG_IMAGE_WIDTH } from '@blog/features/og-image/image';
-import { fnv1a, splitmix32 } from './random';
+import { fnv1a, splitmix32 } from '../../utils/random';
+import { ACCENT, INK, stroke, svg } from '../../utils/svg';
 
-// The blog's colors from tokens.css. They resolve in the page the SVG is
-// inlined into, through a style attribute: `var()` is not certain to work in a
-// presentation attribute.
-const INK = 'var(--ink)';
-const ACCENT = 'var(--accent)';
 const W = OG_IMAGE_WIDTH;
 const H = OG_IMAGE_HEIGHT;
 // One column of the site's 12-column grid, on a 1200px card with 80px margins.
@@ -31,8 +27,8 @@ export function drawMaze(seed: string): string {
         random() < 0.5
           ? `M${x} ${y}L${x + CELL} ${y + CELL}`
           : `M${x + CELL} ${y}L${x} ${y + CELL}`;
-      out += `<path d="${d}" style="stroke: ${random() < 0.1 ? ACCENT : INK}" stroke-width="10" stroke-linecap="square"/>`;
+      out += `<path d="${d}" ${stroke(random() < 0.1 ? ACCENT : INK)} stroke-width="10" stroke-linecap="square"/>`;
     }
   }
-  return `<svg xmlns="http://www.w3.org/2000/svg" width="${W}" height="${H}" viewBox="0 0 ${W} ${H}">${out}</svg>`;
+  return svg(W, H, out);
 }

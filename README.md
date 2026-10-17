@@ -27,13 +27,16 @@ The cards are a separate Astro site in `og/`, so their pages and fonts never rea
 blog's build. `pnpm og` builds that site and shoots each page with Chromium. Every card is
 shot before any image is replaced, so a failed run leaves the committed images as they were.
 While designing, `pnpm og:dev` shows the site's card at `/site/` and each post's at
-`/posts/<lang>/<slug>/`.
+`/posts/<lang>/<slug>/`, the About page's at `/about/` and the post list's at `/posts/`.
+Other pages share the site's image.
 
 A post's card draws one of nine patterns, chosen from the post's id alone, so adding a post
 never changes another post's image.
 
 The cards import the blog's text and styles through `@blog/*`. The blog imports nothing
-from `og/`; it only links the images.
+from `og/`; it only links the images. Inside `og/src/`, the code follows the blog's
+directory structure: each card and its picture in `features/<name>/`, named as the card's
+page, and what the cards share in `components/` and `utils/`.
 
 ## Why Astro
 
