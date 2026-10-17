@@ -1,4 +1,4 @@
-import { isLang, type Lang } from './languages';
+import { isLang, type Lang } from '@/utils/languages';
 
 export type PostIdParts = {
   lang: Lang;
