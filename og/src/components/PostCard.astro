@@ -1,0 +1,140 @@
+---
+import { SITE_TITLE } from '@blog/site';
+import type { Lang } from '@blog/features/posts/languages';
+import { formatDate } from '@blog/utils/date';
+import { loadDefaultJapaneseParser } from 'budoux';
+import { drawPattern, patternNameFor } from '../patterns';
+import CardLayout from './CardLayout.astro';
+
+interface Props {
+  id: string;
+  title: string;
+  lang: Lang;
+  publishedAt: Date;
+}
+
+const { id, title, lang, publishedAt } = Astro.props;
+const art = drawPattern(patternNameFor(id), id);
+
+// A Japanese title breaks only between BudouX's phrases: `<wbr>` marks each
+// break, `keep-all` forbids the rest, and no-break spaces hold a Latin name
+// such as "All Products Pack" inside its phrase. Not `word-break: auto-phrase`,
+// which Chromium hands to ICU's phrase breaking: ICU's Japanese model, with
+// weights from 2024, finds no break in some of these titles, and a phrase too
+// long for its line then breaks between any two characters, even mid-word.
+// Here a phrase never breaks inside; one too long shrinks the type instead.
+const phrases =
+  lang === 'ja'
+    ? loadDefaultJapaneseParser()
+        .parse(title)
+        .map((phrase) => phrase.replaceAll(' ', ' '))
+    : [title];
+---
+
+{/* The post's title on ink bars beside its pattern, under the site's name. */}
+<CardLayout lang={lang}>
+  <div class="card">
+    <div class="art" set:html={art} />
+    <div class="site" lang="en">
+      {SITE_TITLE}
+    </div>
+    <h1>
+      <span>{phrases.map((phrase, i) => (i === 0 ? phrase : [<wbr />, phrase]))}</span>
+    </h1>
+    <p class="meta" lang="en">
+      {formatDate(publishedAt)} · {lang}
+    </p>
+  </div>
+</CardLayout>
+
+{/*
+  What CSS cannot do: shrink the type until the title fits its bars in four
+  lines, and pad the bars so their lines meet. A line box is taller than the
+  backgrounds of its inline boxes, which only cover the font's content area.
+  A title that still overflows at the smallest size fails the render rather
+  than being shot cut off.
+*/}
+<script is:inline>
+  window.cardReady = document.fonts.ready.then(() => {
+    const h1 = document.querySelector('h1');
+    const titleBar = h1.querySelector('span');
+    const fits = () => h1.scrollWidth <= h1.clientWidth && titleBar.getClientRects().length <= 4;
+    for (let size = parseFloat(getComputedStyle(h1).fontSize); !fits() && size > 24; size--) {
+      h1.style.fontSize = `${size - 1}px`;
+    }
+    if (!fits()) throw new Error(`The title does not fit at 24px: ${h1.textContent}`);
+    const [line] = titleBar.getClientRects();
+    const pitch = parseFloat(getComputedStyle(h1).lineHeight);
+    titleBar.style.paddingBlock = `${(pitch - line.height) / 2}px`;
+  });
+</script>
+
+<style>
+  .card {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    padding: 56px 80px 60px;
+    /* Latin first, so Latin inside a Japanese title stays in Schibsted Grotesk. */
+    font-family: var(--font-schibsted-grotesk), var(--font-murecho), sans-serif;
+  }
+  .art {
+    /* Tints the patterns mix in, from the blog's colors. */
+    --deep: color-mix(in oklab, var(--accent) 50%, var(--ink));
+    --mist: color-mix(in oklab, var(--accent) 14%, var(--paper));
+    position: absolute;
+    top: 0;
+    right: 0;
+    line-height: 0;
+  }
+  /* Positioned, so they paint above the pattern. */
+  .site,
+  h1,
+  .meta {
+    position: relative;
+  }
+  .site {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    font-size: 28px;
+    font-weight: 900;
+    letter-spacing: -0.03em;
+    text-transform: uppercase;
+  }
+  .site::before {
+    width: 28px;
+    height: 28px;
+    background: var(--accent);
+    content: '';
+  }
+  h1 {
+    max-width: 760px;
+    margin: auto 0 0;
+    font-size: 58px;
+    font-weight: 800;
+    line-height: 1.4;
+    letter-spacing: 0.04em;
+    text-wrap: balance;
+  }
+  /* Breaks only at the `<wbr>` between phrases, not between any two characters. */
+  h1:lang(ja) {
+    line-height: 1.5;
+    word-break: keep-all;
+  }
+  /* One bar per line, each padded as if it were its own box. */
+  h1 span {
+    padding-inline: 16px;
+    color: var(--paper);
+    background: var(--ink);
+    box-decoration-break: clone;
+  }
+  .meta {
+    margin: 30px 0 0;
+    font-size: 22px;
+    font-weight: 800;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+  }
+</style>

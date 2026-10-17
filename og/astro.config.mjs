@@ -23,5 +23,14 @@ export default defineConfig({
       styles: ['normal'],
       fallbacks: [],
     },
+    // Japanese titles; Latin in them stays in Schibsted Grotesk, listed first.
+    {
+      provider: fontProviders.google(),
+      name: 'Murecho',
+      cssVariable: '--font-murecho',
+      weights: [800],
+      styles: ['normal'],
+      fallbacks: [],
+    },
   ],
 });
