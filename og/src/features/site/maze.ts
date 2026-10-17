@@ -1,5 +1,5 @@
 import { OG_IMAGE_HEIGHT, OG_IMAGE_WIDTH } from '@blog/features/og-image/image';
-import { fnv1a, splitmix32 } from './random';
+import { fnv1a, splitmix32 } from '../../utils/random';
 
 // The blog's colors from tokens.css. They resolve in the page the SVG is
 // inlined into, through a style attribute: `var()` is not certain to work in a

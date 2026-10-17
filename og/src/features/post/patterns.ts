@@ -1,5 +1,5 @@
 import { OG_IMAGE_HEIGHT } from '@blog/features/og-image/image';
-import { fnv1a, randomInt, splitmix32 } from './random';
+import { fnv1a, randomInt, splitmix32 } from '../../utils/random';
 
 // The blog's colors from tokens.css, and two tints of them that the card
 // defines. They resolve in the page the SVG is inlined into, through style

@@ -2,7 +2,7 @@
 import type { GetStaticPaths } from 'astro';
 import { getPosts, type PostEntry } from '@blog/features/posts/content';
 import { parsePostId } from '@blog/features/posts/id';
-import PostCard from '../../components/PostCard.astro';
+import PostCard from '../../features/post/PostCard.astro';
 
 // Each post's card, at `posts/<id>/` so that render.ts shoots it to the path
 // the blog links: postOgImagePath() in features/og-image/image.ts.

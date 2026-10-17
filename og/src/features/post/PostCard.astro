@@ -3,8 +3,8 @@ import { SITE_TITLE } from '@blog/site';
 import type { Lang } from '@blog/features/posts/languages';
 import { formatDate } from '@blog/utils/date';
 import { loadDefaultJapaneseParser } from 'budoux';
-import { drawPattern, patternNameFor } from '../patterns';
-import CardLayout from './CardLayout.astro';
+import { drawPattern, patternNameFor } from './patterns';
+import CardLayout from '../../components/CardLayout.astro';
 
 interface Props {
   id: string;
