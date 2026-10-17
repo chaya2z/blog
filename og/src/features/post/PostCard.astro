@@ -1,7 +1,7 @@
 ---
 import type { Lang } from '@blog/utils/languages';
 import { formatDate } from '@blog/utils/date';
-import { loadDefaultJapaneseParser } from 'budoux';
+import { japanesePhrases } from '@blog/utils/phrases';
 import { drawPattern, patternNameFor } from '@blog/features/posts/patterns';
 import CardLayout from '../../components/CardLayout.astro';
 import SiteMark from '../../components/SiteMark.astro';
@@ -16,19 +16,9 @@ interface Props {
 const { id, title, lang, publishedAt } = Astro.props;
 const art = drawPattern(patternNameFor(id), id);
 
-// A Japanese title breaks only between BudouX's phrases: `<wbr>` marks each
-// break, `keep-all` forbids the rest, and no-break spaces hold a Latin name
-// such as "All Products Pack" inside its phrase. Not `word-break: auto-phrase`,
-// which Chromium hands to ICU's phrase breaking: ICU's Japanese model, with
-// weights from 2024, finds no break in some of these titles, and a phrase too
-// long for its line then breaks between any two characters, even mid-word.
-// Here a phrase never breaks inside; one too long shrinks the type instead.
-const phrases =
-  lang === 'ja'
-    ? loadDefaultJapaneseParser()
-        .parse(title)
-        .map((phrase) => phrase.replaceAll(' ', ' '))
-    : [title];
+// A Japanese title breaks only between phrases (see utils/phrases.ts). Here a
+// phrase never breaks inside; one too long shrinks the type instead.
+const phrases = lang === 'ja' ? japanesePhrases(title) : [title];
 ---
 
 {/* The post's title on ink bars beside its pattern, under the site's name. */}
