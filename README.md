@@ -142,3 +142,10 @@ The visual direction is **Type Poster**. Large typography is the main graphic el
   column.
 - **Accessibility:** WCAG 2.2 AA contrast, visible keyboard focus, and support for
   `prefers-reduced-motion`. No real text is rotated or set vertically.
+
+## Why there is no theme toggle
+
+The blog uses the light or dark setting the reader has chosen in their OS or browser.
+That covers what readers need for now. A toggle would also be one more thing to
+maintain, with details to get right, such as avoiding a flash of the wrong scheme on
+page load.
