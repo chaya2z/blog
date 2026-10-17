@@ -2,6 +2,7 @@
 import { getEntry, render } from 'astro:content';
 import Masthead from '@/components/Masthead.astro';
 import { formatDate } from '@/utils/date';
+import { ogImagePath } from '@/features/og-image/image';
 import BaseLayout from '@/layouts/BaseLayout.astro';
 import '@/styles/prose.css';
 
@@ -11,10 +12,15 @@ if (!page) {
 }
 const { Content } = await render(page);
 const { title, description, updatedAt } = page.data;
+// The card draws the blog's versions as a timeline, from the History below.
+const ogImage = {
+  path: ogImagePath('about'),
+  alt: 'A timeline of the six versions of this blog since 2019, from Blogger to Astro',
+};
 ---
 
 {/* English only, like the rest of the UI. */}
-<BaseLayout title={title} lang="en" description={description}>
+<BaseLayout title={title} lang="en" description={description} {ogImage}>
   <Masthead title="About" />
   <div class="container body">
     <p class="updated">

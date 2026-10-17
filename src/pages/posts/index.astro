@@ -1,14 +1,17 @@
 ---
 import Masthead from '@/components/Masthead.astro';
 import PostList from '@/features/posts/components/PostList.astro';
+import { ogImagePath } from '@/features/og-image/image';
 import { getPosts } from '@/features/posts/content';
 import BaseLayout from '@/layouts/BaseLayout.astro';
-import { SITE_DESCRIPTION } from '@/site';
+import { POSTS_TAGLINE, SITE_DESCRIPTION, SITE_TITLE } from '@/site';
 
 const posts = await getPosts();
+// The card shows the page's name and the kinds of posts, under the site's name.
+const ogImage = { path: ogImagePath('posts'), alt: `Posts on ${SITE_TITLE}: ${POSTS_TAGLINE}` };
 ---
 
-<BaseLayout title="Posts" lang="en" description={SITE_DESCRIPTION}>
+<BaseLayout title="Posts" lang="en" description={SITE_DESCRIPTION} {ogImage}>
   <Masthead title="Posts" />
   <div class="container list">
     <PostList posts={posts} />
