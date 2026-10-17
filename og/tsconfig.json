@@ -1,0 +1,11 @@
+{
+  "extends": "astro/tsconfigs/strict",
+  "include": [".astro/types.d.ts", "**/*"],
+  "exclude": ["dist"],
+  "compilerOptions": {
+    "paths": {
+      // The cards use the blog's own text and styles; nothing in the blog uses the cards.
+      "@blog/*": ["../src/*"]
+    }
+  }
+}

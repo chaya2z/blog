@@ -77,6 +77,7 @@ by feature. Below is the target layout.
 │   ├── plugins/           # Build plugins, such as Markdown processing
 │   ├── styles/            # Global CSS, design tokens and shared stylesheets
 │   └── utils/             # Helpers that no single feature owns, one file per subject
+├── og/                    # The Open Graph cards, a separate Astro site
 └── astro.config.mjs
 ```
 

@@ -5,13 +5,14 @@
   "scripts": {
     "dev": "astro dev",
     "build": "astro build",
+    "og:dev": "cd og && astro dev",
     "preview": "astro preview",
     "astro": "astro",
     "lint": "oxlint",
     "lint:fix": "oxlint --fix",
     "fmt": "oxfmt",
     "fmt:check": "oxfmt --check",
-    "typecheck": "astro check",
+    "typecheck": "astro check && astro check --root og",
     "test": "vitest run"
   },
   "dependencies": {
