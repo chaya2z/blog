@@ -1,6 +1,6 @@
 import { getCollection, getEntry, type CollectionEntry } from 'astro:content';
 import { parsePostId } from './id';
-import type { Lang } from './languages';
+import type { Lang } from '@/utils/languages';
 
 export type PostEntry = CollectionEntry<'posts'>;
 
