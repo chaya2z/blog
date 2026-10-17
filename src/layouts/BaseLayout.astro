@@ -4,32 +4,41 @@ import '@/styles/global.css';
 import SiteFooter from '@/components/SiteFooter.astro';
 import SiteHeader from '@/components/SiteHeader.astro';
 import { OG_IMAGE_HEIGHT, OG_IMAGE_WIDTH, ogImagePath } from '@/features/og-image/image';
+import type { Lang } from '@/features/posts/languages';
 import { SITE_TAGLINE, SITE_TITLE } from '@/site';
 
 interface Props {
   title: string;
-  lang: string;
+  lang: Lang;
   description: string;
   /** Marks the page as an Open Graph article; other pages are websites. */
   article?: { publishedTime: Date };
+  /**
+   * The page's Open Graph image, by its path, and alt text that says what the
+   * image says, not a caption. Pages without one share the site's.
+   * ref: https://ogp.me/#structured
+   */
+  ogImage?: { path: string; alt: string };
 }
 
 // Open Graph names a locale by language and territory; it assumes en_US when
 // none is given.
 // ref: https://ogp.me/#optional
-const OG_LOCALES: Record<string, string> = { en: 'en_US', ja: 'ja_JP' };
+const OG_LOCALES = { en: 'en_US', ja: 'ja_JP' } satisfies Record<Lang, string>;
 
-const { title, lang, description, article } = Astro.props;
+const {
+  title,
+  lang,
+  description,
+  article,
+  ogImage = { path: ogImagePath('site'), alt: `${SITE_TITLE}: ${SITE_TAGLINE}` },
+} = Astro.props;
 // Absolute, as Google recommends; `trailingSlash: 'always'` keeps the path
 // identical to the served URL, so it never names a redirect source.
 const canonicalUrl = new URL(Astro.url.pathname, Astro.site).href;
-// Every page shares the site's image for now. Absolute, as the Open Graph URL
-// type takes only http(s) URLs.
+// Absolute, as the Open Graph URL type takes only http(s) URLs.
 // ref: https://ogp.me/#types
-const ogImageUrl = new URL(ogImagePath('site'), Astro.site).href;
-// What the image says, not a caption, as Open Graph asks.
-// ref: https://ogp.me/#structured
-const ogImageAlt = `${SITE_TITLE}: ${SITE_TAGLINE}`;
+const ogImageUrl = new URL(ogImage.path, Astro.site).href;
 ---
 
 <!doctype html>
@@ -59,11 +68,11 @@ const ogImageAlt = `${SITE_TITLE}: ${SITE_TAGLINE}`;
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     <meta property="og:url" content={canonicalUrl} />
-    {OG_LOCALES[lang] && <meta property="og:locale" content={OG_LOCALES[lang]} />}
+    <meta property="og:locale" content={OG_LOCALES[lang]} />
     <meta property="og:image" content={ogImageUrl} />
     <meta property="og:image:width" content={String(OG_IMAGE_WIDTH)} />
     <meta property="og:image:height" content={String(OG_IMAGE_HEIGHT)} />
-    <meta property="og:image:alt" content={ogImageAlt} />
+    <meta property="og:image:alt" content={ogImage.alt} />
     {/* X falls back to the og: tags above, so only its card type is set here. */}
     <meta name="twitter:card" content="summary_large_image" />
     <Font cssVariable="--font-inter" />

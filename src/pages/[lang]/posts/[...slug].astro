@@ -5,10 +5,13 @@ import 'katex/dist/katex.min.css';
 import ArticleHeader from '@/features/posts/components/ArticleHeader.astro';
 import Breadcrumbs from '@/features/posts/components/Breadcrumbs.astro';
 import ShareLinks from '@/features/posts/components/ShareLinks.astro';
+import { postOgImagePath } from '@/features/og-image/image';
 import { getPosts, type PostEntry } from '@/features/posts/content';
 import { parsePostId } from '@/features/posts/id';
 import '@/styles/prose.css';
 import BaseLayout from '@/layouts/BaseLayout.astro';
+import { SITE_TITLE } from '@/site';
+import { formatDate } from '@/utils/date';
 
 export const getStaticPaths = (async () => {
   const posts = await getPosts();
@@ -26,6 +29,11 @@ const { post } = Astro.props;
 const { lang } = parsePostId(post.id);
 const { Content } = await render(post);
 const url = new URL(Astro.url.pathname, Astro.site).href;
+// The post's card shows its title, the site's name and the date.
+const ogImage = {
+  path: postOgImagePath(post.id),
+  alt: `${post.data.title} — ${SITE_TITLE}, ${formatDate(post.data.publishedAt)}`,
+};
 ---
 
 <BaseLayout
@@ -33,6 +41,7 @@ const url = new URL(Astro.url.pathname, Astro.site).href;
   lang={lang}
   description={post.data.description}
   article={{ publishedTime: post.data.publishedAt }}
+  {ogImage}
 >
   {/* Breadcrumbs are site navigation, so they stay outside the article. */}
   <div class="container crumbs">
