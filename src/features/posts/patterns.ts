@@ -1,6 +1,6 @@
-import { OG_IMAGE_HEIGHT } from '@blog/features/og-image/image';
-import { fnv1a, randomInt, splitmix32 } from '../../utils/random';
-import { ACCENT, DEEP, INK, MIST, PAPER, fill, stroke, svg } from '../../utils/svg';
+import { OG_IMAGE_HEIGHT } from '@/features/og-image/image';
+import { fnv1a, randomInt, splitmix32 } from '@/utils/random';
+import { ACCENT, DEEP, INK, MIST, PAPER, fill, stroke, svg } from '@/utils/svg';
 
 const H = OG_IMAGE_HEIGHT;
 // One column of the site's 12-column grid, on a 1200px card with 80px margins.

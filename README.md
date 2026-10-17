@@ -35,8 +35,9 @@ never changes another post's image.
 
 The cards import the blog's text and styles through `@blog/*`. The blog imports nothing
 from `og/`; it only links the images. Inside `og/src/`, the code follows the blog's
-directory structure: each card and its picture in `features/<name>/`, named as the card's
-page, and what the cards share in `components/` and `utils/`.
+directory structure: each card in `features/<name>/` with any picture only it draws, named
+as the card's page, and what the cards share in `components/` and `utils/`. A post's
+picture comes from the blog's `features/posts/`, as the post page shows it too.
 
 ## Why Astro
 

@@ -41,12 +41,6 @@ const size = `width: ${OG_IMAGE_WIDTH}px; height: ${OG_IMAGE_HEIGHT}px`;
   :global(*::after) {
     box-sizing: border-box;
   }
-  /* Tints of the blog's colors that the pictures mix in; see utils/svg.ts. */
-  :global(html) {
-    --mist: color-mix(in oklab, var(--accent) 14%, var(--paper));
-    --shallow: color-mix(in oklab, var(--accent) 50%, var(--paper));
-    --deep: color-mix(in oklab, var(--accent) 50%, var(--ink));
-  }
   /* Sized in the markup; the screenshot itself is clipped to the viewport. */
   :global(body) {
     margin: 0;
