@@ -2,6 +2,7 @@
 title: 'eBPFでシステムコールを監視してみた'
 description: 'eBPF Summit 2020 の入門セッションで公開されたコードを Ubuntu 20.04 で動かし、clone システムコールの発行回数をユーザー ID ごとに数えた。'
 publishedAt: '2020-12-03'
+tags: ['Linux']
 ---
 
 この記事は[ITRC Advent Calendar 2020](https://adventar.org/calendars/5535) の 3 日目の記事です．

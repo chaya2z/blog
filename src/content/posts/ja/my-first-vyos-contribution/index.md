@@ -2,6 +2,7 @@
 title: 'VyOSにコントリビュートした'
 description: 'VyOS で出たエラーから、Perl スクリプトで $ がエスケープされていないバグを見つけ、初めて OSS に PR を出した。この経験から、最新版を使うことと英語を避けないことをコントリビュートのこつとして挙げる。'
 publishedAt: '2021-12-06'
+tags: ['VyOS']
 ---
 
 この記事は [ITRC Advent Calendar 2021](https://adventar.org/calendars/6368) の6日目の記事です．

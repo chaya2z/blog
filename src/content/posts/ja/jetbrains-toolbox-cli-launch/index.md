@@ -2,6 +2,7 @@
 title: 'JetBrains ToolboxでIDEをCLIから起動する'
 description: 'Toolbox の「Generate shell scripts」を有効にすると、idea hoge.md のように IDE をコマンドから起動できる。保存先を ~/ 以下にすることと、ディレクトリ選択欄の末尾に入る空白を消すことがつまずきどころ。'
 publishedAt: '2021-12-14'
+tags: ['JetBrains']
 ---
 
 この記事は [ITRC Advent Calendar 2021](https://adventar.org/calendars/6368) の14日目の記事です．

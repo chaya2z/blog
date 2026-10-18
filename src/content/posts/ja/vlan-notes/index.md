@@ -2,6 +2,7 @@
 title: 'VLANの設定で学んだこと'
 description: 'Native VLAN を、機器で最初から設定されている VLAN 1 のことだと勘違いしていた。Access Port、Trunk Port、Native VLAN がそれぞれどんなフレームを流すのかを整理した。'
 publishedAt: '2021-12-23'
+tags: ['Network']
 ---
 
 ## はじめに

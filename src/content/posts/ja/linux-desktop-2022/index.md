@@ -2,6 +2,7 @@
 title: 'Linuxデスクトップ環境とdotfilesの管理（2022年）'
 description: 'Gnome のメモリ消費が気になり、Fedora 36 で i3-gaps を中心としたデスクトップに移行した。polybar や rofi の設定は git で管理し、Python の fire で書いたスクリプトでシンボリックリンクを張っている。'
 publishedAt: '2022-08-18'
+tags: ['Linux', 'Python', 'Retrospective']
 ---
 
 i3-gaps を中心とした Linux の環境構築についてと、それらのファイルの管理について書きました。
