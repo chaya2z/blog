@@ -125,6 +125,18 @@
 }
 
 /*
+ * An image on its own line. A tall one, such as a phone screenshot, stops at
+ * the height of one screen and centers; a wide one still fills the column.
+ */
+.prose > p:has(> img) > img {
+  display: block;
+  width: auto;
+  max-width: 100%;
+  max-height: min(40rem, 80svh);
+  margin-inline: auto;
+}
+
+/*
  * Code blocks keep the background Shiki sets inline (github-dark by default),
  * so the token colors always sit on the theme they were chosen for.
  */
