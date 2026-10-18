@@ -10,9 +10,11 @@ export const POSTS_TAGLINE = 'Build logs, setup notes, and look-backs.';
 
 // The one author, shown at the end of every post.
 export const AUTHOR = {
-  name: 'chaya2z',
-  bio: 'SRE',
-  // Linked from the footer.
+  // Shown on the author card only, above the handle; the rest of the site
+  // goes by the handle.
+  name: 'Taisuke Nakano',
+  handle: 'chaya2z',
+  // Linked from the footer and the author card.
   links: {
     github: 'https://github.com/chaya2z',
     linkedin: 'https://www.linkedin.com/in/chaya2z/',
