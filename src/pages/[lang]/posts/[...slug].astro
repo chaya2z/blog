@@ -3,6 +3,7 @@ import type { GetStaticPaths } from 'astro';
 import { render } from 'astro:content';
 import 'katex/dist/katex.min.css';
 import ArticleHeader from '@/features/posts/components/ArticleHeader.astro';
+import AuthorCard from '@/features/posts/components/AuthorCard.astro';
 import Breadcrumbs from '@/features/posts/components/Breadcrumbs.astro';
 import RelatedPosts from '@/features/posts/components/RelatedPosts.astro';
 import ShareLinks from '@/features/posts/components/ShareLinks.astro';
@@ -81,6 +82,9 @@ const ogImage = {
           </div>
         </div>
       </div>
+      <div class="end">
+        <AuthorCard />
+      </div>
     </div>
   </article>
   {/* Other posts are site navigation, so they follow the article rather than join it. */}
@@ -121,14 +125,18 @@ const ogImage = {
     /* The share links set themselves two by two when queried against this width. */
     container-type: inline-size;
   }
-  /* The posts after the article, over the text's width. */
-  .more {
-    padding-bottom: clamp(3rem, 6vw, 5rem);
-  }
+  /* What closes the article, and the posts after it, over the text's width. */
+  .end,
   .more-inner {
     max-width: 68ch;
     /* The text's size (prose.css), so that 68ch is the text's width. */
     font-size: 1.125rem;
+  }
+  .end {
+    margin-top: clamp(3.5rem, 7vw, 6rem);
+  }
+  .more {
+    padding-bottom: clamp(3rem, 6vw, 5rem);
   }
   .share-label {
     margin: 0 0 0.75rem;
@@ -155,6 +163,10 @@ const ogImage = {
     .prose {
       grid-column: 4 / 12;
       grid-row: 1;
+    }
+    .end {
+      grid-column: 4 / 12;
+      grid-row: 2;
     }
     .more {
       display: grid;
