@@ -97,6 +97,40 @@ const ogImage = {
   )}
 </BaseLayout>
 
+<script>
+  /*
+   * On wide screens the notes take no height (see the style below), so a long
+   * one could run into the next block's notes, or past the end of the text.
+   * Each block's notes start no higher than a gap below the end of the notes
+   * before them, and the text ends no higher than the last notes. Without this
+   * script the notes keep their height and hold the next block down instead.
+   */
+  const WIDE = window.matchMedia('(min-width: 88rem)');
+  const prose = document.querySelector<HTMLElement>('.prose');
+  const groups = [...document.querySelectorAll<HTMLElement>('.prose .sidenotes')];
+
+  const placeNotes = (text: HTMLElement) => {
+    text.style.paddingBottom = '';
+    let end = -Infinity;
+    for (const group of groups) {
+      group.style.translate = '';
+      if (!WIDE.matches) continue;
+      const top = group.getBoundingClientRect().top + window.scrollY;
+      const shift = Math.max(0, end + parseFloat(getComputedStyle(group).rowGap) - top);
+      if (shift > 0) group.style.translate = `0 ${shift}px`;
+      end = top + shift + group.scrollHeight;
+    }
+    const overrun = end - (text.getBoundingClientRect().bottom + window.scrollY);
+    if (overrun > 0) text.style.paddingBottom = `${overrun}px`;
+  };
+
+  if (prose && groups.length > 0) {
+    prose.dataset.sidenotesPlaced = '';
+    // The text's size changes with the window and as its fonts load.
+    new ResizeObserver(() => placeNotes(prose)).observe(prose);
+    WIDE.addEventListener('change', () => placeNotes(prose));
+  }
+</script>
 <style>
   .article-head {
     padding-block: 1.5rem clamp(2.5rem, 5vw, 5rem);
@@ -201,7 +235,10 @@ const ogImage = {
    *
    * The block and its notes share a grid that reaches from the text's left edge
    * to the page's, 9 columns: the text's 68 characters, a gutter, and the notes
-   * in what is left. A note longer than its block holds the next block down.
+   * in what is left. A note longer than its block holds the next block down,
+   * until the script above places the notes: then they take no height, so the
+   * row is the block's, a long note runs on down the margin, and the text
+   * below keeps its place.
    */
   @media (min-width: 88rem) {
     .prose :global(.noted) {
@@ -213,6 +250,9 @@ const ogImage = {
     }
     .prose :global(.sidenotes) {
       margin-top: 0.25rem;
+    }
+    .prose[data-sidenotes-placed] :global(.sidenotes) {
+      height: 0;
     }
   }
 </style>
