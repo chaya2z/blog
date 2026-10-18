@@ -13,6 +13,8 @@ const posts = defineCollection({
     title: z.string().min(1),
     description: z.string().min(1),
     publishedAt: z.coerce.date(),
+    // Topics, in the post's own spelling (product names keep their case).
+    tags: z.array(z.string().min(1)).default([]),
   }),
 });
 

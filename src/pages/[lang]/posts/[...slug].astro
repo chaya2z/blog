@@ -4,11 +4,13 @@ import { render } from 'astro:content';
 import 'katex/dist/katex.min.css';
 import ArticleHeader from '@/features/posts/components/ArticleHeader.astro';
 import Breadcrumbs from '@/features/posts/components/Breadcrumbs.astro';
+import RelatedPosts from '@/features/posts/components/RelatedPosts.astro';
 import ShareLinks from '@/features/posts/components/ShareLinks.astro';
 import TableOfContents from '@/features/posts/components/TableOfContents.astro';
 import { postOgImagePath } from '@/features/og-image/image';
 import { getPosts, type PostEntry } from '@/features/posts/content';
 import { parsePostId } from '@/features/posts/id';
+import { relatedPosts } from '@/features/posts/related';
 import '@/styles/prose.css';
 import BaseLayout from '@/layouts/BaseLayout.astro';
 import { SITE_TITLE } from '@/site';
@@ -18,15 +20,17 @@ export const getStaticPaths = (async () => {
   const posts = await getPosts();
   return posts.map((post) => ({
     params: parsePostId(post.id),
-    props: { post },
+    props: { post, related: relatedPosts(post, posts) },
   }));
 }) satisfies GetStaticPaths;
 
 interface Props {
   post: PostEntry;
+  /** Posts sharing its tags, most alike first. */
+  related: PostEntry[];
 }
 
-const { post } = Astro.props;
+const { post, related } = Astro.props;
 const { lang } = parsePostId(post.id);
 const { Content, headings } = await render(post);
 const url = new URL(Astro.url.pathname, Astro.site).href;
@@ -56,6 +60,7 @@ const ogImage = {
           title={post.data.title}
           description={post.data.description}
           publishedAt={post.data.publishedAt}
+          tags={post.data.tags}
         />
       </div>
     </div>
@@ -78,6 +83,14 @@ const ogImage = {
       </div>
     </div>
   </article>
+  {/* Other posts are site navigation, so they follow the article rather than join it. */}
+  {related.length > 0 && (
+    <div class="container more">
+      <div class="more-inner">
+        <RelatedPosts posts={related} />
+      </div>
+    </div>
+  )}
 </BaseLayout>
 
 <style>
@@ -108,6 +121,15 @@ const ogImage = {
     /* The share links set themselves two by two when queried against this width. */
     container-type: inline-size;
   }
+  /* The posts after the article, over the text's width. */
+  .more {
+    padding-bottom: clamp(3rem, 6vw, 5rem);
+  }
+  .more-inner {
+    max-width: 68ch;
+    /* The text's size (prose.css), so that 68ch is the text's width. */
+    font-size: 1.125rem;
+  }
   .share-label {
     margin: 0 0 0.75rem;
     font-size: 0.8rem;
@@ -133,6 +155,13 @@ const ogImage = {
     .prose {
       grid-column: 4 / 12;
       grid-row: 1;
+    }
+    .more {
+      display: grid;
+      grid-template-columns: repeat(12, minmax(0, 1fr));
+    }
+    .more-inner {
+      grid-column: 4 / 12;
     }
     /* Spans the text's full height, so the inner block can stick within it. */
     .rail {

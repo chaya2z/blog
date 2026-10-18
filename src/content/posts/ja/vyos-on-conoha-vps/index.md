@@ -2,6 +2,7 @@
 title: 'ConoHa-VPSにVyOSをインストールする'
 description: 'ConoHa VPS は ISO イメージを http でしか取得できないので、nginx で VyOS の ISO を公開し、conoha-iso でダウンロードしてインストールした。この手順なら任意の ISO イメージでサーバを作れる。'
 publishedAt: '2021-12-04'
+tags: ['Homelab', 'Network', 'VyOS']
 ---
 
 この記事は [ITRC Advent Calendar 2021](https://adventar.org/calendars/6368) の4日目の記事です．

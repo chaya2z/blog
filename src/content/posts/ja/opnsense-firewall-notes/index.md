@@ -2,6 +2,7 @@
 title: 'OPNsenseのファイアウォール設定でつまずいたこと'
 description: 'OPNsense の LAN net が指すのはインターフェイスが直接つながるネットワークだけで、その先のネットワークは含まない。自動生成ルールや評価順の確認、pfctl -d で WEB GUI に戻る方法など、引っかかった点をまとめた。'
 publishedAt: '2021-08-17'
+tags: ['Homelab', 'Network']
 ---
 
 ところどころつまずいたので残します．
