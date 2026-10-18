@@ -83,6 +83,8 @@ const { posts } = Astro.props;
     letter-spacing: 0;
     /* Break between phrases, not inside words (where supported). */
     word-break: auto-phrase;
+    /* Proportional widths, as the post's own title: no gap before a `（`. */
+    font-feature-settings: 'palt';
   }
   a {
     text-decoration: none;

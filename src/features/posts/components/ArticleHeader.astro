@@ -1,6 +1,8 @@
 ---
 import { drawInlinePattern } from '@/features/posts/inline-pattern';
+import { parsePostId } from '@/features/posts/id';
 import { formatDate } from '@/utils/date';
+import { japanesePhrases } from '@/utils/phrases';
 
 interface Props {
   /** The post's id, which picks and seeds its picture. */
@@ -15,6 +17,12 @@ const { postId, title, description, publishedAt } = Astro.props;
 // The pattern the post's Open Graph card draws from the same seed, in the
 // page's colors.
 const patternSvg = drawInlinePattern(postId);
+
+// A Japanese title breaks only between phrases, so a word or a name is never
+// cut across lines; other languages break at spaces as usual. The summary is
+// running text and breaks as text does: by phrase, a long phrase would leave
+// a short line with room to spare.
+const titlePhrases = parsePostId(postId).lang === 'ja' ? japanesePhrases(title) : [title];
 ---
 
 {/*
@@ -22,7 +30,7 @@ const patternSvg = drawInlinePattern(postId);
   supplementary, so on wide screens it takes the columns the notes use below.
 */}
 <header>
-  <h1>{title}</h1>
+  <h1>{titlePhrases.map((phrase, i) => (i === 0 ? phrase : [<wbr />, phrase]))}</h1>
   <p class="description">{description}</p>
   <div class="art" aria-hidden="true" set:html={patternSvg} />
   <div class="meta">
@@ -53,10 +61,17 @@ const patternSvg = drawInlinePattern(postId);
     letter-spacing: -0.045em;
     text-wrap: balance;
   }
+  /*
+   * Japanese display type sets proportional widths (palt): kana and brackets
+   * lose the side room a square body gives them, so `（` no longer opens a gap
+   * and the title holds together as Latin does at -0.045em. Only the title:
+   * running text reads better on the even square.
+   */
   h1:lang(ja) {
     font-size: clamp(2rem, 4vw, 3.25rem);
     line-height: 1.3;
     letter-spacing: 0;
+    font-feature-settings: 'palt';
   }
   /*
    * The accent bar that opens the article, set as each section's h2 sets it
@@ -71,6 +86,15 @@ const patternSvg = drawInlinePattern(postId);
     content: '';
   }
   /*
+   * A Japanese title breaks only at the `<wbr>` between phrases. A phrase too
+   * long for its line, on a narrow screen, may still break inside rather than
+   * overflow.
+   */
+  h1:lang(ja) {
+    word-break: keep-all;
+    overflow-wrap: anywhere;
+  }
+  /*
    * The summary is the standfirst: larger than the text, well below the title.
    * Kana and kanji fill their square and set denser than Latin, so Japanese
    * at the same size reads much louder; it takes about 0.8 of the Latin size.
@@ -83,10 +107,12 @@ const patternSvg = drawInlinePattern(postId);
     letter-spacing: -0.01em;
     text-wrap: pretty;
   }
+  /* Strict line breaking, as in the text: no small kana or long vowel mark opens a line. */
   .description:lang(ja) {
     font-size: clamp(1.0625rem, 1.5vw, 1.375rem);
     line-height: 1.8;
     letter-spacing: 0.02em;
+    line-break: strict;
   }
   .art {
     align-self: start;
