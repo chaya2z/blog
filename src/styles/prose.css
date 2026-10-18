@@ -206,7 +206,12 @@
   gap: 1rem;
   margin-top: 1rem;
 }
-/* A reference scrolls its note into view with room above, as a heading does. */
+/*
+ * A reference scrolls its note into view with room above, as a heading does.
+ * A long word, such as a URL, breaks anywhere: as a grid item, a note is at
+ * least as wide as its longest word, and `break-word` would leave it that wide,
+ * past the narrow column or the page.
+ */
 .prose .sidenote {
   scroll-margin-top: 2rem;
   padding-top: 0.625rem;
@@ -214,6 +219,7 @@
   font-size: 0.75em;
   line-height: 1.55;
   color: var(--ink-muted);
+  overflow-wrap: anywhere;
 }
 .prose .sidenote p + p {
   margin-top: 0.5em;
