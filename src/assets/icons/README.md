@@ -1,7 +1,8 @@
 # Icons
 
 Where each file in this directory comes from, under what terms it is used,
-and what was changed. All files were retrieved on 2026-10-14.
+and what was changed. `arrow-outward.svg` was retrieved on 2026-10-18, all
+other files on 2026-10-14.
 
 ## Brand logos
 
@@ -22,8 +23,9 @@ From [Material Symbols](https://github.com/google/material-design-icons)
 under the [Apache License 2.0](https://www.apache.org/licenses/LICENSE-2.0).
 The files are unchanged; the color is set where they are used.
 
-| File        | Source                                                                                                                                                                                                                             |
-| ----------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `link.svg`  | [symbols/web/link/materialsymbolsoutlined/link_wght600_24px.svg](https://github.com/google/material-design-icons/blob/6d7ca43bd6e6668531a00fcaca06d921b63dd716/symbols/web/link/materialsymbolsoutlined/link_wght600_24px.svg)     |
-| `check.svg` | [symbols/web/check/materialsymbolsoutlined/check_wght600_24px.svg](https://github.com/google/material-design-icons/blob/6d7ca43bd6e6668531a00fcaca06d921b63dd716/symbols/web/check/materialsymbolsoutlined/check_wght600_24px.svg) |
-| `share.svg` | [symbols/web/share/materialsymbolsoutlined/share_wght600_24px.svg](https://github.com/google/material-design-icons/blob/6d7ca43bd6e6668531a00fcaca06d921b63dd716/symbols/web/share/materialsymbolsoutlined/share_wght600_24px.svg) |
+| File                | Source                                                                                                                                                                                                                                                             |
+| ------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `link.svg`          | [symbols/web/link/materialsymbolsoutlined/link_wght600_24px.svg](https://github.com/google/material-design-icons/blob/6d7ca43bd6e6668531a00fcaca06d921b63dd716/symbols/web/link/materialsymbolsoutlined/link_wght600_24px.svg)                                     |
+| `check.svg`         | [symbols/web/check/materialsymbolsoutlined/check_wght600_24px.svg](https://github.com/google/material-design-icons/blob/6d7ca43bd6e6668531a00fcaca06d921b63dd716/symbols/web/check/materialsymbolsoutlined/check_wght600_24px.svg)                                 |
+| `share.svg`         | [symbols/web/share/materialsymbolsoutlined/share_wght600_24px.svg](https://github.com/google/material-design-icons/blob/6d7ca43bd6e6668531a00fcaca06d921b63dd716/symbols/web/share/materialsymbolsoutlined/share_wght600_24px.svg)                                 |
+| `arrow-outward.svg` | [symbols/web/arrow_outward/materialsymbolsoutlined/arrow_outward_wght600_24px.svg](https://github.com/google/material-design-icons/blob/6d7ca43bd6e6668531a00fcaca06d921b63dd716/symbols/web/arrow_outward/materialsymbolsoutlined/arrow_outward_wght600_24px.svg) |
