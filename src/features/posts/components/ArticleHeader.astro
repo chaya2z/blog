@@ -36,7 +36,7 @@ const titlePhrases = parsePostId(postId).lang === 'ja' ? japanesePhrases(title) 
   <div class="art" aria-hidden="true" set:html={patternSvg} />
   <div class="meta">
     {/* The date is English UI text, even inside a Japanese post. */}
-    <time datetime={publishedAt.toISOString().slice(0, 10)} lang="en">
+    <time datetime={publishedAt.toISOString()} lang="en">
       {formatDate(publishedAt)}
     </time>
     {tags.length > 0 && (
