@@ -151,4 +151,27 @@ const ogImage = {
       display: block;
     }
   }
+
+  /*
+   * Once the page reaches its full 84rem, about 13rem is free to the right of
+   * the 68 characters, and a block's notes (plugins/sidenotes.ts) move there,
+   * level with it. Narrower pages leave too little, so the notes stay under
+   * their block until the window is 88rem, the page and its side gutters.
+   *
+   * The block and its notes share a grid that reaches from the text's left edge
+   * to the page's, 9 columns: the text's 68 characters, a gutter, and the notes
+   * in what is left. A note longer than its block holds the next block down.
+   */
+  @media (min-width: 88rem) {
+    .prose :global(.noted) {
+      display: grid;
+      grid-template-columns: 68ch minmax(0, 1fr);
+      column-gap: 2rem;
+      align-items: start;
+      width: calc(100cqi / 12 * 9);
+    }
+    .prose :global(.sidenotes) {
+      margin-top: 0.25rem;
+    }
+  }
 </style>

@@ -3,6 +3,7 @@ import { defineConfig, fontProviders } from 'astro/config';
 import { satteri } from '@astrojs/markdown-satteri';
 import sitemap from '@astrojs/sitemap';
 import { katexPlugin } from './src/plugins/katex.ts';
+import { sidenotesPlugin } from './src/plugins/sidenotes.ts';
 
 // https://astro.build/config
 export default defineConfig({
@@ -13,11 +14,13 @@ export default defineConfig({
   },
   integrations: [sitemap()],
   // `math` parses conventional Markdown math (`$...$` / `$$...$$`) into AST nodes;
-  // `katexPlugin` renders those nodes as HTML with KaTeX.
+  // `katexPlugin` renders those nodes as HTML with KaTeX. `sidenotesPlugin`
+  // copies each footnote beside its reference, for the post page's margin.
   markdown: {
     processor: satteri({
       features: { math: true },
       mdastPlugins: [katexPlugin],
+      hastPlugins: [sidenotesPlugin],
     }),
   },
   // Both fonts drop Astro's fallbacks: each variable would end in `sans-serif`,
