@@ -49,11 +49,43 @@ function withoutBackrefs(children: ElementContent[]): ElementContent[] {
   return kept;
 }
 
+/*
+ * A note wider than this, in half-width characters (a Japanese character
+ * counts two), folds on narrow screens: about two and a half lines at a
+ * phone's width. A URL counts nothing, so a source given as one stays open
+ * however long its address.
+ */
+const FOLD_WIDTH = 120;
+
+const isUrlLink = (node: Element): boolean =>
+  node.tagName === 'a' && /^https?:\/\//.test(textOf(node));
+
+function textOf(node: ElementContent): string {
+  if (node.type === 'text') return node.value;
+  if (node.type !== 'element') return '';
+  return node.children.map(textOf).join('');
+}
+
+function widthOf(node: ElementContent): number {
+  if (node.type === 'text') {
+    let width = 0;
+    for (const char of node.value) width += char.codePointAt(0)! >= 0x2e80 ? 2 : 1;
+    return width;
+  }
+  if (node.type !== 'element' || isUrlLink(node)) return 0;
+  return node.children.reduce((sum, child) => sum + widthOf(child), 0);
+}
+
 /**
  * The note for `footnote`, numbered `number`: its blocks as they are, lists
  * and code included, without the links back. Those end the last paragraph, or
- * follow a last block of another kind on their own. The number opens the first
- * paragraph, or stands before a first block of another kind.
+ * follow a last block of another kind on their own.
+ *
+ * A short note opens with its number, in the first paragraph or before a
+ * first block of another kind. A long one, wider than FOLD_WIDTH over all its
+ * blocks, is a `details` whose summary holds the number and the note's text
+ * as plain text, so narrow screens can show its start and fold the rest; its
+ * blocks follow the summary.
  */
 function createSidenote(footnote: Element, number: string): Element {
   const blocks = footnote.children
@@ -72,17 +104,42 @@ function createSidenote(footnote: Element, number: string): Element {
     properties: { className: ['sidenote-number'] },
     children: [{ type: 'text', value: number }],
   };
+  const properties = { className: ['sidenote'], role: 'note', id: footnote.properties.id };
+  const folds = blocks.reduce((sum, block) => sum + widthOf(block), 0) > FOLD_WIDTH;
+
+  if (folds) {
+    const excerpt = blocks.map(textOf).join(' ').replace(/\s+/g, ' ').trim();
+    const summary: Element = {
+      type: 'element',
+      tagName: 'summary',
+      properties: {},
+      children: [
+        label,
+        { type: 'text', value: ' ' },
+        {
+          type: 'element',
+          tagName: 'span',
+          properties: { className: ['sidenote-excerpt'] },
+          children: [{ type: 'text', value: excerpt }],
+        },
+      ],
+    };
+    return {
+      type: 'element',
+      tagName: 'div',
+      properties,
+      children: [
+        { type: 'element', tagName: 'details', properties: {}, children: [summary, ...blocks] },
+      ],
+    };
+  }
+
   const [first, ...rest] = blocks;
   const children: ElementContent[] =
     first?.tagName === 'p'
       ? [{ ...first, children: [label, { type: 'text', value: ' ' }, ...first.children] }, ...rest]
       : [label, ...blocks];
-  return {
-    type: 'element',
-    tagName: 'div',
-    properties: { className: ['sidenote'], role: 'note', id: footnote.properties.id },
-    children,
-  };
+  return { type: 'element', tagName: 'div', properties, children };
 }
 
 /** Footnote references inside `node`, in document order. */

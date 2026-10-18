@@ -225,3 +225,41 @@
 .prose .sidenote-number {
   color: var(--accent-text);
 }
+
+/*
+ * A long note (plugins/sidenotes.ts) shows its first two lines, closed, and
+ * a mark before its number says it opens. Open, the number stands at the
+ * start of the first block, which the summary's plain-text copy gives way to.
+ */
+.prose .sidenote summary {
+  display: -webkit-box;
+  overflow: hidden;
+  cursor: pointer;
+  list-style: none;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+}
+.prose .sidenote summary::-webkit-details-marker {
+  display: none;
+}
+.prose .sidenote summary::before {
+  margin-right: 0.3em;
+  font-weight: 800;
+  color: var(--accent-text);
+  content: '+';
+}
+.prose .sidenote details[open] > summary {
+  display: block;
+  float: left;
+  margin-right: 0.3em;
+  overflow: visible;
+  -webkit-line-clamp: none;
+  line-clamp: none;
+}
+.prose .sidenote details[open] > summary::before {
+  content: '−';
+}
+.prose .sidenote details[open] .sidenote-excerpt {
+  display: none;
+}
