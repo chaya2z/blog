@@ -1,0 +1,121 @@
+---
+import type { MarkdownHeading } from 'astro';
+import type { Lang } from '@/utils/languages';
+
+interface Props {
+  headings: MarkdownHeading[];
+  /** Language of the post; the label is English UI. */
+  lang: Lang;
+}
+
+const { headings, lang } = Astro.props;
+
+/*
+ * Lists the sections, one per h2. Links use the ids the Markdown processor
+ * gave the headings, so duplicate titles still match. The footnotes get an h2
+ * of their own, set as a label, which is not a section.
+ */
+const FOOTNOTE_LABEL_ID = 'footnote-label';
+const items = headings.filter(({ depth, slug }) => depth === 2 && slug !== FOOTNOTE_LABEL_ID);
+---
+
+{items.length > 0 && (
+  // Not a heading: the label would join the article's outline.
+  <nav aria-labelledby="toc-label" data-toc>
+    <p id="toc-label" class="label" lang="en">
+      Contents
+    </p>
+    <ol lang={lang}>
+      {items.map(({ slug, text }) => (
+        <li>
+          <a href={`#${slug}`}>{text}</a>
+        </li>
+      ))}
+    </ol>
+  </nav>
+)}
+
+<script>
+  /*
+   * Marks the section being read: the last heading that has passed the top
+   * quarter of the window. Before the first heading, none is marked.
+   */
+  const READING_LINE_RATIO = 0.25;
+
+  const links = [...document.querySelectorAll<HTMLAnchorElement>('[data-toc] a')];
+  const headingElements = links.map((link) =>
+    document.getElementById(decodeURIComponent(link.hash.slice(1))),
+  );
+
+  const update = () => {
+    const line = window.innerHeight * READING_LINE_RATIO;
+    const currentIndex = headingElements.findLastIndex(
+      (heading) => heading !== null && heading.getBoundingClientRect().top <= line,
+    );
+    links.forEach((link, i) => {
+      if (i === currentIndex) link.setAttribute('aria-current', 'location');
+      else link.removeAttribute('aria-current');
+    });
+  };
+
+  // One update per frame, however often scroll fires.
+  let frame = 0;
+  const schedule = () => {
+    cancelAnimationFrame(frame);
+    frame = requestAnimationFrame(update);
+  };
+
+  if (links.length > 0) {
+    window.addEventListener('scroll', schedule, { passive: true });
+    window.addEventListener('resize', schedule);
+    update();
+  }
+</script>
+
+<style>
+  nav {
+    padding-top: 0.75rem;
+    border-top: 2px solid var(--ink);
+  }
+  .label {
+    margin: 0 0 0.75rem;
+    font-size: 0.8rem;
+    font-weight: 750;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+  }
+  ol {
+    display: grid;
+    gap: 0.125rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    font-size: 0.9rem;
+    line-height: 1.35;
+  }
+  /* A column for the marker, so the titles line up whichever is marked. */
+  a {
+    display: grid;
+    grid-template-columns: 1.375rem minmax(0, 1fr);
+    padding-block: 0.4375rem;
+    color: var(--ink-muted);
+    text-decoration: none;
+  }
+  a::before {
+    content: '';
+  }
+  a:hover {
+    color: var(--ink);
+  }
+  /* The section being read, set by the script above: full ink and an accent square. */
+  [aria-current] {
+    font-weight: 750;
+    color: var(--ink);
+  }
+  [aria-current]::before {
+    width: 0.625rem;
+    height: 0.625rem;
+    margin-top: 0.35em;
+    background: var(--accent);
+  }
+</style>

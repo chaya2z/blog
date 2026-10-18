@@ -44,10 +44,10 @@
  * the element after it drops the flow gap instead of adding its own.
  */
 .prose h2 {
-  margin-top: 4.5rem;
-  margin-bottom: 1.5rem;
+  margin-top: 5rem;
+  margin-bottom: 1.375rem;
   font-size: 1.75em;
-  line-height: 1.1;
+  line-height: 1.12;
 }
 .prose h3 {
   margin-top: 3rem;
@@ -58,49 +58,17 @@
   margin-top: 0;
 }
 
-/* Numbered sections: each h2 number is an accent block, each h3 a chip on a solid. */
-.prose {
-  counter-reset: h2;
-}
-.prose h2 {
-  counter-increment: h2;
-  counter-reset: h3;
-  display: flex;
-  align-items: center;
-  gap: 0.6em;
-  padding-top: 1.5rem;
-  border-top: var(--rule-heavy) solid var(--ink);
-}
+/*
+ * A section opens on a short accent bar, the same mark that opens the article
+ * above its title. Headings carry no numbers; the table of contents lists them.
+ */
 .prose h2::before {
-  content: counter(h2);
-  flex: none;
-  display: inline-grid;
-  place-items: center;
-  min-width: 1.9em;
-  height: 1.9em;
-  padding-inline: 0.35em;
-  font-size: 0.7em;
-  font-weight: 850;
-  color: #ffffff;
+  display: block;
+  width: 3rem;
+  height: var(--rule-heavy);
+  margin-bottom: 1.25rem;
   background: var(--accent);
-  outline: 2px solid var(--ink);
-  font-variant-numeric: tabular-nums;
-}
-.prose h3 {
-  counter-increment: h3;
-  display: flex;
-  align-items: center;
-  gap: 0.55em;
-}
-.prose h3::before {
-  content: counter(h2) '.' counter(h3);
-  flex: none;
-  padding: 0.18em 0.55em;
-  font-size: 0.7em;
-  font-weight: 850;
-  color: var(--on-solid);
-  background: var(--solid);
-  font-variant-numeric: tabular-nums;
+  content: '';
 }
 
 /* Tight tracking suits large Latin type, not Japanese. */
@@ -190,4 +158,67 @@
 }
 .prose td {
   font-variant-numeric: tabular-nums;
+}
+
+/*
+ * Footnotes: the reference is a small accent figure. The list at the end holds
+ * only footnotes no block refers to; the rest move beside their blocks.
+ */
+.prose sup {
+  line-height: 0;
+}
+.prose [data-footnote-ref] {
+  font-weight: 800;
+  text-decoration: none;
+}
+.prose .footnotes {
+  margin-top: 4.5rem;
+  padding-top: 0.75rem;
+  border-top: 2px solid var(--ink);
+  font-size: 0.8em;
+  line-height: 1.6;
+  color: var(--ink-muted);
+}
+/* Its h2 is a label, not a section: no bar, and set like the other labels. */
+.prose .footnotes h2 {
+  margin: 0 0 0.75rem;
+  font-size: 0.8rem;
+  font-weight: 750;
+  line-height: 1.5;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--ink);
+}
+.prose .footnotes h2::before {
+  content: none;
+}
+.prose .footnotes li::marker {
+  font-weight: 800;
+  color: var(--accent-text);
+}
+
+/*
+ * A footnote moved next to the block that refers to it (plugins/sidenotes.ts),
+ * set under the block. The post page sets it beside the block on wide screens.
+ */
+.prose .sidenotes {
+  display: grid;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+/* A reference scrolls its note into view with room above, as a heading does. */
+.prose .sidenote {
+  scroll-margin-top: 2rem;
+  padding-top: 0.625rem;
+  border-top: 2px solid var(--ink);
+  font-size: 0.75em;
+  line-height: 1.55;
+  color: var(--ink-muted);
+}
+.prose .sidenote p + p {
+  margin-top: 0.5em;
+}
+.prose .sidenote-number {
+  font-weight: 800;
+  color: var(--accent-text);
 }
