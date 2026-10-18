@@ -76,6 +76,15 @@ body::before {
   pointer-events: none;
   content: '';
 }
+/*
+ * A phone stacks everything in one column, so no offset lands on a line, and
+ * twelve lines in its width read as stripes rather than structure.
+ */
+@media (max-width: 40rem) {
+  body::before {
+    display: none;
+  }
+}
 
 :focus-visible {
   /* currentColor always contrasts with its own background. */
