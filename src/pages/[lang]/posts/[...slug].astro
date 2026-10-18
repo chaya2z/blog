@@ -46,7 +46,7 @@ const ogImage = {
   title={post.data.title}
   lang={lang}
   description={post.data.description}
-  article={{ publishedTime: post.data.publishedAt }}
+  article={{ publishedTime: post.data.publishedAt, modifiedTime: post.data.updatedAt }}
   {ogImage}
 >
   {/* Breadcrumbs are site navigation, so they stay outside the article. */}

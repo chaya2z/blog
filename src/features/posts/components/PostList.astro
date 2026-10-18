@@ -16,7 +16,7 @@ const { posts } = Astro.props;
     <li>
       <article lang={parsePostId(post.id).lang}>
         {/* The date is English UI text, even beside a Japanese title. */}
-        <time datetime={post.data.publishedAt.toISOString().slice(0, 10)} lang="en">
+        <time datetime={post.data.publishedAt.toISOString()} lang="en">
           {formatDate(post.data.publishedAt)}
         </time>
         <h2>

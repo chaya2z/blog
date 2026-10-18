@@ -34,7 +34,7 @@ const titlePhrases = (post: PostEntry) =>
             <span class="title" lang={parsePostId(post.id).lang}>
               {titlePhrases(post).map((phrase, i) => (i === 0 ? phrase : [<wbr />, phrase]))}
             </span>
-            <time datetime={post.data.publishedAt.toISOString().slice(0, 10)}>
+            <time datetime={post.data.publishedAt.toISOString()}>
               {formatDate(post.data.publishedAt)}
             </time>
           </a>

@@ -1,7 +1,7 @@
 ---
 title: 'AIにとってバイナリは編集可能なコードなのか？ChatGPTにAPKを直接作らせる'
 description: 'Redditで見た「バイナリはもう編集可能なコードだ」という話を確かめるため、Android版ChatGPTにELFとAPKを直接作らせた。ChatGPTは自分で生成したAPKの署名ブロックとDEXバイトコードの誤りを解析して直し、Android 17で起動するところまで到達した。'
-publishedAt: '2026-09-09'
+publishedAt: '2026-09-08T19:00:00Z'
 tags: ['AI', 'Android']
 ---
 

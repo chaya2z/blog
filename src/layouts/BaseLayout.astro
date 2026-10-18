@@ -12,7 +12,7 @@ interface Props {
   lang: Lang;
   description: string;
   /** Marks the page as an Open Graph article; other pages are websites. */
-  article?: { publishedTime: Date };
+  article?: { publishedTime: Date; modifiedTime?: Date };
   /**
    * The page's Open Graph image, by its path, and alt text that says what the
    * image says, not a caption. Pages without one share the site's.
@@ -57,12 +57,10 @@ const ogImageUrl = new URL(ogImage.path, Astro.site).href;
     />
     <meta property="og:type" content={article ? 'article' : 'website'} />
     {article && (
-      // The date alone, as in the page's <time>; Open Graph allows it.
-      // ref: https://ogp.me/#data_types
-      <meta
-        property="article:published_time"
-        content={article.publishedTime.toISOString().slice(0, 10)}
-      />
+      <meta property="article:published_time" content={article.publishedTime.toISOString()} />
+    )}
+    {article?.modifiedTime && (
+      <meta property="article:modified_time" content={article.modifiedTime.toISOString()} />
     )}
     <meta property="og:site_name" content={SITE_TITLE} />
     <meta property="og:title" content={title} />
