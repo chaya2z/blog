@@ -5,6 +5,7 @@ import 'katex/dist/katex.min.css';
 import ArticleHeader from '@/features/posts/components/ArticleHeader.astro';
 import Breadcrumbs from '@/features/posts/components/Breadcrumbs.astro';
 import ShareLinks from '@/features/posts/components/ShareLinks.astro';
+import TableOfContents from '@/features/posts/components/TableOfContents.astro';
 import { postOgImagePath } from '@/features/og-image/image';
 import { getPosts, type PostEntry } from '@/features/posts/content';
 import { parsePostId } from '@/features/posts/id';
@@ -27,7 +28,7 @@ interface Props {
 
 const { post } = Astro.props;
 const { lang } = parsePostId(post.id);
-const { Content } = await render(post);
+const { Content, headings } = await render(post);
 const url = new URL(Astro.url.pathname, Astro.site).href;
 // The post's card shows its title, the site's name and the date.
 const ogImage = {
@@ -50,7 +51,12 @@ const ogImage = {
   <article>
     <div class="article-head">
       <div class="container">
-        <ArticleHeader title={post.data.title} publishedAt={post.data.publishedAt} />
+        <ArticleHeader
+          postId={post.id}
+          title={post.data.title}
+          description={post.data.description}
+          publishedAt={post.data.publishedAt}
+        />
       </div>
     </div>
     <div class="container body">
@@ -58,9 +64,16 @@ const ogImage = {
         <Content />
       </div>
       {/* After the text in source order; wide screens move it to a side rail. */}
-      <div class="share">
-        <div class="share-inner">
-          <ShareLinks url={url} title={post.data.title} />
+      <div class="rail">
+        <div class="rail-inner">
+          <TableOfContents {headings} {lang} />
+          <div class="share">
+            {/* The list is named for screen readers already; this is its visible label. */}
+            <p class="share-label" lang="en" aria-hidden="true">
+              Share
+            </p>
+            <ShareLinks url={url} title={post.data.title} />
+          </div>
         </div>
       </div>
     </div>
@@ -69,7 +82,7 @@ const ogImage = {
 
 <style>
   .article-head {
-    padding-block: 1.5rem clamp(2.5rem, 5vw, 4.5rem);
+    padding-block: 1.5rem clamp(2.5rem, 5vw, 5rem);
     border-bottom: var(--rule-heavy) solid var(--ink);
   }
   .crumbs {
@@ -78,20 +91,39 @@ const ogImage = {
   .body {
     padding-block: clamp(2.5rem, 5vw, 4.5rem);
   }
+  /* About 68 characters, near the 66 Bringhurst gives for body text. */
   .prose {
     max-width: 68ch;
   }
-  .share {
+  .rail {
     margin-top: clamp(2.5rem, 5vw, 4.5rem);
-    /* The share links stack into a column when queried against this width. */
+  }
+  /* Narrow screens read straight through: no contents, the share links after the text. */
+  .rail :global([data-toc]) {
+    display: none;
+  }
+  .share {
+    padding-top: 0.75rem;
+    border-top: 2px solid var(--ink);
+    /* The share links set themselves two by two when queried against this width. */
     container-type: inline-size;
+  }
+  .share-label {
+    margin: 0 0 0.75rem;
+    font-size: 0.8rem;
+    font-weight: 750;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
   }
 
   /*
-   * Wide screens sit on the 12-column grid drawn behind the page: share links
-   * follow the reader down column 1, and the text runs from column 2 to 9,
-   * leaving 10 to 12 for a table of contents. From 75rem, column 1 is about
-   * 5.9rem wide, so the 2.75rem buttons keep about 3.2rem clear of the text.
+   * Wide screens sit on the 12-column grid drawn behind the page: the contents
+   * and the share links follow the reader down columns 1 to 3, and the text
+   * starts at column 4. Its 68 characters fit in columns 4 to 11 from 75rem.
+   *
+   * The rail keeps 2rem clear of the text, about one line of it: less than the
+   * gap between paragraphs, and the contents read as part of the text. Three
+   * columns leave the contents about 15rem, so most titles take one line.
    */
   @media (min-width: 75rem) {
     .body {
@@ -99,18 +131,24 @@ const ogImage = {
       grid-template-columns: repeat(12, minmax(0, 1fr));
     }
     .prose {
-      grid-column: 2 / 10;
+      grid-column: 4 / 12;
       grid-row: 1;
     }
     /* Spans the text's full height, so the inner block can stick within it. */
-    .share {
-      grid-column: 1;
+    .rail {
+      grid-column: 1 / 4;
       grid-row: 1;
       margin-top: 0;
+      padding-right: 2rem;
     }
-    .share-inner {
+    .rail-inner {
       position: sticky;
       top: 2rem;
+      display: grid;
+      gap: 2.5rem;
+    }
+    .rail :global([data-toc]) {
+      display: block;
     }
   }
 </style>

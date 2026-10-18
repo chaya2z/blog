@@ -1,16 +1,30 @@
 ---
+import { drawInlinePattern } from '@/features/posts/inline-pattern';
 import { formatDate } from '@/utils/date';
 
 interface Props {
+  /** The post's id, which picks and seeds its picture. */
+  postId: string;
   title: string;
+  description: string;
   publishedAt: Date;
 }
 
-const { title, publishedAt } = Astro.props;
+const { postId, title, description, publishedAt } = Astro.props;
+
+// The pattern the post's Open Graph card draws from the same seed, in the
+// page's colors.
+const patternSvg = drawInlinePattern(postId);
 ---
 
+{/*
+  Text first: the title and the summary carry the head. The picture is
+  supplementary, so on wide screens it takes the columns the notes use below.
+*/}
 <header>
   <h1>{title}</h1>
+  <p class="description">{description}</p>
+  <div class="art" aria-hidden="true" set:html={patternSvg} />
   <div class="meta">
     {/* The date is English UI text, even inside a Japanese post. */}
     <time datetime={publishedAt.toISOString().slice(0, 10)} lang="en">
@@ -20,42 +34,120 @@ const { title, publishedAt } = Astro.props;
 </header>
 
 <style>
+  /* Narrow screens stack the head, with a small picture beside the summary. */
   header {
+    /* Below the title's accent bar, as below each section's (prose.css). */
+    --bar-gap: 1.25rem;
     display: grid;
-    gap: 1.5rem;
-    max-width: 62rem;
-  }
-  /* An accent bar marks where the grid starts, above the title. */
-  header::before {
-    width: 4rem;
-    height: var(--rule-heavy);
-    background: var(--accent);
-    content: '';
+    grid-template-columns: minmax(0, 1fr) 6rem;
+    column-gap: 1rem;
+    row-gap: 1.5rem;
   }
   /* Article titles are sentences: big, but not set as poster capitals. */
   h1 {
+    grid-column: 1 / -1;
     margin: 0;
-    font-size: clamp(2.4rem, 5.5vw, 4.75rem);
-    font-weight: 840;
-    line-height: 1;
-    letter-spacing: -0.05em;
+    font-size: clamp(2.25rem, 5vw, 4.25rem);
+    font-weight: 800;
+    line-height: 1.02;
+    letter-spacing: -0.045em;
     text-wrap: balance;
   }
   h1:lang(ja) {
-    font-size: clamp(2rem, 4.5vw, 3.5rem);
+    font-size: clamp(2rem, 4vw, 3.25rem);
     line-height: 1.3;
     letter-spacing: 0;
   }
+  /*
+   * The accent bar that opens the article, set as each section's h2 sets it
+   * (prose.css): the same bar, the same gap below, so the two read as one mark.
+   */
+  h1::before {
+    display: block;
+    width: 3rem;
+    height: var(--rule-heavy);
+    margin-bottom: var(--bar-gap);
+    background: var(--accent);
+    content: '';
+  }
+  /*
+   * The summary is the standfirst: larger than the text, well below the title.
+   * Kana and kanji fill their square and set denser than Latin, so Japanese
+   * at the same size reads much louder; it takes about 0.8 of the Latin size.
+   */
+  .description {
+    max-width: 28em;
+    margin: 0;
+    font-size: clamp(1.1875rem, 1.9vw, 1.75rem);
+    line-height: 1.4;
+    letter-spacing: -0.01em;
+    text-wrap: pretty;
+  }
+  .description:lang(ja) {
+    font-size: clamp(1.0625rem, 1.5vw, 1.375rem);
+    line-height: 1.8;
+    letter-spacing: 0.02em;
+  }
+  .art {
+    align-self: start;
+    border-top: 2px solid var(--ink);
+  }
+  .art :global(svg) {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
   .meta {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.5rem 1.5rem;
-    padding-block: 0.75rem;
-    border-block: 2px solid var(--ink);
+    grid-column: 1 / -1;
+    padding-top: 0.875rem;
+    border-top: 2px solid var(--ink);
+  }
+  time {
     font-size: 0.8rem;
     font-weight: 750;
     letter-spacing: 0.14em;
     text-transform: uppercase;
     font-variant-numeric: tabular-nums;
+  }
+
+  /*
+   * Wide screens put the head on the page's 12 columns, as the text below:
+   * the date in columns 1 to 3 beside the title, where the
+   * contents run below; the title and the summary from column 4, over the
+   * text; and the picture in columns 11 and 12, where the notes go.
+   */
+  @media (min-width: 75rem) {
+    header {
+      grid-template-columns: repeat(12, minmax(0, 1fr));
+      column-gap: 0;
+      row-gap: 2.5rem;
+    }
+    h1 {
+      grid-column: 4 / 13;
+    }
+    /*
+     * Level with the title's text, below its bar, and kept 2rem clear of it as
+     * the contents are of the text.
+     */
+    .meta {
+      grid-column: 1 / 4;
+      grid-row: 1 / 3;
+      align-self: start;
+      margin-top: calc(var(--rule-heavy) + var(--bar-gap));
+      margin-right: 2rem;
+    }
+    /*
+     * No gap of its own on the right: the picture keeps 2rem clear, and a
+     * padding would come out of the 28em measure, breaking lines short.
+     */
+    .description {
+      grid-column: 4 / 11;
+    }
+    .art {
+      grid-column: 11 / 13;
+      grid-row: 2;
+      margin-top: 0.5rem;
+      margin-left: 2rem;
+    }
   }
 </style>

@@ -203,12 +203,16 @@ const shareUrls = {
     }
   }
   /*
-   * A slot too narrow for one row, such as the side rail, stacks the links into
-   * a column. One row needs 5 × 2.75rem buttons + 4 × 0.5rem gaps = 15.75rem.
+   * The links stay in rows. A slot too narrow for the four that always show,
+   * such as the side rail on smaller screens, sets those four two by two rather
+   * than three and one. The system share, shown only where the browser offers
+   * it, then takes a row of its own. Four need 4 × 2.75rem buttons + 3 × 0.5rem
+   * gaps = 12.5rem.
    */
-  @container (width < 15.75rem) {
+  @container (width < 12.5rem) {
     ul {
-      flex-direction: column;
+      display: grid;
+      grid-template-columns: repeat(2, 2.75rem);
     }
   }
   li {
