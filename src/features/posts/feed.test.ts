@@ -43,4 +43,15 @@ describe('toFeedHtml', () => {
       '<span class="katex"><span class="katex-mathml"><math></math></span></span>',
     );
   });
+
+  it('unfolds a long note, its number at the start of the first paragraph', () => {
+    const html =
+      '<div class="sidenote" role="note" id="fn-a"><details><summary>' +
+      '<span class="sidenote-number">1</span> <span class="sidenote-excerpt">First. Second.</span>' +
+      '</summary><p>First.</p><p>Second.</p></details></div>';
+    expect(toFeedHtml(html, pageUrl)).toBe(
+      '<div class="sidenote" role="note" id="fn-a">' +
+        '<p><span class="sidenote-number">1</span> First.</p><p>Second.</p></div>',
+    );
+  });
 });

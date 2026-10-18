@@ -81,6 +81,25 @@ describe('sidenotesPlugin', () => {
     expect(html).toMatch(/<div class="noted"><ul>[\s\S]*<\/ul><div class="sidenotes">/);
   });
 
+  it('keeps a source open, however long its URL', () => {
+    const url = `https://example.com/${'a'.repeat(200)}`;
+    const notes = notesOf(render(`Text.[^a]\n\n[^a]: Source: <${url}>\n`));
+    expect(notes).not.toContain('<details>');
+    expect(notes).toContain('<span class="sidenote-number">1</span> Source:');
+  });
+
+  it('folds a long note, its number and plain text in the summary', () => {
+    const definition = '用語の定義を文章で説明する長い注釈。'.repeat(4);
+    const notes = notesOf(
+      render(`Text.[^a]\n\n[^a]: ${definition} [Link](https://example.com).\n`),
+    );
+    expect(notes).toMatch(
+      /<div class="sidenote" role="note" id="user-content-fn-a"><details><summary><span class="sidenote-number">1<\/span> <span class="sidenote-excerpt">用語の定義/,
+    );
+    expect(notes).toContain('Link.</span></summary><p>用語の定義');
+    expect(notes).toContain('<a href="https://example.com">Link</a>.</p></details>');
+  });
+
   it('keeps in the list a footnote only another footnote cites', () => {
     const html = render('Text.[^a]\n\n[^a]: See [^b].\n[^b]: Inner.\n');
     expect(html).toContain('<section data-footnotes');

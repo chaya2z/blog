@@ -239,6 +239,8 @@ const ogImage = {
    * until the script above places the notes: then they take no height, so the
    * row is the block's, a long note runs on down the margin, and the text
    * below keeps its place.
+   *
+   * A long note shows whole here, open or not, with its number at its start.
    */
   @media (min-width: 88rem) {
     .prose :global(.noted) {
@@ -253,6 +255,27 @@ const ogImage = {
     }
     .prose[data-sidenotes-placed] :global(.sidenotes) {
       height: 0;
+    }
+  }
+  /* A browser that cannot show a closed note's blocks keeps it folded. */
+  @media (min-width: 88rem) {
+    @supports selector(::details-content) {
+      .prose :global(.sidenote details::details-content) {
+        content-visibility: visible;
+      }
+      .prose :global(.sidenote summary) {
+        display: block;
+        float: left;
+        margin-right: 0.3em;
+        overflow: visible;
+        cursor: auto;
+        -webkit-line-clamp: none;
+        line-clamp: none;
+      }
+      .prose :global(.sidenote summary::before),
+      .prose :global(.sidenote-excerpt) {
+        display: none;
+      }
     }
   }
 </style>
