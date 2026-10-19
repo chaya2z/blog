@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 
-import { postJsonLd } from './structured-data';
+import { postBreadcrumbJsonLd, postJsonLd } from './structured-data';
 
 const post = {
   title: 'A post',
@@ -17,5 +17,16 @@ describe('postJsonLd', () => {
 
   it('leaves out dateModified for a post never updated', () => {
     expect(postJsonLd(post)).not.toHaveProperty('dateModified');
+  });
+});
+
+describe('postBreadcrumbJsonLd', () => {
+  it('links Home and Posts, and leaves the post to its own page', () => {
+    const data = postBreadcrumbJsonLd({ title: 'A post', siteUrl: new URL('https://example.com') });
+    expect(data.itemListElement).toEqual([
+      { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://example.com/' },
+      { '@type': 'ListItem', position: 2, name: 'Posts', item: 'https://example.com/posts/' },
+      { '@type': 'ListItem', position: 3, name: 'A post' },
+    ]);
   });
 });
