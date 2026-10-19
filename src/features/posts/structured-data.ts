@@ -7,6 +7,10 @@ import { AUTHOR } from '@/site';
  */
 export function postJsonLd(post: {
   title: string;
+  description: string;
+  /** A BCP 47 tag, as in the page's `lang`. */
+  lang: string;
+  tags: string[];
   imageUrl: string;
   publishedAt: Date;
   updatedAt?: Date | undefined;
@@ -15,6 +19,9 @@ export function postJsonLd(post: {
     '@context': 'https://schema.org',
     '@type': 'BlogPosting',
     headline: post.title,
+    description: post.description,
+    inLanguage: post.lang,
+    keywords: post.tags,
     image: [post.imageUrl],
     datePublished: post.publishedAt.toISOString(),
     // Left out until the post is updated, rather than repeating the date above.
