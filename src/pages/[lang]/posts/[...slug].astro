@@ -44,6 +44,9 @@ const ogImage = {
 };
 const blogPosting = postJsonLd({
   title: post.data.title,
+  description: post.data.description,
+  lang,
+  tags: post.data.tags,
   imageUrl: new URL(ogImage.path, Astro.site).href,
   publishedAt: post.data.publishedAt,
   updatedAt: post.data.updatedAt,

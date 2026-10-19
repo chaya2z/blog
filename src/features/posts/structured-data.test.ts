@@ -4,6 +4,9 @@ import { postBreadcrumbJsonLd, postJsonLd } from './structured-data';
 
 const post = {
   title: 'A post',
+  description: 'What the post is about.',
+  lang: 'ja',
+  tags: ['Linux'],
   imageUrl: 'https://example.com/og.png',
   publishedAt: new Date('2026-09-08T19:00:00Z'),
 };
