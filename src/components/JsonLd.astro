@@ -1,0 +1,12 @@
+---
+import { serializeJsonLd } from '@/utils/json-ld';
+
+interface Props {
+  /** A schema.org object, with its own `@context`. */
+  data: object;
+}
+
+const { data } = Astro.props;
+---
+
+<script type="application/ld+json" set:html={serializeJsonLd(data)} />

@@ -2,6 +2,7 @@
 import type { GetStaticPaths } from 'astro';
 import { render } from 'astro:content';
 import 'katex/dist/katex.min.css';
+import JsonLd from '@/components/JsonLd.astro';
 import ArticleHeader from '@/features/posts/components/ArticleHeader.astro';
 import AuthorCard from '@/features/posts/components/AuthorCard.astro';
 import Breadcrumbs from '@/features/posts/components/Breadcrumbs.astro';
@@ -41,7 +42,7 @@ const ogImage = {
   path: postOgImagePath(post.id),
   alt: `${post.data.title} on ${SITE_TITLE}, ${formatDate(post.data.publishedAt)}`,
 };
-const jsonLd = postJsonLd({
+const structuredData = postJsonLd({
   title: post.data.title,
   imageUrl: new URL(ogImage.path, Astro.site).href,
   publishedAt: post.data.publishedAt,
@@ -56,7 +57,7 @@ const jsonLd = postJsonLd({
   article={{ publishedTime: post.data.publishedAt, modifiedTime: post.data.updatedAt }}
   {ogImage}
 >
-  <script type="application/ld+json" is:inline set:html={jsonLd} />
+  <JsonLd slot="head" data={structuredData} />
   {/* Breadcrumbs are site navigation, so they stay outside the article. */}
   <div class="container crumbs">
     <Breadcrumbs title={post.data.title} lang={lang} />
