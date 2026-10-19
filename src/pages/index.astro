@@ -1,13 +1,24 @@
 ---
+import JsonLd from '@/components/JsonLd.astro';
 import PostList from '@/features/posts/components/PostList.astro';
 import { getPosts } from '@/features/posts/content';
 import BaseLayout from '@/layouts/BaseLayout.astro';
 import { SITE_DESCRIPTION, SITE_TITLE } from '@/site';
 
 const posts = (await getPosts()).slice(0, 5);
+// The name Google shows for the site in its results; only the home page of a
+// domain or subdomain can give it.
+// ref: https://developers.google.com/search/docs/appearance/site-names
+const webSite = {
+  '@context': 'https://schema.org',
+  '@type': 'WebSite',
+  name: SITE_TITLE,
+  url: new URL('/', Astro.site).href,
+};
 ---
 
 <BaseLayout title={SITE_TITLE} lang="en" description={SITE_DESCRIPTION}>
+  <JsonLd slot="head" data={webSite} />
   <section class="container latest" aria-labelledby="latest">
     <div class="head">
       {/* The page's only heading above the post titles, so the outline stays h1 > h2. */}
