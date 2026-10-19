@@ -1,0 +1,148 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import { SITE_TITLE } from '@/site';
+
+// The page may also stand in for an address that is gone for good, so its
+// words cover both, and it names no status code.
+const DESCRIPTION = 'The page you’re looking for doesn’t exist or may have been moved.';
+---
+
+<BaseLayout title="Page not found" lang="en">
+  <main class="page">
+    <a href="/" class="logo">
+      {SITE_TITLE}
+    </a>
+    <h1>
+      <span class="first">Page</span> <span class="last">not found</span>
+    </h1>
+    <div class="body">
+      <p>{DESCRIPTION}</p>
+      <nav aria-label="Ways back">
+        <a href="/" class="primary">
+          Back to home <span aria-hidden="true">→</span>
+        </a>
+        <a href="/posts/">
+          Browse all posts <span aria-hidden="true">→</span>
+        </a>
+      </nav>
+    </div>
+  </main>
+</BaseLayout>
+
+<style>
+  /*
+   * The page has no header or footer. The heading is split around the rest:
+   * its first word across the top of the window, the rest in the bottom corner.
+   * The padding keeps the rest clear of both. Clipped, as each word's font box
+   * runs past its tight line box, and would add a few pixels of scroll.
+   */
+  .page {
+    --gutter: clamp(1rem, 2.5vw, 2rem);
+    --word: min(16vw, 26vh);
+    position: relative;
+    display: grid;
+    align-content: center;
+    justify-items: center;
+    min-height: 100dvh;
+    padding: calc(var(--gutter) + 3rem + var(--word)) var(--gutter)
+      calc(var(--gutter) + var(--word) * 1.1);
+    overflow: clip;
+  }
+  /* Padded to a 44px target, with the padding taken back so the name stays in line. */
+  .logo {
+    position: absolute;
+    top: var(--gutter);
+    left: var(--gutter);
+    margin: -0.5rem;
+    padding: 0.5rem;
+    font-size: 1.05rem;
+    font-weight: 850;
+    letter-spacing: -0.03em;
+    text-transform: uppercase;
+    text-decoration: none;
+  }
+
+  /* The words are placed on the page; the heading itself takes no room. */
+  h1 {
+    margin: 0;
+  }
+  h1 > span {
+    position: absolute;
+    font-size: var(--word);
+    font-weight: 900;
+    line-height: 0.78;
+    letter-spacing: -0.07em;
+    text-transform: uppercase;
+  }
+  .first {
+    top: calc(var(--gutter) + 2.5rem);
+    left: var(--gutter);
+  }
+  .last {
+    right: var(--gutter);
+    bottom: var(--gutter);
+    color: var(--accent-text);
+  }
+
+  .body {
+    display: grid;
+    gap: 1.25rem;
+    width: min(100%, 50rem);
+  }
+  p {
+    margin: 0;
+    padding-bottom: 0.75rem;
+    border-bottom: 1px solid var(--ink-hairline);
+    font-size: clamp(1.125rem, 1.8vw, 1.5rem);
+    font-weight: 700;
+    line-height: 1.3;
+    letter-spacing: -0.015em;
+  }
+  /* Side by side while both fit, stacked below that. */
+  nav {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));
+    gap: 0.75rem;
+  }
+  nav a {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    min-height: 4rem;
+    padding-inline: 1.5rem;
+    border: 3px solid var(--ink);
+    font-size: 1.125rem;
+    font-weight: 860;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    text-decoration: none;
+  }
+  nav a:hover {
+    text-decoration: underline 3px;
+    text-underline-offset: 0.2em;
+  }
+  /* An inline block, so the hover underline stops at the label. */
+  nav a > span {
+    display: inline-block;
+  }
+  .primary {
+    background: var(--ink);
+    color: var(--paper);
+  }
+  /* The outline follows the text color, which here is the page's own. */
+  .primary:focus-visible {
+    outline-color: var(--ink);
+  }
+
+  /* A narrow window sets the words larger and breaks "not found" onto two lines. */
+  @media (max-width: 48rem) {
+    .page {
+      --word: min(24vw, 20svh);
+      padding-bottom: calc(var(--gutter) + var(--word) * 1.8);
+    }
+    .last {
+      width: min-content;
+      text-align: right;
+    }
+  }
+</style>

@@ -3,7 +3,11 @@
   "name": "blog",
   "compatibility_date": "2026-10-12",
   "assets": {
-    "directory": "./dist"
+    "directory": "./dist",
+    // Without this, an address with no asset gets an empty 404; with it, the
+    // nearest 404.html, which here is always the root's.
+    // ref: https://developers.cloudflare.com/workers/static-assets/routing/static-site-generation/#custom-404-pages
+    "not_found_handling": "404-page"
   },
   // Serve only on the custom domain; the workers.dev hostnames stay off.
   "routes": [
