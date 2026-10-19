@@ -75,6 +75,8 @@ const ogImageUrl = new URL(ogImage.path, Astro.site).href;
     <meta name="twitter:card" content="summary_large_image" />
     <Font cssVariable="--font-inter" />
     <Font cssVariable="--font-noto-sans-jp" />
+    {/* What a page adds to its own head, such as its JSON-LD. */}
+    <slot name="head" />
   </head>
   <body>
     <SiteHeader />
