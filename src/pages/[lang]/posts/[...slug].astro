@@ -13,7 +13,7 @@ import { postOgImagePath } from '@/features/og-image/image';
 import { getPosts, type PostEntry } from '@/features/posts/content';
 import { parsePostId } from '@/features/posts/id';
 import { relatedPosts } from '@/features/posts/related';
-import { postJsonLd } from '@/features/posts/structured-data';
+import { postBreadcrumbJsonLd, postJsonLd } from '@/features/posts/structured-data';
 import '@/styles/prose.css';
 import BaseLayout from '@/layouts/BaseLayout.astro';
 import { SITE_TITLE } from '@/site';
@@ -42,12 +42,13 @@ const ogImage = {
   path: postOgImagePath(post.id),
   alt: `${post.data.title} on ${SITE_TITLE}, ${formatDate(post.data.publishedAt)}`,
 };
-const structuredData = postJsonLd({
+const blogPosting = postJsonLd({
   title: post.data.title,
   imageUrl: new URL(ogImage.path, Astro.site).href,
   publishedAt: post.data.publishedAt,
   updatedAt: post.data.updatedAt,
 });
+const breadcrumbList = postBreadcrumbJsonLd({ title: post.data.title, siteUrl: Astro.site! });
 ---
 
 <BaseLayout
@@ -57,7 +58,8 @@ const structuredData = postJsonLd({
   article={{ publishedTime: post.data.publishedAt, modifiedTime: post.data.updatedAt }}
   {ogImage}
 >
-  <JsonLd slot="head" data={structuredData} />
+  <JsonLd slot="head" data={blogPosting} />
+  <JsonLd slot="head" data={breadcrumbList} />
   {/* Breadcrumbs are site navigation, so they stay outside the article. */}
   <div class="container crumbs">
     <Breadcrumbs title={post.data.title} lang={lang} />
