@@ -1,0 +1,73 @@
+---
+import SiteFooter from '@/components/SiteFooter.astro';
+import SiteHeader from '@/components/SiteHeader.astro';
+import { OG_IMAGE_HEIGHT, OG_IMAGE_WIDTH, ogImagePath } from '@/features/og-image/image';
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import type { Lang } from '@/utils/languages';
+import { SITE_TAGLINE, SITE_TITLE } from '@/site';
+
+interface Props {
+  title: string;
+  lang: Lang;
+  description: string;
+  /** Marks the page as an Open Graph article; other pages are websites. */
+  article?: { publishedTime: Date; modifiedTime?: Date };
+  /**
+   * The page's Open Graph image, by its path, and alt text that says what the
+   * image says, not a caption. Pages without one share the site's.
+   * ref: https://ogp.me/#structured
+   */
+  ogImage?: { path: string; alt: string };
+}
+
+// Open Graph names a locale by language and territory; it assumes en_US when
+// none is given.
+// ref: https://ogp.me/#optional
+const OG_LOCALES = { en: 'en_US', ja: 'ja_JP' } satisfies Record<Lang, string>;
+
+const {
+  title,
+  lang,
+  description,
+  article,
+  ogImage = { path: ogImagePath('site'), alt: `${SITE_TITLE}: ${SITE_TAGLINE}` },
+} = Astro.props;
+// Absolute, as Google recommends; `trailingSlash: 'always'` keeps the path
+// identical to the served URL, so it never names a redirect source.
+const canonicalUrl = new URL(Astro.url.pathname, Astro.site).href;
+// Absolute, as the Open Graph URL type takes only http(s) URLs.
+// ref: https://ogp.me/#types
+const ogImageUrl = new URL(ogImage.path, Astro.site).href;
+---
+
+<BaseLayout title={title} lang={lang}>
+  <Fragment slot="head">
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonicalUrl} />
+    <meta property="og:type" content={article ? 'article' : 'website'} />
+    {article && (
+      <meta property="article:published_time" content={article.publishedTime.toISOString()} />
+    )}
+    {article?.modifiedTime && (
+      <meta property="article:modified_time" content={article.modifiedTime.toISOString()} />
+    )}
+    <meta property="og:site_name" content={SITE_TITLE} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonicalUrl} />
+    <meta property="og:locale" content={OG_LOCALES[lang]} />
+    <meta property="og:image" content={ogImageUrl} />
+    <meta property="og:image:width" content={String(OG_IMAGE_WIDTH)} />
+    <meta property="og:image:height" content={String(OG_IMAGE_HEIGHT)} />
+    <meta property="og:image:alt" content={ogImage.alt} />
+    {/* X falls back to the og: tags above, so only its card type is set here. */}
+    <meta name="twitter:card" content="summary_large_image" />
+    {/* What a page adds to its own head, such as its JSON-LD. */}
+    <slot name="head" />
+  </Fragment>
+  <SiteHeader />
+  <main>
+    <slot />
+  </main>
+  <SiteFooter />
+</BaseLayout>

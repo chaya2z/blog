@@ -2,7 +2,7 @@
 import JsonLd from '@/components/JsonLd.astro';
 import PostList from '@/features/posts/components/PostList.astro';
 import { getPosts } from '@/features/posts/content';
-import BaseLayout from '@/layouts/BaseLayout.astro';
+import SiteLayout from '@/layouts/SiteLayout.astro';
 import { SITE_DESCRIPTION, SITE_TITLE } from '@/site';
 
 const posts = (await getPosts()).slice(0, 5);
@@ -17,7 +17,7 @@ const webSite = {
 };
 ---
 
-<BaseLayout title={SITE_TITLE} lang="en" description={SITE_DESCRIPTION}>
+<SiteLayout title={SITE_TITLE} lang="en" description={SITE_DESCRIPTION}>
   <JsonLd slot="head" data={webSite} />
   <section class="container latest" aria-labelledby="latest">
     <div class="head">
@@ -31,7 +31,7 @@ const webSite = {
     </div>
     <PostList posts={posts} />
   </section>
-</BaseLayout>
+</SiteLayout>
 
 <style>
   /*

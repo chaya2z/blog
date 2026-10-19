@@ -2,7 +2,7 @@
 import { getEntry, render } from 'astro:content';
 import Masthead from '@/components/Masthead.astro';
 import { formatDate } from '@/utils/date';
-import BaseLayout from '@/layouts/BaseLayout.astro';
+import SiteLayout from '@/layouts/SiteLayout.astro';
 import '@/styles/prose.css';
 
 const page = await getEntry('pages', 'privacy');
@@ -14,7 +14,7 @@ const { title, description, updatedAt } = page.data;
 ---
 
 {/* English only, like the rest of the UI. */}
-<BaseLayout title={title} lang="en" description={description}>
+<SiteLayout title={title} lang="en" description={description}>
   <Masthead title="Privacy" />
   <div class="container body">
     <p class="updated">
@@ -25,7 +25,7 @@ const { title, description, updatedAt } = page.data;
       <Content />
     </div>
   </div>
-</BaseLayout>
+</SiteLayout>
 
 <style>
   .body {
