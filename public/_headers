@@ -1,0 +1,4 @@
+# https://developers.cloudflare.com/workers/static-assets/headers/
+
+/*
+  Strict-Transport-Security: max-age=300
