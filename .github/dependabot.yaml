@@ -1,0 +1,34 @@
+version: 2
+updates:
+  - package-ecosystem: github-actions
+    # "/" makes Dependabot scan .github/workflows.
+    directory: '/'
+    schedule:
+      interval: weekly
+      day: monday
+      timezone: Asia/Tokyo
+    cooldown:
+      default-days: 14
+    commit-message:
+      prefix: ci
+    groups:
+      actions:
+        patterns: ['*']
+  - package-ecosystem: npm
+    directory: '/'
+    schedule:
+      interval: weekly
+      day: monday
+      timezone: Asia/Tokyo
+    # Keep in sync with minimumReleaseAge in pnpm-workspace.yaml so that
+    # Dependabot doesn't open PRs that pnpm install will reject.
+    cooldown:
+      default-days: 14
+    commit-message:
+      prefix: chore
+      include: scope
+    open-pull-requests-limit: 10
+    groups:
+      minor-and-patch:
+        patterns: ['*']
+        update-types: ['minor', 'patch']
