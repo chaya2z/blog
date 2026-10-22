@@ -2,3 +2,8 @@
 
 /*
   Strict-Transport-Security: max-age=604800
+
+# Keep Cache-Control out of `/*`: a path matching several rules gets every
+# rule's value joined with a comma, not the most specific one.
+/_astro/*
+  Cache-Control: public, max-age=31536000, immutable
