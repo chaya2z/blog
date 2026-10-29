@@ -39,6 +39,23 @@ directory structure: each card in `features/<name>/` with any picture only it dr
 as the card's page, and what the cards share in `components/` and `utils/`. A post's
 picture comes from the blog's `features/posts/`, as the post page shows it too.
 
+## Japanese font subset
+
+Noto Sans JP is served as one subset of the characters the site uses, committed as
+`src/assets/fonts/noto-sans-jp-subset.woff2` with the list of those characters beside it.
+CI fails while a page uses a character the subset lacks (`pnpm fonts:check` after a build);
+add it with:
+
+```sh
+cargo install skera --features cli  # once; woff2_compress comes from google/woff2
+pnpm fonts
+```
+
+`pnpm fonts` builds the site, downloads the full font once into `.cache/fonts/` from a
+pinned google/fonts commit, and subsets it with [skera](https://github.com/googlefonts/fontations/tree/main/skera)
+and `woff2_compress`. It only adds characters, so the file, and the hash in its URL,
+changes only when a new character appears; `pnpm fonts --reset` drops the unused ones.
+
 ## Why Astro
 
 Astro is built for content sites, so running a blog on it is simple:

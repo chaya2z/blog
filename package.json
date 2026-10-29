@@ -5,6 +5,8 @@
   "scripts": {
     "dev": "astro dev",
     "build": "astro build",
+    "fonts": "astro build && node scripts/subset-fonts.ts",
+    "fonts:check": "node scripts/subset-fonts.ts --check",
     "og": "node og/render.ts",
     "og:dev": "cd og && astro dev",
     "preview": "astro preview",

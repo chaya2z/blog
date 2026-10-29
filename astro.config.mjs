@@ -36,15 +36,21 @@ export default defineConfig({
       fallbacks: [],
     },
     {
-      // Google, not Fontsource: Astro's Fontsource provider cannot select the
-      // Japanese unicode-range slices, and its `japanese` file does not exist.
-      // From Google, a page downloads just the slices for the characters it uses.
-      // The Japanese slices are unnamed, so `subsets` keeps them all.
-      provider: fontProviders.google(),
+      // One subset of the characters the site uses, made by `pnpm fonts`.
+      // Google's unicode-range slices made a Japanese page fetch dozens of
+      // files and inlined over 120 @font-face rules into every page.
+      provider: fontProviders.local(),
       name: 'Noto Sans JP',
       cssVariable: '--font-noto-sans-jp',
-      weights: ['100 900'],
-      styles: ['normal'],
+      options: {
+        variants: [
+          {
+            src: ['./src/assets/fonts/noto-sans-jp-subset.woff2'],
+            weight: '100 900',
+            style: 'normal',
+          },
+        ],
+      },
       fallbacks: [],
     },
   ],
