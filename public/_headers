@@ -1,7 +1,7 @@
 # https://developers.cloudflare.com/workers/static-assets/headers/
 
 /*
-  Strict-Transport-Security: max-age=604800
+  Strict-Transport-Security: max-age=2592000
 
 # Keep Cache-Control out of `/*`: a path matching several rules gets every
 # rule's value joined with a comma, not the most specific one.
