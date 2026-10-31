@@ -23,8 +23,9 @@ each brand supplies.
 
 From [Material Symbols](https://github.com/google/material-design-icons)
 (Outlined, weight 600, 24px optical size) at commit `6d7ca43bd6e6`, licensed
-under the [Apache License 2.0](https://www.apache.org/licenses/LICENSE-2.0).
-The files are unchanged; the color is set where they are used.
+under the [Apache License 2.0](https://www.apache.org/licenses/LICENSE-2.0), a copy
+of which is in [`LICENSE-APACHE-2.0.txt`](./LICENSE-APACHE-2.0.txt). The
+files are unchanged; the color is set where they are used.
 
 | File                | Source                                                                                                                                                                                                                                                             |
 | ------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
