@@ -14,8 +14,8 @@ const post = {
 describe('postJsonLd', () => {
   it('gives the dates as UTC instants', () => {
     const data = postJsonLd({ ...post, updatedAt: new Date('2026-10-19T12:30:00Z') });
-    expect(data.datePublished).toBe('2026-09-08T19:00:00.000Z');
-    expect(data.dateModified).toBe('2026-10-19T12:30:00.000Z');
+    expect(data.datePublished).toBe('2026-09-08T19:00:00Z');
+    expect(data.dateModified).toBe('2026-10-19T12:30:00Z');
   });
 
   it('leaves out dateModified for a post never updated', () => {

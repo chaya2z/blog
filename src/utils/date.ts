@@ -12,3 +12,14 @@ export function formatDate(date: Date): string {
     timeZone: 'UTC',
   }).format(date);
 }
+
+/**
+ * Prints an instant in UTC to the second, e.g. `2026-09-08T19:00:00Z`, for
+ * machine-readable dates: JSON-LD, Open Graph and `<time datetime>`.
+ * `Date#toISOString()` always adds milliseconds, which schema.org's DateTime
+ * leaves out, and frontmatter holds instants to the second.
+ * ref: https://schema.org/DateTime
+ */
+export function formatInstant(date: Date): string {
+  return date.toTemporalInstant().toString({ smallestUnit: 'second' });
+}

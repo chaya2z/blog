@@ -3,7 +3,7 @@ import { drawInlinePattern } from '@/features/posts/inline-pattern';
 import type { PostEntry } from '@/features/posts/content';
 import { parsePostId } from '@/features/posts/id';
 import { getPostPath } from '@/features/posts/routing';
-import { formatDate } from '@/utils/date';
+import { formatDate, formatInstant } from '@/utils/date';
 import { japanesePhrases } from '@/utils/phrases';
 
 interface Props {
@@ -34,7 +34,7 @@ const titlePhrases = (post: PostEntry) =>
             <span class="title" lang={parsePostId(post.id).lang}>
               {titlePhrases(post).map((phrase, i) => (i === 0 ? phrase : [<wbr />, phrase]))}
             </span>
-            <time datetime={post.data.publishedAt.toISOString()}>
+            <time datetime={formatInstant(post.data.publishedAt)}>
               {formatDate(post.data.publishedAt)}
             </time>
           </a>
