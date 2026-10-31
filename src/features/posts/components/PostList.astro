@@ -1,6 +1,6 @@
 ---
 import type { PostEntry } from '@/features/posts/content';
-import { formatDate } from '@/utils/date';
+import { formatDate, formatInstant } from '@/utils/date';
 import { parsePostId } from '@/features/posts/id';
 import { getPostPath } from '@/features/posts/routing';
 
@@ -16,7 +16,7 @@ const { posts } = Astro.props;
     <li>
       <article lang={parsePostId(post.id).lang}>
         {/* The date is English UI text, even beside a Japanese title. */}
-        <time datetime={post.data.publishedAt.toISOString()} lang="en">
+        <time datetime={formatInstant(post.data.publishedAt)} lang="en">
           {formatDate(post.data.publishedAt)}
         </time>
         <h2>

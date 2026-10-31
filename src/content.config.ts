@@ -5,8 +5,9 @@ import { z } from 'astro/zod';
 // The loaders' bases are URLs from this file, not paths from the project root,
 // so the Open Graph card site in og/, a project of its own, loads the same files.
 
-// `z.iso.datetime()` takes only `Z` as the offset and requires the time.
-const utcDateTime = z.iso.datetime().transform((value) => new Date(value));
+// `z.iso.datetime({ precision: 0 })` takes only `Z` as the offset and requires
+// the time to the second, with no fraction.
+const utcDateTime = z.iso.datetime({ precision: 0 }).transform((value) => new Date(value));
 
 // Each post lives at `posts/<lang>/<slug>/index.md`, so the entry id is `<lang>/<slug>`.
 // Do not add a `slug` field: the glob loader would use it as the id and drop the lang.

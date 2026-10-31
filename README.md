@@ -5,7 +5,7 @@ A personal tech blog built with [Astro](https://astro.build) and served from
 
 ## Quick start
 
-Requires Node.js 24.4+ and pnpm.
+Requires Node.js 26+ and pnpm.
 
 ```sh
 pnpm install

@@ -1,7 +1,7 @@
 ---
 import { drawInlinePattern } from '@/features/posts/inline-pattern';
 import { parsePostId } from '@/features/posts/id';
-import { formatDate } from '@/utils/date';
+import { formatDate, formatInstant } from '@/utils/date';
 import { japanesePhrases } from '@/utils/phrases';
 
 interface Props {
@@ -36,7 +36,7 @@ const titlePhrases = parsePostId(postId).lang === 'ja' ? japanesePhrases(title) 
   <div class="art" aria-hidden="true" set:html={patternSvg} />
   <div class="meta">
     {/* The date is English UI text, even inside a Japanese post. */}
-    <time datetime={publishedAt.toISOString()} lang="en">
+    <time datetime={formatInstant(publishedAt)} lang="en">
       {formatDate(publishedAt)}
     </time>
     {tags.length > 0 && (

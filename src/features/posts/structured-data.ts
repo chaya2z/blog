@@ -1,8 +1,9 @@
 import { AUTHOR } from '@/site';
+import { formatInstant } from '@/utils/date';
 
 /**
  * A post's schema.org `BlogPosting`, with the properties Google reads for an
- * article. Dates are UTC instants in ISO 8601.
+ * article. Dates are UTC instants in ISO 8601, to the second.
  * ref: https://developers.google.com/search/docs/appearance/structured-data/article
  */
 export function postJsonLd(post: {
@@ -23,9 +24,9 @@ export function postJsonLd(post: {
     inLanguage: post.lang,
     keywords: post.tags,
     image: [post.imageUrl],
-    datePublished: post.publishedAt.toISOString(),
+    datePublished: formatInstant(post.publishedAt),
     // Left out until the post is updated, rather than repeating the date above.
-    ...(post.updatedAt && { dateModified: post.updatedAt.toISOString() }),
+    ...(post.updatedAt && { dateModified: formatInstant(post.updatedAt) }),
     author: [{ '@type': 'Person', name: AUTHOR.name, url: AUTHOR.links.website }],
   };
 }
