@@ -167,3 +167,10 @@ The blog uses the light or dark setting the reader has chosen in their OS or bro
 That covers what readers need for now. A toggle would also be one more thing to
 maintain, with details to get right, such as avoiding a flash of the wrong scheme on
 page load.
+
+## License
+
+Unless otherwise noted, the source code and content of this repository are not licensed
+for reuse. Third-party assets remain under their own licenses, as noted beside them, such
+as in [`src/assets/icons/README.md`](src/assets/icons/README.md) and
+[`src/assets/fonts/OFL.txt`](src/assets/fonts/OFL.txt).
